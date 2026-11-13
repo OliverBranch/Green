@@ -914,3 +914,42 @@
   .av-thumb { width: 70px; }
   .av-thumb canvas { width: 56px; height: 56px; }
 }
+
+/* =====================================================================
+   Gato (0.4.3): editor e o gatinho no canto da tela
+   ===================================================================== */
+
+.pet-name-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.pet-name {
+  font-family: var(--display); font-size: 28px; line-height: 1; padding: 4px 10px; width: 14ch;
+  background: var(--bg); color: var(--phos); border: 1px solid var(--line-2); outline: none;
+}
+.pet-name:focus { border-color: var(--phos); box-shadow: 0 0 0 1px var(--phos); }
+.prof-av-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.corner-cat { position: fixed; right: 18px; bottom: 58px; z-index: 40; display: grid; justify-items: end; pointer-events: none; }
+.cat-art {
+  pointer-events: auto; display: block; padding: 0; background: none; border: none; cursor: pointer;
+  filter: drop-shadow(0 0 6px rgba(67, 255, 149, .18)); transition: transform .12s steps(2);
+}
+.cat-art canvas { display: block; width: 96px; height: 96px; image-rendering: pixelated; }
+.cat-art:hover { transform: translateY(-2px); }
+.cat-art:focus-visible { outline: 2px solid var(--phos); outline-offset: 2px; }
+.cat-bubble {
+  position: relative; margin-bottom: 2px; max-width: 220px; padding: 5px 9px; font-size: 12px; color: var(--ink);
+  background: var(--phos); box-shadow: var(--glow); opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s;
+}
+.cat-bubble::after { content: ''; position: absolute; bottom: -5px; right: 34px; width: 8px; height: 8px; background: var(--phos); transform: rotate(45deg); }
+.cat-bubble.is-on { opacity: 1; transform: none; }
+.cat-heart { position: absolute; right: 40px; bottom: 80px; color: var(--alert); font-size: 18px; text-shadow: var(--glow-alert); animation: cat-heart 1s steps(6) forwards; pointer-events: none; }
+@keyframes cat-heart { to { transform: translateY(-34px); opacity: 0; } }
+body.has-overlay .corner-cat { display: none; }
+
+@media (max-width: 820px) {
+  .corner-cat { right: 8px; bottom: 52px; }
+  .cat-art canvas { width: 64px; height: 64px; }
+  .cat-heart { right: 26px; bottom: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-heart { animation: none; display: none; }
+}

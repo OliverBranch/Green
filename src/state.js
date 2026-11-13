@@ -12,6 +12,8 @@ export function defaultState() {
     operator: null,
     avatar: null,         // personagem (ui/avatar.js); null até a pessoa criar
     avatarSkipped: false, // escolheu "deixar para depois" na primeira vez
+    pet: null,            // o gato (ui/pet.js)
+    petSkipped: false,
     xp: 0,
     reputation: 50,
     nodes: {},        // id -> { level, cooldownUntil, attempts, provenAt: {1: ts, 2: ts, 3: ts} }
@@ -25,7 +27,7 @@ export function defaultState() {
     rust: {},         // nodeId -> ts: nó comprovado que você errou numa análise ou caso, até acertar de novo
     history: [],      // { q, ok, t, kind } — base para revisão espaçada
     stats: { exams: 0, passed: 0, missions: 0, missionsFailed: 0, battles: 0, battlesWon: 0, cards: 0, cardsOk: 0, runs: 0, runsWon: 0 },
-    settings: { timer: 90, cooldownHours: 24, effects: true, sound: true },
+    settings: { timer: 90, cooldownHours: 24, effects: true, sound: true, petCorner: true },
     activeExam: null,
   };
 }

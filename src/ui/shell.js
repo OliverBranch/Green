@@ -11,6 +11,8 @@ import { ACT_NAMES } from '../run.js';
 import { PALETTE as P, iconURL } from './pixel.js';
 import { portrait as avatarPortrait, scaled } from './avatar.js';
 import { openAvatarEditor } from './avatar-view.js';
+import { openPetEditor, mountCornerCat } from './pet-view.js';
+import { portrait as catPortrait } from './pet.js';
 import { ATTRS } from '../attributes.js';
 import { mountProfile } from './profile-view.js';
 import { openExam } from './exam-view.js';
@@ -23,6 +25,8 @@ const ROUTES = [
   { id: 'perfil', label: 'Perfil', path: 'perfil', icon: 'cert', title: 'Perfil' },
 ];
 const HOME = 'operacao';
+
+let cat = null;
 
 export function mountShell(root) {
   const topStats = h('div', { class: 'top-stats' });
@@ -109,7 +113,10 @@ export function mountShell(root) {
             : h('span', { class: 'nav-avatar', 'aria-hidden': 'true' }, (s.operator || '?').slice(0, 1).toUpperCase()),
           h('span', { class: 'nav-who' }, h('b', {}, s.operator || 'operador'), h('span', {}, r.name.toLowerCase()),
           )),
-        h('button', { class: 'nav-edit', onclick: () => openAvatarEditor({ first: !s.avatar }) }, s.avatar ? '✎ editar personagem' : '+ criar personagem'),
+        h('span', { class: 'nav-edits' },
+          h('button', { class: 'nav-edit', onclick: () => openAvatarEditor({ first: !s.avatar }) }, s.avatar ? '✎ personagem' : '+ personagem'),
+          h('button', { class: 'nav-edit', onclick: () => openPetEditor({ first: !s.pet }) },
+            s.pet ? [scaled(catPortrait(s.pet), 1), ` ${s.pet.name}`] : '+ adotar gato')),
         h('span', { class: 'nav-xp', role: 'meter', 'aria-label': `${s.xp} XP`, 'aria-valuenow': String(s.xp) }, h('span', { style: { width: `${Math.round(r.progress * 100)}%` } })),
         h('span', { class: 'nav-xp-text' }, r.ceil ? `${s.xp} / ${r.ceil} xp` : `${s.xp} xp`),
         h('span', { class: 'nav-k' }, 'ficha do analista'),
@@ -141,7 +148,7 @@ export function mountShell(root) {
 
   const commands = {
     help: (_, { print }) => {
-      print('comandos: status · nos [ramo] · prova <código> · missao [id] · operacao · ficha · personagem · ir <mapa|missoes|operacao|perfil> · som · exportar · limpar · whoami');
+      print('comandos: status · nos [ramo] · prova <código> · missao [id] · operacao · ficha · personagem · gato · miau · ir <mapa|missoes|operacao|perfil> · som · exportar · limpar · whoami');
     },
     status: (_, { print }) => {
       const s = store.get(); const r = rank(s.xp); const m = mastery();
@@ -179,6 +186,14 @@ export function mountShell(root) {
       location.hash = '#/operacao';
     },
     personagem: (_, { setOpen }) => { setOpen(false); openAvatarEditor({}); },
+    gato: (_, { setOpen }) => { setOpen(false); openPetEditor({}); },
+    pet: (_, { setOpen }) => { setOpen(false); openPetEditor({}); },
+    miau: (_, { print }) => {
+      const p = store.get().pet;
+      if (!p) { print('você ainda não tem um gato. digite gato para adotar um.', 'warn'); return; }
+      cat?.pat();
+      print(`${p.name}: =^.^=`, 'ok');
+    },
     avatar: (_, { setOpen }) => { setOpen(false); openAvatarEditor({}); },
     ficha: (_, { print }) => {
       const a = playerAttrs();
@@ -206,9 +221,15 @@ export function mountShell(root) {
   renderTop();
   store.subscribe(() => { renderTop(); renderNav(); applyFx(); });
   window.addEventListener('hashchange', route);
-  // primeira vez (ou save antigo): convida a criar o personagem
-  const s0 = store.get();
-  if (!s0.avatar && !s0.avatarSkipped) setTimeout(() => { if (!document.querySelector('.overlay')) openAvatarEditor({ first: true }); }, 400);
+  // primeira vez (ou save antigo): convida a criar o personagem e depois a adotar o gato
+  const onboarding = () => {
+    if (document.querySelector('.overlay')) return;
+    const st = store.get();
+    if (!st.avatar && !st.avatarSkipped) openAvatarEditor({ first: true, onDone: onboarding });
+    else if (!st.pet && !st.petSkipped) openPetEditor({ first: true });
+  };
+  setTimeout(onboarding, 400);
+  cat = mountCornerCat();
   // Alt+1..4 troca de seção (fora de provas e da operação aberta)
   window.addEventListener('keydown', (e) => {
     if (!e.altKey || e.ctrlKey || e.metaKey || document.querySelector('.overlay')) return;

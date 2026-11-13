@@ -267,6 +267,9 @@ a { color: var(--phos); }
 .nav-avatar.is-pix canvas { display: block; width: 64px; height: 64px; image-rendering: pixelated; }
 .nav-edit { justify-self: start; background: none; border: none; padding: 0; font: inherit; font-size: 11px; color: var(--phos-2); cursor: pointer; }
 .nav-edit:hover { color: var(--phos); text-decoration: underline; }
+.nav-edits { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.nav-edit { display: inline-flex; align-items: center; gap: 3px; }
+.nav-edit canvas { width: 16px; height: 16px; image-rendering: pixelated; }
 .nav-avatar {
   display: grid; place-items: center; width: 34px; height: 34px; flex: none;
   font-family: var(--display); font-size: 26px; line-height: 1; color: var(--ink); background: var(--phos); box-shadow: var(--glow);

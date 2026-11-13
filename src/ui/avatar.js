@@ -65,7 +65,7 @@ export function mix(a, b, t) { const x = hex2rgb(a), y = hex2rgb(b); return rgb2
 
 // ---------- grade de pixels ----------
 
-class Grid {
+export class Grid {
   constructor(w, h) { this.w = w; this.h = h; this.d = new Array(w * h).fill(null); }
   get(x, y) { return x < 0 || y < 0 || x >= this.w || y >= this.h ? null : this.d[y * this.w + x]; }
   px(x, y, c) { x = Math.round(x); y = Math.round(y); if (x >= 0 && y >= 0 && x < this.w && y < this.h) this.d[y * this.w + x] = c; }
@@ -128,14 +128,14 @@ function rng(seed) {
   return () => { a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 }
 
-const OUT = P.K;
+export const OUT = P.K;
 // ruído determinístico por pixel, para textura de cabelo sem padrão repetido
-const noise = (x, y) => (((x * 73856093) ^ (y * 19349663) ^ 0x5bd1e995) >>> 0) % 100;
-const texture = (base, dark, light, dn = 14, ln = 8) => (x, y) => { const n = noise(x, y); return n < dn ? dark : n > 100 - ln ? light : base; };
+export const noise = (x, y) => (((x * 73856093) ^ (y * 19349663) ^ 0x5bd1e995) >>> 0) % 100;
+export const texture = (base, dark, light, dn = 14, ln = 8) => (x, y) => { const n = noise(x, y); return n < dn ? dark : n > 100 - ln ? light : base; };
 
 // ---------- vista de costas, na estação de trabalho (72×46) ----------
 
-function desk(g) {
+function desk(g, withCat = false) {
   // monitores
   for (const x0 of [1, 37]) {
     g.rect(x0 - 1, 0, x0 + 34, 24, OUT);
@@ -155,8 +155,13 @@ function desk(g) {
   g.rect(0, 29, 71, 32, P.l); g.rect(0, 33, 71, 45, P.L); g.rect(0, 29, 71, 29, P.m);
   // teclado e caneca
   g.rect(4, 27, 20, 28, P.m); g.rect(5, 27, 19, 27, P.t);
-  g.rect(62, 25, 66, 29, P.A); g.rect(62, 25, 62, 29, P.a); g.rect(67, 26, 68, 28, P.A); g.px(67, 27, null);
-  g.px(63, 23, P.m); g.px(64, 22, P.m); g.px(65, 23, P.m); g.px(64, 20, P.m);
+  if (withCat) {
+    g.rect(65, 25, 68, 29, P.A); g.rect(65, 25, 65, 29, P.a); g.rect(69, 26, 70, 28, P.A); g.px(69, 27, null);
+    g.px(66, 23, P.m); g.px(67, 22, P.m); g.px(67, 20, P.m);
+  } else {
+    g.rect(62, 25, 66, 29, P.A); g.rect(62, 25, 62, 29, P.a); g.rect(67, 26, 68, 28, P.A); g.px(67, 27, null);
+    g.px(63, 23, P.m); g.px(64, 22, P.m); g.px(65, 23, P.m); g.px(64, 20, P.m);
+  }
   // encosto da cadeira
   g.poly([[22, 45], [24, 26], [48, 26], [50, 45]], P.k);
   g.line(24, 26, 48, 26, P.L);
@@ -474,11 +479,13 @@ export function portrait(av) {
   return cache.get(k);
 }
 
-export function workstation(av) {
-  const k = `w|${keyOf(av)}`;
+// `cat` (opcional): função (grid, x, y) que desenha o gato sentado na mesa, ao lado do analista.
+export function workstation(av, cat = null, catKey = '') {
+  const k = `w|${keyOf(av)}|${catKey}`;
   if (!cache.has(k)) {
     const g = new Grid(72, 46);
-    desk(g);
+    desk(g, !!cat);
+    if (cat) cat(g, 52, 16);
     g.over(backPerson(normalize(av)));
     cache.set(k, g.canvas());
   }

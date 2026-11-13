@@ -8,6 +8,8 @@ import { log } from './console.js';
 import { sheet, playerAttrs } from './run-view.js';
 import { portrait as avatarPortrait, workstation, scaled } from './avatar.js';
 import { openAvatarEditor } from './avatar-view.js';
+import { openPetEditor } from './pet-view.js';
+import { portrait as catPortrait, deskCat } from './pet.js';
 
 function select(label, value, options, onChange) {
   const id = `set-${label.replace(/\W+/g, '-')}`;
@@ -73,12 +75,14 @@ export function mountProfile(container, { onNode }) {
 
       h('section', { class: 'sec prof-avatar' },
         s.avatar
-          ? h('div', { class: 'prof-av-art' }, scaled(avatarPortrait(s.avatar), 4), scaled(workstation(s.avatar), 3))
+          ? h('div', { class: 'prof-av-art' }, scaled(avatarPortrait(s.avatar), 4), s.pet ? scaled(catPortrait(s.pet), 4) : null, scaled(workstation(s.avatar, ...deskCat(s.pet)), 3))
           : h('p', { class: 'sec-lead' }, 'Você ainda não criou seu personagem. Ele aparece na estação de trabalho durante os combates.'),
         h('div', {},
           h('h2', { class: 'sec-title' }, 'Personagem'),
-          h('p', { class: 'sec-lead' }, 'Seu analista na estação de trabalho do SOC: corpo, pele, cabelo, rosto, roupa e acessórios.'),
-          h('button', { class: 'btn', onclick: () => openAvatarEditor({ first: !s.avatar }) }, s.avatar ? 'Editar personagem' : 'Criar personagem'))),
+          h('p', { class: 'sec-lead' }, s.pet ? `Seu analista na estação de trabalho do SOC, com ${s.pet.name} na mesa.` : 'Seu analista na estação de trabalho do SOC. Falta um gato na mesa.'),
+          h('div', { class: 'prof-av-btns' },
+            h('button', { class: 'btn', onclick: () => openAvatarEditor({ first: !s.avatar }) }, s.avatar ? 'Editar personagem' : 'Criar personagem'),
+            h('button', { class: 'btn', onclick: () => openPetEditor({ first: !s.pet }) }, s.pet ? `Editar ${s.pet.name}` : 'Adotar um gato')))),
 
       h('section', { class: 'sec' },
         h('h2', { class: 'sec-title' }, 'Ficha do analista'),
@@ -113,7 +117,11 @@ export function mountProfile(container, { onNode }) {
           h('div', { class: 'field' },
             h('label', { class: 'check', for: 'fx' },
               h('input', { type: 'checkbox', id: 'fx', checked: s.settings.effects, onchange: (e) => store.update((st) => { st.settings.effects = e.target.checked; }) }),
-              h('span', {}, 'Efeitos de monitor CRT (linhas de varredura e brilho)'))))),
+              h('span', {}, 'Efeitos de monitor CRT (linhas de varredura e brilho)'))),
+          h('div', { class: 'field' },
+            h('label', { class: 'check', for: 'petcorner' },
+              h('input', { type: 'checkbox', id: 'petcorner', checked: s.settings.petCorner !== false, onchange: (e) => store.update((st) => { st.settings.petCorner = e.target.checked; }) }),
+              h('span', {}, 'Gato no canto da tela'))))),
 
       h('section', { class: 'sec' },
         h('h2', { class: 'sec-title' }, 'Save'),

@@ -1,5 +1,5 @@
 {
-  "version": "0.4.2",
+  "version": "0.4.3",
   "tree": "tree.json",
   "exams": [
     "exams/fundamentos.json",

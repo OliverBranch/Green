@@ -67,6 +67,11 @@ export const sfx = {
   win: () => { [523, 659, 784, 1046, 784, 1046].forEach((f, i) => tone(f, 0.12, { at: i * 0.1 })); },
   lose: () => { [392, 330, 262, 196].forEach((f, i) => tone(f, 0.22, { at: i * 0.18, slide: -20 })); },
   turn: () => tone(520, 0.05, { type: 'triangle', vol: 0.5 }),
+  meow: () => {
+    const f = 620 + Math.random() * 160;
+    tone(f, 0.12, { type: 'triangle', slide: f * 0.5, vol: 0.45 });
+    tone(f * 1.5, 0.22, { type: 'sine', slide: -f * 0.6, vol: 0.4, at: 0.1 });
+  },
 };
 
 export function soundOn() { return !!store.get()?.settings?.sound; }

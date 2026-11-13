@@ -92,7 +92,7 @@ export function mountBattle(frame, { enc, b, head, onEnd }) {
     ui.main = h('div', { class: 'inc-main' }, ui.stage, ui.actions);
     ui.grid = h('div', { class: 'inc-grid' }, ui.main, ui.side);
     mount(frame, head(), ui.grid);
-    scene = createScene(ui.canvas, { enemy: enc.sprite, avatar: store.get().avatar });
+    scene = createScene(ui.canvas, { enemy: enc.sprite, avatar: store.get().avatar, pet: store.get().pet });
     syncScene();
     window.addEventListener('keydown', onKey);
     document.addEventListener('visibilitychange', onVisibility);

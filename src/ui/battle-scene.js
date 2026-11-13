@@ -6,6 +6,7 @@ import { PALETTE as P, sprite, spritePixels, drawText, textWidth, iconCanvas } f
 import { prefersReducedMotion } from './dom.js';
 
 import { workstation, tinted } from './avatar.js';
+import { deskCat } from './pet.js';
 
 export const W = 256;
 export const H = 144;
@@ -55,9 +56,13 @@ export function enemyLayers(kind) { return (ENEMIES[kind] || ENEMIES.moth).layer
 const rand = (a, b) => a + Math.random() * (b - a);
 const ease = (t) => 1 - Math.pow(1 - t, 3);
 
-export function createScene(canvas, { enemy = 'moth', avatar = null, onReady } = {}) {
-  const opImg = avatar ? workstation(avatar) : sprite('operator');
-  const opHitImg = avatar ? tinted(opImg, P.R) : sprite('operator', P.R);
+export function createScene(canvas, { enemy = 'moth', avatar = null, pet = null, onReady } = {}) {
+  // estação de trabalho: o personagem do jogador e, se houver, o gato na mesa (três quadros: rabo para cá, para lá, piscando)
+  const station = (frame) => { const [fn, k] = deskCat(pet, frame); return workstation(avatar || {}, fn, k); };
+  const opFrames = avatar || pet ? [station({ tail: 0 }), station({ tail: 1 }), station({ tail: 0, blink: true }), station({ tail: 0, happy: true })] : null;
+  const opImg = opFrames ? opFrames[0] : sprite('operator');
+  const opHitImg = opFrames ? tinted(opImg, P.R) : sprite('operator', P.R);
+  let catHappy = 0;
   const ctx = canvas.getContext('2d');
   canvas.width = W; canvas.height = H;
   ctx.imageSmoothingEnabled = false;
@@ -295,7 +300,9 @@ export function createScene(canvas, { enemy = 'moth', avatar = null, onReady } =
 
   function drawOperator(now) {
     const shakeX = opHit > 0 && !reduced ? Math.round(rand(-2, 2)) : 0;
-    ctx.drawImage(opImg, OP_X + shakeX, OP_Y);
+    let img = opImg;
+    if (opFrames && !reduced) img = catHappy > now ? opFrames[3] : now % 4200 < 160 ? opFrames[2] : opFrames[Math.floor(now / 800) % 2];
+    ctx.drawImage(img, OP_X + shakeX, OP_Y);
     // telas piscando: verdes quando estável, vermelhas quando a integridade cai
     const danger = st.integrity < 0.35;
     const flick = (Math.sin(now / 90) + 1) / 2;
@@ -664,6 +671,10 @@ export function createScene(canvas, { enemy = 'moth', avatar = null, onReady } =
         }
       });
       flash = { color: P.W, a: 0.7 };
+      if (pet) {
+        catHappy = performance.now() + 2600;
+        for (let i = 0; i < 6; i++) particles.push({ x: OP_X + 58 + rand(-3, 3), y: OP_Y + 14, vx: rand(-8, 8), vy: rand(-26, -14), c: P.P, life: rand(0.8, 1.4), s: 2, g: 0, fade: 0.5 });
+      }
       await wait(700);
       await banner('AMEACA CONTIDA', P.G, 'atacante expulso da rede');
     },

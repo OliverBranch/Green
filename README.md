@@ -13,6 +13,7 @@ Versão 0.4: **combate por cartas**. Na Operação (o modo roguelike), cada aç�
 - **Operação**: veja abaixo.
 - **Terminal**: tecla `` ` `` ou botão no rodapé. Digite `help` (`ficha` mostra seus atributos).
 - **Personagem**: na primeira vez o jogo abre o criador do seu analista: corpo, tom de pele, cabelo (8 estilos e 10 cores), barba, óculos, roupa e cor, capuz, fone e boné. Ele aparece de costas na estação de trabalho durante os combates, no cartão do menu e no perfil. Para mudar: Perfil → Editar personagem, o link no menu ou o comando `personagem`.
+- **Gato**: todo analista tem um. Depois do personagem, o jogo oferece a adoção: nome, cor do pelo, padrão (sólido, listrado, manchado, frajola, siamês, tricolor) e cor secundária, cor dos olhos, heterocromia, vesgo, expressão, tamanho, orelhas, rabo e coleira, sino, gravata ou bandana. Ele fica sentado na sua mesa durante os combates (balança o rabo, pisca e comemora as vitórias) e mora no canto da tela: clique para fazer carinho; parado por um minuto, ele dorme. Para mudar: Perfil, o link no menu ou o comando `gato`. O comando `miau` também funciona. Dá para esconder o gato do canto em Perfil → Ajustes.
 - **Menu lateral**: Operação é a aba inicial. Cada seção mostra o que tem para fazer (operação em andamento, provas disponíveis) e o rodapé do menu traz sua ficha do analista. Alt+1 a Alt+4 trocam de seção.
 
 ## Operação (roguelike)
@@ -131,6 +132,8 @@ src/
   ui/battle-scene.js    cena em pixel art (canvas 256×144, efeitos e animações)
   ui/avatar.js          personagem desenhado em código: busto de frente e de costas na estação
   ui/avatar-view.js     editor de personagem
+  ui/pet.js             o gato desenhado em código: grande (32×32) e na mesa (13×14), com quadros de animação
+  ui/pet-view.js        editor do gato e o gatinho do canto da tela
   ui/pixel-data.js      sprites, ícones e fonte de pixel, desenhados como texto
   ui/sfx.js             efeitos sonoros sintetizados (WebAudio, sem arquivos)
 content/
