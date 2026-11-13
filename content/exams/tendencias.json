@@ -1,0 +1,108 @@
+{
+  "branch": "tendencias",
+  "questions": [
+    {
+      "id": "ten-zt-1-01", "node": "ten-zt", "level": 1,
+      "prompt": "Qual o princípio central de Zero Trust?",
+      "options": [
+        "Não confiar por padrão com base na localização de rede; verificar explicitamente cada acesso, com menor privilégio e assumindo violação",
+        "Confiar em tudo que está dentro da rede corporativa",
+        "Bloquear todo acesso remoto",
+        "Substituir firewalls por antivírus"
+      ],
+      "answer": 0,
+      "explain": "Estar na rede interna deixa de significar confiança. Cada requisição é avaliada por identidade, dispositivo e contexto."
+    },
+    {
+      "id": "ten-zt-1-02", "node": "ten-zt", "level": 1,
+      "prompt": "Na arquitetura da NIST SP 800-207, qual componente decide se o acesso a um recurso é concedido?",
+      "options": ["Policy Engine (PE)", "Policy Enforcement Point (PEP)", "Policy Administrator (PA)", "SIEM"],
+      "answer": 0,
+      "explain": "O PE decide, o PA executa a decisão estabelecendo ou encerrando a sessão, e o PEP é o ponto que efetivamente libera ou bloqueia o tráfego. O SIEM é fonte de informação, não decisor."
+    },
+    {
+      "id": "ten-zt-1-03", "node": "ten-zt", "level": 1,
+      "prompt": "Como a microssegmentação contribui para Zero Trust?",
+      "options": [
+        "Limita o movimento lateral, restringindo a comunicação entre cargas de trabalho ao estritamente necessário",
+        "Aumenta a largura de banda entre servidores",
+        "Elimina a necessidade de autenticação",
+        "Substitui a cifragem de dados em trânsito"
+      ],
+      "answer": 0,
+      "explain": "Se um servidor é comprometido, o atacante não alcança os vizinhos que não precisam conversar com ele. É o princípio de assumir violação aplicado à rede."
+    },
+    {
+      "id": "ten-zt-1-04", "node": "ten-zt", "level": 1,
+      "prompt": "Por que uma VPN tradicional, que dá acesso à rede interna inteira depois do login, é problemática numa visão Zero Trust?",
+      "options": [
+        "Concede confiança ampla e implícita à rede, em vez de acesso por recurso, por sessão e com verificação contínua",
+        "Porque VPNs não cifram o tráfego",
+        "Porque VPNs não funcionam com MFA",
+        "Não é problemática: VPN é o próprio Zero Trust"
+      ],
+      "answer": 0,
+      "explain": "Uma credencial roubada vira acesso a tudo. ZTNA dá acesso só à aplicação necessária e reavalia o risco durante a sessão."
+    },
+    {
+      "id": "ten-zt-1-05", "node": "ten-zt", "level": 1,
+      "prompt": "Quais sinais costumam compor a decisão de acesso em Zero Trust?",
+      "options": [
+        "Identidade, postura do dispositivo, contexto (local, horário, comportamento) e sensibilidade do recurso",
+        "Apenas o endereço IP de origem",
+        "Apenas a senha do usuário",
+        "Apenas o cargo do usuário no organograma"
+      ],
+      "answer": 0,
+      "explain": "A decisão é dinâmica e combina vários sinais. Um único atributo, como IP ou senha, é exatamente a confiança implícita que o modelo quer evitar."
+    },
+    {
+      "id": "ten-zt-2-01", "node": "ten-zt", "level": 2,
+      "prompt": "Um banco quer começar a adotar Zero Trust com orçamento limitado. Qual primeiro passo traz mais ganho?",
+      "options": [
+        "Fortalecer identidade: MFA resistente a phishing, inventário de ativos e identidades e acesso condicional para aplicações críticas",
+        "Comprar um firewall de borda maior",
+        "Trocar todos os switches da rede",
+        "Desligar a VPN imediatamente, sem alternativa"
+      ],
+      "answer": 0,
+      "explain": "Identidade é o novo perímetro e a base de todas as decisões. Sem saber quem e o que acessa, não há política a aplicar."
+    },
+    {
+      "id": "ten-zt-2-02", "node": "ten-zt", "level": 2,
+      "prompt": "Um prestador de serviço precisa acessar o sistema de cobrança. No modelo Zero Trust, qual a forma ideal?",
+      "options": [
+        "Acesso só à aplicação necessária via ZTNA ou proxy, com MFA, checagem do dispositivo, sessão com tempo limitado e registro",
+        "VPN com acesso completo à rede interna",
+        "Uma conta compartilhada entre os funcionários do prestador",
+        "Liberar o IP fixo do prestador no firewall"
+      ],
+      "answer": 0,
+      "explain": "Menor privilégio, por recurso e por sessão, com rastreabilidade individual. Conta compartilhada elimina a responsabilização, e liberar IP é confiança baseada em rede."
+    },
+    {
+      "id": "ten-zt-2-03", "node": "ten-zt", "level": 2,
+      "prompt": "Depois de um login com MFA, o usuário começa a baixar volumes incomuns de dados às 3h, a partir de outro país. O que se espera de uma arquitetura Zero Trust?",
+      "options": [
+        "Reavaliação contínua: com o risco maior, a política pode exigir nova autenticação, restringir ou encerrar a sessão",
+        "Nada, porque o usuário já passou pelo MFA",
+        "Bloquear o usuário permanentemente, sem análise",
+        "Apenas registrar o evento para auditoria anual"
+      ],
+      "answer": 0,
+      "explain": "A verificação não acontece só no login. Sinais de comportamento durante a sessão realimentam a decisão de acesso."
+    },
+    {
+      "id": "ten-zt-2-04", "node": "ten-zt", "level": 2,
+      "prompt": "Qual afirmação sobre Zero Trust é correta?",
+      "options": [
+        "É uma estratégia de arquitetura implantada de forma gradual, não um produto único",
+        "É um produto que se compra e instala em um dia",
+        "Dispensa monitoramento, porque bloqueia tudo",
+        "Só se aplica a empresas que usam nuvem pública"
+      ],
+      "answer": 0,
+      "explain": "Fornecedores vendem componentes, mas Zero Trust é um conjunto de princípios aplicados por etapas, começando pelos ativos mais críticos."
+    }
+  ]
+}

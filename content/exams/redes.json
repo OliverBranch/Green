@@ -1,0 +1,149 @@
+{
+  "branch": "redes",
+  "questions": [
+    {
+      "id": "net-fun-1-01", "node": "net-fundamentos", "level": 1,
+      "prompt": "Em qual camada do modelo OSI um switch tradicional toma suas decisões de encaminhamento?",
+      "options": ["Camada 2, enlace, com base no endereço MAC", "Camada 3, rede, com base no endereço IP", "Camada 4, transporte, com base na porta", "Camada 1, física, com base no sinal"],
+      "answer": 0,
+      "explain": "O switch tradicional consulta a tabela de endereços MAC. Roteadores atuam na camada 3. Switches de camada 3 existem, mas não são o caso típico."
+    },
+    {
+      "id": "net-fun-1-02", "node": "net-fundamentos", "level": 1,
+      "prompt": "Quantos endereços de host utilizáveis existem na sub-rede 192.168.10.0/26?",
+      "options": ["62", "64", "30", "126"],
+      "answer": 0,
+      "explain": "/26 deixa 6 bits de host: 2^6 = 64 endereços. Tirando o endereço de rede (.0) e o de broadcast (.63), sobram 62."
+    },
+    {
+      "id": "net-fun-1-03", "node": "net-fundamentos", "level": 1,
+      "prompt": "Qual a sequência do three-way handshake do TCP?",
+      "options": ["SYN, SYN-ACK, ACK", "SYN, ACK, FIN", "ACK, SYN, SYN-ACK", "SYN, RST, ACK"],
+      "answer": 0,
+      "explain": "O cliente envia SYN, o servidor responde SYN-ACK e o cliente confirma com ACK. Só então a conexão está estabelecida."
+    },
+    {
+      "id": "net-fun-1-04", "node": "net-fundamentos", "level": 1,
+      "prompt": "Qual destas faixas é de endereçamento privado segundo a RFC 1918?",
+      "options": ["172.16.0.0/12", "100.64.0.0/10", "169.254.0.0/16", "192.0.2.0/24"],
+      "answer": 0,
+      "explain": "As faixas da RFC 1918 são 10.0.0.0/8, 172.16.0.0/12 e 192.168.0.0/16. 100.64.0.0/10 é para CGNAT, 169.254.0.0/16 é link-local e 192.0.2.0/24 é reservada para documentação."
+    },
+    {
+      "id": "net-fun-1-05", "node": "net-fundamentos", "level": 1,
+      "prompt": "Sobre o IPv6, é correto afirmar:",
+      "options": [
+        "Usa endereços de 128 bits e não tem broadcast, usando multicast em seu lugar",
+        "Usa endereços de 64 bits e mantém o broadcast do IPv4",
+        "Exige NAT para funcionar na internet",
+        "Não suporta IPsec"
+      ],
+      "answer": 0,
+      "explain": "IPv6 tem 128 bits e eliminou o broadcast; funções como descoberta de vizinhos usam multicast. NAT não é necessário pela abundância de endereços, e IPsec é suportado."
+    },
+    {
+      "id": "net-fun-2-01", "node": "net-fundamentos", "level": 2,
+      "prompt": "Você precisa dividir 10.10.0.0/24 em sub-redes para 4 setores com até 50 hosts cada. Qual máscara atende com o menor desperdício?",
+      "options": ["/26", "/25", "/27", "/28"],
+      "answer": 0,
+      "explain": "/26 dá 4 sub-redes de 62 hosts. /25 dá só 2 sub-redes; /27 dá 30 hosts por sub-rede, insuficiente para 50."
+    },
+    {
+      "id": "net-fun-2-02", "node": "net-fundamentos", "level": 2,
+      "prompt": "Que padrão aparece neste tráfego capturado e qual a mitigação adequada?",
+      "context": "10:41:02.113 IP 203.0.113.7.51122 > 10.0.5.20.443: Flags [S]\n10:41:02.113 IP 198.51.100.44.40211 > 10.0.5.20.443: Flags [S]\n10:41:02.114 IP 10.0.5.20.443 > 203.0.113.7.51122: Flags [S.]\n10:41:02.114 IP 192.0.2.91.33870 > 10.0.5.20.443: Flags [S]\n10:41:02.115 IP 10.0.5.20.443 > 198.51.100.44.40211: Flags [S.]\n...  milhares de SYN por segundo, nenhum ACK final dos clientes",
+      "options": [
+        "SYN flood esgotando a fila de conexões semiabertas; mitigar com SYN cookies e proteção anti-DDoS",
+        "Varredura UDP; mitigar fechando portas UDP",
+        "Conexões HTTPS normais de clientes legítimos",
+        "ARP spoofing na rede local; mitigar com inspeção dinâmica de ARP"
+      ],
+      "answer": 0,
+      "explain": "Muitos SYN de origens variadas, o servidor responde SYN-ACK ([S.]) e o ACK final nunca chega. As conexões semiabertas lotam a fila. SYN cookies evitam guardar estado até o handshake terminar."
+    },
+    {
+      "id": "net-fun-2-03", "node": "net-fundamentos", "level": 2,
+      "prompt": "O host 10.0.1.25/24 vai enviar um pacote para 10.0.2.40. O que ele faz primeiro?",
+      "options": [
+        "Percebe que o destino está fora da sua sub-rede e envia o quadro ao MAC do gateway padrão, resolvido via ARP",
+        "Envia um ARP perguntando diretamente o MAC de 10.0.2.40",
+        "Faz um broadcast de DNS para descobrir a rota",
+        "Pede ao switch uma rota para 10.0.2.0/24"
+      ],
+      "answer": 0,
+      "explain": "Com máscara /24, 10.0.2.40 está em outra rede. O host entrega o quadro ao gateway (o IP de destino continua 10.0.2.40, só o MAC é do gateway). ARP não atravessa roteador."
+    },
+    {
+      "id": "net-fun-2-04", "node": "net-fundamentos", "level": 2,
+      "prompt": "Qual associação de serviço e porta está correta?",
+      "options": [
+        "DNS: 53 em UDP e TCP, com TCP usado para respostas grandes e transferência de zona",
+        "SNMP: 22/TCP",
+        "SSH: 161/UDP",
+        "LDAPS: 389/TCP"
+      ],
+      "answer": 0,
+      "explain": "SSH usa 22/TCP, SNMP usa 161/UDP (traps em 162) e LDAPS usa 636/TCP; 389 é LDAP sem TLS. DNS usa 53 em UDP e também TCP."
+    },
+    {
+      "id": "net-per-1-01", "node": "net-perimetro", "level": 1,
+      "prompt": "Qual a principal diferença entre IDS e IPS?",
+      "options": [
+        "O IDS monitora e alerta, geralmente fora do fluxo; o IPS fica em linha e pode bloquear o tráfego",
+        "O IDS bloqueia e o IPS apenas registra",
+        "O IDS atua só em camada 2 e o IPS só em camada 7",
+        "Não há diferença funcional, só de fabricante"
+      ],
+      "answer": 0,
+      "explain": "O IPS fica no caminho do tráfego e pode descartar pacotes. Por isso um falso positivo no IPS derruba tráfego legítimo, enquanto no IDS gera só um alerta."
+    },
+    {
+      "id": "net-per-1-02", "node": "net-perimetro", "level": 1,
+      "prompt": "Numa arquitetura com DMZ, onde deve ficar um servidor web público?",
+      "options": [
+        "Na DMZ, isolado da rede interna, com regras que permitem só o necessário vindo da internet e restringem o acesso dele à rede interna",
+        "Na rede interna, junto aos servidores de banco de dados",
+        "Fora de qualquer firewall, para melhorar o desempenho",
+        "Na mesma VLAN das estações de trabalho"
+      ],
+      "answer": 0,
+      "explain": "Se o servidor exposto for comprometido, a DMZ limita o dano: o atacante não ganha acesso direto à rede interna."
+    },
+    {
+      "id": "net-per-1-03", "node": "net-perimetro", "level": 1,
+      "prompt": "Um WAF é mais indicado para mitigar:",
+      "options": [
+        "Ataques a aplicações HTTP, como SQL injection e XSS",
+        "Ataques de ARP spoofing na LAN",
+        "Colisões em switches",
+        "Varreduras de portas UDP"
+      ],
+      "answer": 0,
+      "explain": "O WAF inspeciona requisições HTTP/HTTPS na camada 7. Ajuda contra padrões de ataque web, mas não substitui código seguro."
+    },
+    {
+      "id": "net-per-1-04", "node": "net-perimetro", "level": 1,
+      "prompt": "O que diferencia um firewall stateful de um filtro de pacotes estático?",
+      "options": [
+        "Mantém uma tabela de estado das conexões e permite respostas de sessões iniciadas sem regras explícitas de retorno",
+        "Inspeciona apenas o endereço MAC de origem",
+        "Bloqueia todo tráfego de saída por padrão",
+        "Decifra todo o tráfego TLS automaticamente"
+      ],
+      "answer": 0,
+      "explain": "O filtro estático avalia cada pacote isoladamente. O stateful sabe que um pacote é resposta de uma conexão já autorizada."
+    },
+    {
+      "id": "net-per-1-05", "node": "net-perimetro", "level": 1,
+      "prompt": "Um NAC baseado em 802.1X serve principalmente para:",
+      "options": [
+        "Autenticar e avaliar dispositivos antes de conceder acesso à rede, colocando-os na VLAN adequada",
+        "Balancear carga entre servidores web",
+        "Cifrar o tráfego entre data centers",
+        "Traduzir endereços privados em públicos"
+      ],
+      "answer": 0,
+      "explain": "Com 802.1X o switch só libera a porta depois de autenticar o dispositivo (geralmente via RADIUS). O NAC pode ainda checar postura, como antivírus e patches."
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "branch": "governanca",
+  "questions": [
+    {
+      "id": "gov-pol-1-01", "node": "gov-politicas", "level": 1,
+      "prompt": "Na hierarquia documental típica, qual documento estabelece diretrizes gerais e deve ser aprovado pela alta direção?",
+      "options": ["Política de segurança da informação", "Procedimento operacional", "Norma técnica interna", "Instrução de trabalho"],
+      "answer": 0,
+      "explain": "A política é o nível mais alto: diz o que a organização quer e por quê, com patrocínio da direção. Normas detalham regras e procedimentos descrevem o passo a passo."
+    },
+    {
+      "id": "gov-pol-1-02", "node": "gov-politicas", "level": 1,
+      "prompt": "Qual a diferença entre uma norma interna e um procedimento?",
+      "options": [
+        "A norma define regras obrigatórias que detalham a política; o procedimento descreve como executar uma atividade, passo a passo",
+        "A norma é opcional e o procedimento é obrigatório",
+        "O procedimento é aprovado pela diretoria e a norma pelo técnico",
+        "Não há diferença: são sinônimos"
+      ],
+      "answer": 0,
+      "explain": "Política diz o quê, norma diz quais regras, procedimento diz como. Exemplo: a política exige controle de acesso, a norma fixa senha mínima e MFA, o procedimento ensina a conceder acesso no sistema."
+    },
+    {
+      "id": "gov-pol-1-03", "node": "gov-politicas", "level": 1,
+      "prompt": "Segundo boas práticas da ISO/IEC 27002, a política de segurança da informação deve ser:",
+      "options": [
+        "Aprovada pela direção, comunicada às partes interessadas e revisada em intervalos planejados ou quando houver mudanças significativas",
+        "Escrita apenas pela TI e mantida confidencial para não expor controles",
+        "Revisada somente depois de incidentes graves",
+        "Copiada de uma organização do mesmo setor para garantir conformidade"
+      ],
+      "answer": 0,
+      "explain": "Política que ninguém conhece ou que não acompanha mudanças não funciona. Aprovação, comunicação e revisão periódica são os pontos que um auditor verifica."
+    },
+    {
+      "id": "gov-pol-1-04", "node": "gov-politicas", "level": 1,
+      "prompt": "Numa auditoria, verificar se um controle descrito na política realmente funciona na prática corresponde a testar:",
+      "options": [
+        "A efetividade operacional do controle, com evidências de execução",
+        "Apenas a redação da política",
+        "Apenas se a política foi assinada",
+        "O formato e a identidade visual do documento"
+      ],
+      "answer": 0,
+      "explain": "Auditoria avalia desenho (o controle existe e faz sentido) e efetividade (ele opera de fato). Efetividade se prova com evidências: registros, amostras, logs."
+    },
+    {
+      "id": "gov-pol-1-05", "node": "gov-politicas", "level": 1,
+      "prompt": "Uma política de mesa limpa e tela limpa reduz principalmente qual risco?",
+      "options": [
+        "Exposição de informações a pessoas não autorizadas no ambiente físico",
+        "Indisponibilidade de servidores por falta de energia",
+        "Ataques de injeção de SQL",
+        "Perda de dados por falha de disco"
+      ],
+      "answer": 0,
+      "explain": "Documentos sobre a mesa e telas desbloqueadas ficam visíveis para visitantes, terceiros e colegas sem necessidade de acesso. É um controle de confidencialidade no ambiente físico."
+    },
+    {
+      "id": "gov-pol-2-01", "node": "gov-politicas", "level": 2,
+      "prompt": "A política proíbe guardar dados de clientes em nuvem não homologada. Uma auditoria encontra 40 colaboradores usando drive pessoal para compartilhar arquivos com parceiros. Qual ação trata a causa, e não só o sintoma?",
+      "options": [
+        "Entender por que o fluxo oficial não atende, oferecer uma alternativa homologada, reforçar a conscientização e monitorar com DLP ou CASB",
+        "Desligar os 40 colaboradores",
+        "Bloquear todo o acesso à internet",
+        "Reescrever a política para permitir drives pessoais"
+      ],
+      "answer": 0,
+      "explain": "Shadow IT costuma indicar uma necessidade de negócio sem solução oficial. Sem uma alternativa viável, o comportamento volta. Punição em massa e bloqueio total não resolvem a causa."
+    },
+    {
+      "id": "gov-pol-2-02", "node": "gov-politicas", "level": 2,
+      "prompt": "Na auditoria, o gestor apresenta a política assinada pela diretoria, mas ela não é revisada há quatro anos e não cobre sistemas novos, como a migração para nuvem. Qual o achado mais adequado?",
+      "options": [
+        "Não conformidade: a política está desatualizada, sem revisão periódica e sem cobrir o escopo atual",
+        "Conforme, porque a política está assinada pela diretoria",
+        "Observação apenas cosmética, sem impacto",
+        "Achado de disponibilidade da política"
+      ],
+      "answer": 0,
+      "explain": "Assinatura não basta. A ausência de revisão planejada e a falta de cobertura do ambiente atual configuram não conformidade com o requisito de revisão da política."
+    },
+    {
+      "id": "gov-pol-2-03", "node": "gov-politicas", "level": 2,
+      "prompt": "Um servidor legado não pode receber patches porque o fornecedor do sistema faliu. Como tratar essa exceção à política?",
+      "options": [
+        "Exceção formal, com análise de risco, controles compensatórios, aprovação do responsável pelo risco e prazo de validade",
+        "Liberação verbal do coordenador de TI",
+        "Ignorar, já que não há patch disponível",
+        "Aprovação pelo próprio técnico que administra o servidor"
+      ],
+      "answer": 0,
+      "explain": "Exceções precisam ser registradas, avaliadas e aceitas por quem responde pelo risco, com controles compensatórios (isolamento de rede, monitoramento reforçado) e data para reavaliação."
+    },
+    {
+      "id": "gov-pol-2-04", "node": "gov-politicas", "level": 2,
+      "prompt": "Qual indicador demonstra melhor a efetividade de um programa de conscientização em segurança?",
+      "options": [
+        "Queda da taxa de cliques em simulações de phishing e aumento de reportes ao longo do tempo",
+        "Quantidade de slides do treinamento",
+        "Percentual de presença na palestra anual",
+        "Número de e-mails informativos enviados"
+      ],
+      "answer": 0,
+      "explain": "Presença e volume medem atividade, não resultado. Mudança de comportamento (clicar menos, reportar mais) é o que mostra se o programa funciona."
+    }
+  ]
+}

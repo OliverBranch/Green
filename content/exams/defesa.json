@@ -1,0 +1,105 @@
+{
+  "branch": "defesa",
+  "questions": [
+    {
+      "id": "ops-sie-1-01", "node": "ops-siem", "level": 1,
+      "prompt": "Qual a principal função de um SIEM?",
+      "options": [
+        "Coletar, normalizar e correlacionar eventos de várias fontes para gerar alertas e apoiar investigações",
+        "Bloquear tráfego malicioso na borda da rede",
+        "Cifrar logs para atender à LGPD",
+        "Substituir o antivírus nas estações"
+      ],
+      "answer": 0,
+      "explain": "O valor do SIEM está na visão unificada: um evento isolado pode ser inofensivo, mas correlacionado com outros revela um ataque."
+    },
+    {
+      "id": "ops-sie-1-02", "node": "ops-siem", "level": 1,
+      "prompt": "O que diferencia um SOAR de um SIEM?",
+      "options": [
+        "O SOAR orquestra e automatiza a resposta com playbooks, como isolar host, bloquear IP e abrir chamado",
+        "O SOAR coleta logs, e o SIEM não",
+        "O SOAR é um antivírus de nova geração",
+        "Não há diferença: são nomes comerciais do mesmo produto"
+      ],
+      "answer": 0,
+      "explain": "O SIEM detecta e alerta. O SOAR age sobre o alerta, de forma automática ou assistida, reduzindo o tempo de resposta."
+    },
+    {
+      "id": "ops-sie-1-03", "node": "ops-siem", "level": 1,
+      "prompt": "Um EDR atua principalmente:",
+      "options": [
+        "Nos endpoints, monitorando comportamento de processos, registro e rede, com resposta como isolar a máquina",
+        "No roteador de borda, filtrando pacotes",
+        "No servidor de e-mail, bloqueando spam",
+        "No banco de dados, mascarando colunas"
+      ],
+      "answer": 0,
+      "explain": "Diferente do antivírus por assinatura, o EDR registra telemetria e detecta comportamento suspeito. O XDR amplia essa visão para outras camadas, como e-mail, identidade e nuvem."
+    },
+    {
+      "id": "ops-sie-1-04", "node": "ops-siem", "level": 1,
+      "prompt": "No log de Segurança do Windows, o evento 4625 indica:",
+      "options": ["Falha de logon", "Logon bem-sucedido", "Criação de conta de usuário", "Log de auditoria limpo"],
+      "answer": 0,
+      "explain": "4624 é logon bem-sucedido, 4625 é falha, 4720 é criação de conta e 1102 é limpeza do log de auditoria."
+    },
+    {
+      "id": "ops-sie-1-05", "node": "ops-siem", "level": 1,
+      "prompt": "No syslog, qual nível de severidade é o mais crítico?",
+      "options": ["0, emergency", "7, debug", "3, error", "1, alert"],
+      "answer": 0,
+      "explain": "A escala vai de 0 (emergency, sistema inutilizável) a 7 (debug). Quanto menor o número, mais grave."
+    },
+    {
+      "id": "ops-sie-2-01", "node": "ops-siem", "level": 2,
+      "prompt": "O que este padrão sugere e qual a prioridade de resposta?",
+      "context": "08:02:11  4625  falha    conta=maria.silva   origem=10.0.8.77\n08:02:12  4625  falha    conta=joao.pereira  origem=10.0.8.77\n08:02:12  4625  falha    conta=ana.costa     origem=10.0.8.77\n...       140 contas distintas, 1 a 2 tentativas cada, em 6 minutos\n08:08:40  4624  sucesso  conta=carlos.lima   origem=10.0.8.77  tipo=3",
+      "options": [
+        "Password spraying a partir de 10.0.8.77 com um sucesso; priorizar a conta carlos.lima (redefinir senha, revogar sessões), investigar o host de origem e a atividade posterior",
+        "Força bruta contra uma única conta; bloquear maria.silva",
+        "Falso positivo de usuários que esqueceram a senha",
+        "Ataque de negação de serviço contra o controlador de domínio"
+      ],
+      "answer": 0,
+      "explain": "Poucas tentativas em muitas contas, da mesma origem, é spraying: evita o bloqueio por tentativas. O sucesso no fim é o ponto crítico, porque o atacante agora tem uma credencial válida."
+    },
+    {
+      "id": "ops-sie-2-02", "node": "ops-siem", "level": 2,
+      "prompt": "Como avaliar esta sequência de eventos num servidor?",
+      "context": "02:14:03  4624  logon tipo 10 (RDP)            conta=svc_backup  origem=185.220.101.4\n02:14:05  4672  privilégios especiais atribuídos  conta=svc_backup\n02:16:40  7045  serviço instalado: \"WinUpdSvc\"     caminho=C:\\Users\\Public\\wu.exe\n02:19:12  1102  o log de auditoria foi limpo       conta=svc_backup",
+      "options": [
+        "Forte indício de comprometimento, com persistência via serviço e limpeza de rastros; acionar resposta a incidente, isolar o host e preservar evidências",
+        "Manutenção de rotina da conta de backup",
+        "Atualização legítima do Windows Update",
+        "Apenas o evento 1102 é relevante, os demais são normais"
+      ],
+      "answer": 0,
+      "explain": "Conta de serviço fazendo RDP de IP externo de madrugada, serviço com nome falso apontando para pasta pública e limpeza de log logo depois: cada evento já é suspeito, juntos formam uma cadeia típica de ataque."
+    },
+    {
+      "id": "ops-sie-2-03", "node": "ops-siem", "level": 2,
+      "prompt": "Um playbook do SOAR fecha automaticamente alertas de login vindo de país incomum, sem análise, e um incidente real passou despercebido. Qual o melhor ajuste?",
+      "options": [
+        "Enriquecer o alerta com MFA, dispositivo, viagem impossível e reputação do IP, e definir critérios para escalar a um analista em vez de fechar",
+        "Desligar a regra de país incomum",
+        "Automatizar ainda mais o fechamento de alertas",
+        "Abandonar o SOAR e tratar tudo manualmente"
+      ],
+      "answer": 0,
+      "explain": "Automação sem contexto vira ponto cego. O equilíbrio é automatizar o enriquecimento e o descarte do que é claramente benigno, escalando o que é ambíguo."
+    },
+    {
+      "id": "ops-sie-2-04", "node": "ops-siem", "level": 2,
+      "prompt": "Para correlacionar eventos de firewall, Active Directory e servidores Linux num SIEM, qual pré-requisito técnico é mais importante?",
+      "options": [
+        "Sincronização de horário (NTP) entre as fontes e normalização dos campos",
+        "Todos os equipamentos serem do mesmo fabricante",
+        "Todas as fontes estarem na mesma VLAN",
+        "Os logs estarem em inglês"
+      ],
+      "answer": 0,
+      "explain": "Correlação depende de ordem temporal. Relógios divergentes embaralham a linha do tempo, e campos não normalizados impedem que o SIEM ligue o mesmo usuário ou IP entre fontes."
+    }
+  ]
+}

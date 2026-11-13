@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0",
+  "tree": "tree.json",
+  "exams": [
+    "exams/fundamentos.json",
+    "exams/governanca.json",
+    "exams/redes.json",
+    "exams/cripto.json",
+    "exams/hardening.json",
+    "exams/devsecops.json",
+    "exams/defesa.json",
+    "exams/dados.json",
+    "exams/tendencias.json"
+  ],
+  "missions": [
+    "missions/m01-cadeado-partido.json"
+  ],
+  "upcoming": [
+    { "title": "Spray noturno", "kind": "Resposta a incidente", "related": "ops-siem" },
+    { "title": "Fatura alheia", "kind": "Pentest de API", "related": "dev-owasp" },
+    { "title": "Política de gaveta", "kind": "Auditoria de governança", "related": "gov-politicas" }
+  ]
+}

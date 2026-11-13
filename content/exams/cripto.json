@@ -1,0 +1,208 @@
+{
+  "branch": "cripto",
+  "questions": [
+    {
+      "id": "cri-pri-1-01", "node": "cri-primitivas", "level": 1,
+      "prompt": "Qual afirmação sobre o AES está correta?",
+      "options": [
+        "É uma cifra simétrica de bloco de 128 bits, com chaves de 128, 192 ou 256 bits",
+        "É uma cifra assimétrica baseada em curvas elípticas",
+        "É uma cifra de fluxo com blocos de 64 bits",
+        "É uma função de hash de 256 bits"
+      ],
+      "answer": 0,
+      "explain": "O bloco do AES é sempre de 128 bits; o que varia é o tamanho da chave (128, 192 ou 256)."
+    },
+    {
+      "id": "cri-pri-1-02", "node": "cri-primitivas", "level": 1,
+      "prompt": "Ana quer enviar uma mensagem confidencial para Bruna usando criptografia assimétrica. Com qual chave Ana deve cifrar?",
+      "options": ["Chave pública de Bruna", "Chave privada de Ana", "Chave privada de Bruna", "Chave pública de Ana"],
+      "answer": 0,
+      "explain": "Só a chave privada de Bruna decifra o que foi cifrado com a pública dela. Usar a privada de Ana seria assinar, não proteger o sigilo."
+    },
+    {
+      "id": "cri-pri-1-03", "node": "cri-primitivas", "level": 1,
+      "prompt": "Qual opção é adequada para armazenar senhas de usuários?",
+      "options": [
+        "Argon2id, bcrypt ou scrypt, com salt único por usuário",
+        "SHA-256 sem salt",
+        "AES com uma chave fixa no código",
+        "MD5 com salt"
+      ],
+      "answer": 0,
+      "explain": "Senhas pedem funções lentas e com custo ajustável, que tornam a força bruta cara. SHA-256 é rápido demais, AES é reversível e MD5 é inadequado mesmo com salt."
+    },
+    {
+      "id": "cri-pri-1-04", "node": "cri-primitivas", "level": 1,
+      "prompt": "Uma chave ECC de 256 bits oferece segurança comparável a uma chave RSA de aproximadamente:",
+      "options": ["3072 bits", "256 bits", "1024 bits", "15360 bits"],
+      "answer": 0,
+      "explain": "Pela NIST SP 800-57, ambas oferecem cerca de 128 bits de segurança. Por isso ECC é mais eficiente: chaves menores, mesmo nível de proteção."
+    },
+    {
+      "id": "cri-pri-1-05", "node": "cri-primitivas", "level": 1,
+      "prompt": "O SHA-3 difere do SHA-2 principalmente por:",
+      "options": [
+        "Usar a construção esponja (Keccak), em vez da construção Merkle–Damgård",
+        "Ser uma cifra simétrica, e não uma função de hash",
+        "Produzir sempre saídas de 128 bits",
+        "Ter sido quebrado e substituído pelo SHA-2"
+      ],
+      "answer": 0,
+      "explain": "SHA-3 veio de um concurso do NIST como alternativa de projeto diferente, não porque o SHA-2 tenha sido quebrado. O SHA-2 continua seguro."
+    },
+    {
+      "id": "cri-pri-2-01", "node": "cri-primitivas", "level": 2,
+      "prompt": "Um sistema cifra registros com AES no modo ECB e analistas notam que campos iguais geram blocos cifrados iguais. Qual a correção adequada?",
+      "options": [
+        "Usar um modo autenticado, como AES-GCM, com nonce único por mensagem",
+        "Manter ECB e aumentar a chave para 256 bits",
+        "Trocar AES por 3DES em ECB",
+        "Comprimir os dados antes de cifrar em ECB"
+      ],
+      "answer": 0,
+      "explain": "ECB cifra cada bloco de forma independente, então padrões vazam qualquer que seja o tamanho da chave. GCM resolve o vazamento e ainda garante integridade."
+    },
+    {
+      "id": "cri-pri-2-02", "node": "cri-primitivas", "level": 2,
+      "prompt": "Um serviço reutilizou a mesma chave e o mesmo nonce em AES-GCM para duas mensagens diferentes. Qual a consequência?",
+      "options": [
+        "Compromete a confidencialidade, pois o XOR dos textos claros pode ser obtido, e permite forjar tags de autenticação",
+        "Nenhuma: o GCM tolera reutilização de nonce",
+        "Apenas perda de desempenho",
+        "Afeta só a integridade da primeira mensagem"
+      ],
+      "answer": 0,
+      "explain": "GCM usa modo contador por baixo. Mesmo par chave e nonce gera o mesmo fluxo de chave, e a reutilização também expõe a chave de autenticação. Nonce nunca pode se repetir com a mesma chave."
+    },
+    {
+      "id": "cri-pri-2-03", "node": "cri-primitivas", "level": 2,
+      "prompt": "Dois serviços internos compartilham uma chave secreta. O receptor precisa confirmar que a mensagem veio do outro serviço e não foi alterada. Qual a solução mais simples e adequada?",
+      "options": [
+        "HMAC-SHA-256 com a chave compartilhada",
+        "SHA-256 simples da mensagem, enviado junto",
+        "Cifrar a mensagem com AES-ECB",
+        "Codificar a mensagem em Base64"
+      ],
+      "answer": 0,
+      "explain": "HMAC garante integridade e autenticidade entre quem tem a chave. Um hash simples pode ser recalculado por qualquer atacante, e Base64 é só codificação."
+    },
+    {
+      "id": "cri-pri-2-04", "node": "cri-primitivas", "level": 2,
+      "prompt": "Por que protocolos como TLS e PGP usam criptografia híbrida?",
+      "options": [
+        "A assimétrica estabelece ou protege a chave de sessão e a simétrica cifra o volume de dados, por desempenho",
+        "Porque a simétrica sozinha não garante confidencialidade",
+        "Porque a assimétrica é mais rápida para grandes volumes",
+        "Para usar duas vezes a mesma chave e aumentar a segurança"
+      ],
+      "answer": 0,
+      "explain": "Assimétrica resolve a distribuição de chaves, mas é lenta. Simétrica é rápida, mas exige uma chave em comum. Juntas, cada uma faz o que faz melhor."
+    },
+    {
+      "id": "cri-pki-1-01", "node": "cri-pki", "level": 1,
+      "prompt": "Na ICP-Brasil, a Autoridade Certificadora Raiz é mantida pelo:",
+      "options": ["ITI, Instituto Nacional de Tecnologia da Informação", "Serpro", "Banco Central do Brasil", "ANPD"],
+      "answer": 0,
+      "explain": "O ITI é a AC Raiz da ICP-Brasil, credencia as ACs subordinadas e audita a cadeia."
+    },
+    {
+      "id": "cri-pki-1-02", "node": "cri-pki", "level": 1,
+      "prompt": "Qual mecanismo permite consultar em tempo real se um certificado foi revogado?",
+      "options": ["OCSP", "CRL", "CSR", "SAN"],
+      "answer": 0,
+      "explain": "OCSP responde sobre um certificado específico na hora. A CRL é uma lista publicada periodicamente. CSR é a requisição de certificado e SAN é o campo de nomes alternativos."
+    },
+    {
+      "id": "cri-pki-1-03", "node": "cri-pki", "level": 1,
+      "prompt": "Ao validar o certificado de um servidor HTTPS, o navegador verifica:",
+      "options": [
+        "A cadeia até uma raiz confiável, o prazo de validade, a revogação e se o nome do host consta no SAN",
+        "Apenas se o certificado foi emitido nos últimos 30 dias",
+        "Somente o tamanho da chave pública",
+        "Se o certificado usa a mesma AC do certificado do usuário"
+      ],
+      "answer": 0,
+      "explain": "Todos esses pontos precisam fechar. Navegadores modernos usam o SAN, e não mais o CN, para conferir o nome do host."
+    },
+    {
+      "id": "cri-pki-1-04", "node": "cri-pki", "level": 1,
+      "prompt": "O que diferencia o certificado A3 do A1 na ICP-Brasil?",
+      "options": [
+        "No A3, a chave privada é gerada e guardada em hardware criptográfico, como token, cartão ou HSM",
+        "O A3 usa RSA e o A1 usa ECC",
+        "O A3 não depende de uma Autoridade Certificadora",
+        "O A3 serve apenas para assinar e-mails"
+      ],
+      "answer": 0,
+      "explain": "No A1 a chave fica em arquivo no computador. No A3 ela fica em hardware e não pode ser exportada, o que reduz o risco de cópia."
+    },
+    {
+      "id": "cri-pki-1-05", "node": "cri-pki", "level": 1,
+      "prompt": "O que é um CSR?",
+      "options": [
+        "Uma requisição enviada à AC com a chave pública e os dados do titular, assinada com a chave privada correspondente",
+        "A lista de certificados revogados da AC",
+        "Um certificado autoassinado usado em testes",
+        "O arquivo que contém a chave privada do servidor"
+      ],
+      "answer": 0,
+      "explain": "A chave privada nunca sai do solicitante. O CSR leva só a chave pública, e a assinatura prova que o solicitante possui a privada correspondente."
+    },
+    {
+      "id": "cri-tls-1-01", "node": "cri-tls", "level": 1,
+      "prompt": "Em relação ao TLS 1.2, uma mudança importante do TLS 1.3 foi:",
+      "options": [
+        "Remover a troca de chaves RSA estática, tornando o sigilo direto obrigatório com (EC)DHE",
+        "Adicionar suporte a RC4 e 3DES",
+        "Exigir dois round-trips completos no handshake",
+        "Eliminar o uso de certificados X.509"
+      ],
+      "answer": 0,
+      "explain": "Com RSA estático, quem obtivesse a chave privada do servidor decifrava sessões antigas gravadas. Com chaves efêmeras, cada sessão tem segredo próprio."
+    },
+    {
+      "id": "cri-tls-1-02", "node": "cri-tls", "level": 1,
+      "prompt": "Na suíte TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, o que o termo RSA indica?",
+      "options": [
+        "O algoritmo de autenticação do servidor, ou seja, o tipo de chave do certificado que assina o handshake",
+        "O algoritmo que cifra os dados da sessão",
+        "O algoritmo de troca de chaves",
+        "A função de hash do handshake"
+      ],
+      "answer": 0,
+      "explain": "ECDHE faz a troca de chaves, RSA autentica o servidor, AES-128-GCM cifra os dados e SHA-256 é usado na derivação de chaves."
+    },
+    {
+      "id": "cri-tls-1-03", "node": "cri-tls", "level": 1,
+      "prompt": "Quantos round-trips o handshake completo do TLS 1.3 costuma levar?",
+      "options": [
+        "1-RTT, com 0-RTT opcional na retomada, sujeito a ataques de replay",
+        "3-RTT, como no TLS 1.0",
+        "2-RTT obrigatoriamente",
+        "Nenhum: o TLS 1.3 não tem handshake"
+      ],
+      "answer": 0,
+      "explain": "O cliente já envia sua parte da troca de chaves na primeira mensagem. O 0-RTT envia dados antes do handshake terminar, mas esses dados podem ser repetidos por um atacante."
+    },
+    {
+      "id": "cri-tls-1-04", "node": "cri-tls", "level": 1,
+      "prompt": "O cabeçalho HSTS protege principalmente contra:",
+      "options": [
+        "SSL stripping, forçando o navegador a usar sempre HTTPS naquele domínio",
+        "SQL injection",
+        "Ataques de negação de serviço",
+        "Vazamento da chave privada do servidor"
+      ],
+      "answer": 0,
+      "explain": "Sem HSTS, a primeira requisição em HTTP pode ser interceptada e mantida em HTTP pelo atacante. Com HSTS, o navegador nem tenta HTTP."
+    },
+    {
+      "id": "cri-tls-1-05", "node": "cri-tls", "level": 1,
+      "prompt": "Qual destes itens deixou de existir no TLS 1.3?",
+      "options": ["Cifras em modo CBC e RC4", "AES-GCM", "ChaCha20-Poly1305", "Certificados X.509"],
+      "answer": 0,
+      "explain": "O TLS 1.3 manteve apenas cifras AEAD (AES-GCM, AES-CCM e ChaCha20-Poly1305). CBC e RC4 tinham histórico de ataques e foram removidos."
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "branch": "devsecops",
+  "questions": [
+    {
+      "id": "dev-owa-1-01", "node": "dev-owasp", "level": 1,
+      "prompt": "No OWASP Top 10:2025, qual categoria ocupa a posição A01?",
+      "options": ["Broken Access Control (quebra de controle de acesso)", "Injection", "Cryptographic Failures", "Security Misconfiguration"],
+      "answer": 0,
+      "explain": "Broken Access Control manteve o primeiro lugar da edição de 2021 para a de 2025. Security Misconfiguration subiu para A02 e Injection caiu para A05."
+    },
+    {
+      "id": "dev-owa-1-02", "node": "dev-owasp", "level": 1,
+      "prompt": "Qual a forma mais eficaz de prevenir SQL injection?",
+      "options": [
+        "Consultas parametrizadas (prepared statements)",
+        "Substituir aspas simples por aspas duplas na entrada",
+        "Confiar apenas no WAF",
+        "Esconder as mensagens de erro do banco"
+      ],
+      "answer": 0,
+      "explain": "Com parametrização, o dado nunca é interpretado como parte do comando SQL. Filtros e WAF são camadas extras, contornáveis; esconder erros só dificulta a exploração."
+    },
+    {
+      "id": "dev-owa-1-03", "node": "dev-owasp", "level": 1,
+      "prompt": "Qual controle mitiga CSRF?",
+      "options": [
+        "Token anti-CSRF imprevisível vinculado à sessão, aliado a cookies SameSite",
+        "Cifrar o banco de dados",
+        "Usar HTTPS em todas as páginas",
+        "Exigir senhas com 12 caracteres"
+      ],
+      "answer": 0,
+      "explain": "No CSRF o navegador da vítima envia a requisição com os cookies dela. Um token que o site atacante não conhece, e cookies que não seguem requisições de outros sites, quebram o ataque. HTTPS sozinho não impede."
+    },
+    {
+      "id": "dev-owa-1-04", "node": "dev-owasp", "level": 1,
+      "prompt": "XSS armazenado acontece quando:",
+      "options": [
+        "Um script malicioso é salvo no servidor, como num comentário, e executado no navegador de outros usuários que veem a página",
+        "O atacante injeta comandos SQL num formulário",
+        "O script vem num link e é refletido só para quem clicou",
+        "O servidor faz requisições a endereços internos"
+      ],
+      "answer": 0,
+      "explain": "No armazenado, a carga fica persistida e atinge todo visitante. A alternativa do link descreve o XSS refletido, e a última descreve SSRF."
+    },
+    {
+      "id": "dev-owa-1-05", "node": "dev-owasp", "level": 1,
+      "prompt": "No OWASP Top 10:2025, o que aconteceu com o SSRF, que era uma categoria própria em 2021?",
+      "options": [
+        "Foi incorporado à categoria A01, Broken Access Control",
+        "Passou a ocupar a posição A10",
+        "Foi removido por ser considerado raro",
+        "Foi incorporado à categoria Injection"
+      ],
+      "answer": 0,
+      "explain": "Na edição de 2025, o SSRF foi absorvido por Broken Access Control. A A10 de 2025 é a nova Mishandling of Exceptional Conditions."
+    },
+    {
+      "id": "dev-owa-2-01", "node": "dev-owasp", "level": 2,
+      "prompt": "Qual vulnerabilidade existe nesta rota?",
+      "context": "app.get('/api/faturas/:id', autenticado, async (req, res) => {\n  const fatura = await db.faturas.findById(req.params.id);\n  res.json(fatura);\n});",
+      "options": [
+        "IDOR, um caso de quebra de controle de acesso: não verifica se a fatura pertence ao usuário autenticado",
+        "SQL injection no parâmetro id",
+        "XSS refletido na resposta JSON",
+        "CSRF, por ser uma requisição GET"
+      ],
+      "answer": 0,
+      "explain": "Estar autenticado não é estar autorizado. Basta trocar o id na URL para ler faturas de outros clientes. A correção é filtrar pelo dono: findOne({ id, clienteId: req.user.id })."
+    },
+    {
+      "id": "dev-owa-2-02", "node": "dev-owasp", "level": 2,
+      "prompt": "Um atacante envia img=http://169.254.169.254/latest/meta-data/iam/security-credentials/ para esta rota. Qual a vulnerabilidade e a correção?",
+      "context": "@app.get('/preview')\ndef preview():\n    url = request.args.get('img')\n    resp = requests.get(url, timeout=5)\n    return resp.content",
+      "options": [
+        "SSRF; validar o destino contra uma allowlist, bloquear faixas internas e de metadados e usar IMDSv2",
+        "Open redirect; adicionar um aviso antes de redirecionar",
+        "XSS refletido; escapar o HTML da resposta",
+        "Path traversal; remover ../ do parâmetro"
+      ],
+      "answer": 0,
+      "explain": "O servidor busca qualquer URL em nome do atacante, inclusive o serviço de metadados da nuvem, que pode devolver credenciais temporárias. O IMDSv2 exige um token obtido com PUT, o que barra esse caso simples."
+    },
+    {
+      "id": "dev-owa-2-03", "node": "dev-owasp", "level": 2,
+      "prompt": "Qual o problema neste trecho e a correção adequada?",
+      "context": "<p>Resultados para: <?= $_GET['q'] ?></p>",
+      "options": [
+        "XSS refletido; aplicar codificação de saída conforme o contexto, como htmlspecialchars, e adotar CSP",
+        "SQL injection; usar prepared statements",
+        "CSRF; adicionar token ao formulário",
+        "Nenhum problema, pois é só exibição"
+      ],
+      "answer": 0,
+      "explain": "O valor de q vai direto para o HTML. Com q=<script>...</script>, o script roda no navegador de quem abrir o link. Codificar na saída neutraliza; a CSP é defesa em profundidade."
+    },
+    {
+      "id": "dev-owa-2-04", "node": "dev-owasp", "level": 2,
+      "prompt": "Depois de um pentest, o time corrigiu a consulta abaixo bloqueando a palavra OR na entrada. Por que a correção é insuficiente?",
+      "context": "query = \"SELECT * FROM contas WHERE agencia = '\" + agencia + \"'\"",
+      "options": [
+        "Blocklist é contornável, por exemplo com UNION, ||, comentários ou codificações; a correção real é parametrizar a consulta",
+        "Porque também deveria bloquear a palavra AND, e aí estaria resolvido",
+        "Porque o banco deveria ser trocado por NoSQL",
+        "A correção é suficiente se a entrada também for convertida para maiúsculas"
+      ],
+      "answer": 0,
+      "explain": "A concatenação continua deixando o dado virar código. Sempre haverá uma variação fora da lista. Prepared statements eliminam a classe inteira do problema."
+    }
+  ]
+}

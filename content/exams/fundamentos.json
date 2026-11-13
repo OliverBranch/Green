@@ -1,0 +1,93 @@
+{
+  "branch": "fundamentos",
+  "questions": [
+    {
+      "id": "fun-cid-1-01", "node": "fun-cid", "level": 1,
+      "prompt": "Um atacante altera o valor de uma transferência em trânsito, mas não consegue ler os demais dados da mensagem. Qual princípio foi violado diretamente?",
+      "options": ["Integridade", "Confidencialidade", "Disponibilidade", "Irretratabilidade"],
+      "answer": 0,
+      "explain": "A alteração não autorizada de dados viola a integridade. Como o atacante não leu o conteúdo, a confidencialidade não foi o alvo principal."
+    },
+    {
+      "id": "fun-cid-1-02", "node": "fun-cid", "level": 1,
+      "prompt": "Qual mecanismo garante a irretratabilidade (não repúdio) de uma mensagem?",
+      "options": [
+        "Assinatura digital feita com a chave privada do emissor",
+        "HMAC calculado com uma chave compartilhada entre as partes",
+        "Cifragem da mensagem com AES-256",
+        "Hash SHA-256 anexado à mensagem"
+      ],
+      "answer": 0,
+      "explain": "Só o emissor possui a chave privada, então ele não consegue negar a autoria. No HMAC as duas partes têm a mesma chave, logo qualquer uma poderia ter gerado o código. Hash puro e cifragem não provam autoria."
+    },
+    {
+      "id": "fun-cid-1-03", "node": "fun-cid", "level": 1,
+      "prompt": "Um ataque DDoS deixa o internet banking fora do ar por duas horas. Qual princípio foi afetado principalmente?",
+      "options": ["Disponibilidade", "Integridade", "Confidencialidade", "Autenticidade"],
+      "answer": 0,
+      "explain": "Negação de serviço impede o acesso de usuários legítimos quando precisam, o que é a definição de violação de disponibilidade."
+    },
+    {
+      "id": "fun-cid-1-04", "node": "fun-cid", "level": 1,
+      "prompt": "No contexto de segurança da informação, autenticidade significa:",
+      "options": [
+        "Garantia de que a informação provém da fonte anunciada e de que a identidade foi verificada",
+        "Garantia de que a informação não foi alterada desde a criação",
+        "Garantia de que a informação está acessível sempre que necessário",
+        "Garantia de que apenas pessoas autorizadas podem ler a informação"
+      ],
+      "answer": 0,
+      "explain": "Autenticidade trata da origem e da identidade. As demais alternativas descrevem integridade, disponibilidade e confidencialidade."
+    },
+    {
+      "id": "fun-cid-1-05", "node": "fun-cid", "level": 1,
+      "prompt": "Um funcionário envia por engano uma planilha com dados de clientes para um e-mail externo. Qual princípio foi comprometido?",
+      "options": ["Confidencialidade", "Disponibilidade", "Integridade", "Irretratabilidade"],
+      "answer": 0,
+      "explain": "Os dados chegaram a quem não tinha autorização para lê-los. É uma quebra de confidencialidade, e ainda pode ser um incidente com dados pessoais sob a LGPD."
+    },
+    {
+      "id": "fun-cid-2-01", "node": "fun-cid", "level": 2,
+      "prompt": "Um banco registra a assinatura de contratos com certificados ICP-Brasil e carimbo de tempo. Um cliente nega ter assinado. Quais propriedades sustentam a posição do banco?",
+      "options": [
+        "Autenticidade e irretratabilidade, apoiadas pela integridade do documento assinado",
+        "Disponibilidade e confidencialidade dos registros",
+        "Apenas a confidencialidade, porque o contrato foi cifrado",
+        "Apenas a disponibilidade dos logs de acesso"
+      ],
+      "answer": 0,
+      "explain": "A assinatura com a chave privada do cliente comprova a origem (autenticidade) e impede a negação (irretratabilidade). A verificação da assinatura também prova que o documento não mudou depois de assinado (integridade)."
+    },
+    {
+      "id": "fun-cid-2-02", "node": "fun-cid", "level": 2,
+      "prompt": "Você quer reduzir o risco de um administrador alterar registros de auditoria sem deixar rastro. Qual controle é mais adequado?",
+      "options": [
+        "Enviar os logs a um repositório central com gravação imutável (WORM) e acesso segregado do administrador",
+        "Cifrar o disco do servidor com BitLocker",
+        "Aumentar o período de retenção dos logs locais",
+        "Fazer backup diário dos logs no próprio servidor"
+      ],
+      "answer": 0,
+      "explain": "O problema é integridade frente a um usuário privilegiado. Só tirar os logs do alcance dele, com gravação imutável, resolve. Cifragem de disco protege confidencialidade em repouso, e cópias locais continuam sob o controle do administrador."
+    },
+    {
+      "id": "fun-cid-2-03", "node": "fun-cid", "level": 2,
+      "prompt": "Os backups da empresa estão cifrados e íntegros, mas a chave de decifragem foi perdida. Qual princípio é comprometido?",
+      "options": ["Disponibilidade", "Confidencialidade", "Integridade", "Autenticidade"],
+      "answer": 0,
+      "explain": "Os dados continuam confidenciais e íntegros, mas inacessíveis. Por isso a gestão de chaves (custódia, cópia segura da chave) faz parte da disponibilidade."
+    },
+    {
+      "id": "fun-cid-2-04", "node": "fun-cid", "level": 2,
+      "prompt": "Um instalador é publicado com seu hash SHA-256 no mesmo servidor. Um atacante invade o servidor e troca os dois. O que falhou no desenho?",
+      "options": [
+        "O hash sozinho não garante autenticidade; deveria ser assinado digitalmente ou publicado num canal confiável separado",
+        "O SHA-256 está quebrado e deveria ser substituído por MD5",
+        "Faltou cifrar o instalador com AES",
+        "O problema é de disponibilidade, não de integridade"
+      ],
+      "answer": 0,
+      "explain": "Quem controla o canal controla o hash. A integridade só se sustenta se o valor de referência tiver origem autenticada, como uma assinatura digital do fornecedor. SHA-256 não está quebrado, e MD5 seria pior."
+    }
+  ]
+}

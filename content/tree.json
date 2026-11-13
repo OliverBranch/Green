@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "branches": [
+    {
+      "id": "fundamentos",
+      "name": "Fundamentos e riscos",
+      "nodes": [
+        {
+          "id": "fun-cid", "code": "CID", "short": "Pilares", "name": "Pilares da segurança",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Confidencialidade, integridade, disponibilidade, autenticidade e irretratabilidade: o que cada uma protege e como são violadas.",
+          "bonus": { "label": "Relatórios mais claros", "effect": { "kind": "xpBonus", "pct": 5 } }
+        },
+        {
+          "id": "fun-riscos", "code": "RSK", "short": "Riscos", "name": "Gestão de riscos",
+          "ring": 2, "offset": 0, "requires": ["fun-cid"],
+          "summary": "Processo da ISO/IEC 27005: identificação, análise, avaliação e tratamento de riscos; classificação e controle de ativos.",
+          "bonus": { "label": "Priorização por risco", "effect": { "kind": "costReduction", "tag": "gov", "pct": 10 } }
+        },
+        {
+          "id": "fun-normas", "code": "ISO", "short": "Normas", "name": "Normas e frameworks",
+          "ring": 3, "offset": 0, "requires": ["fun-riscos"],
+          "summary": "ISO/IEC 27001, 27002, 27701 e 27005, LGPD, NIST CSF 2.0, CIS Controls v8.1 e NIST SP 800-145.",
+          "bonus": { "label": "Citação normativa", "effect": { "kind": "unlock", "text": "Revela a cláusula ou controle aplicável em achados de auditoria." } }
+        }
+      ]
+    },
+    {
+      "id": "governanca",
+      "name": "Governança e continuidade",
+      "nodes": [
+        {
+          "id": "gov-politicas", "code": "POL", "short": "Políticas", "name": "Políticas de segurança",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Definição, implementação e auditoria de políticas, normas e procedimentos; papéis e exceções.",
+          "bonus": { "label": "Exceção formal", "effect": { "kind": "unlock", "text": "Libera a opção de exigir exceção formal com análise de risco em missões de auditoria." } }
+        },
+        {
+          "id": "gov-dados", "code": "GOV", "short": "Governança", "name": "Governança e conformidade",
+          "ring": 2, "offset": -0.8, "requires": ["gov-politicas"],
+          "summary": "Governança de dados, gestão de metadados, compliance e conformidade regulatória.",
+          "bonus": { "label": "Trilha de conformidade", "effect": { "kind": "costReduction", "tag": "dados", "pct": 10 } }
+        },
+        {
+          "id": "gov-continuidade", "code": "BCP", "short": "Continuidade", "name": "Continuidade e recuperação",
+          "ring": 2, "offset": 0.8, "requires": ["gov-politicas"],
+          "summary": "Planos de continuidade, BIA, RTO e RPO, recuperação de desastres, gestão de crises e testes periódicos.",
+          "bonus": { "label": "Plano de contingência", "effect": { "kind": "unlock", "text": "Libera ações de recuperação em missões de incidente." } }
+        }
+      ]
+    },
+    {
+      "id": "redes",
+      "name": "Redes seguras",
+      "nodes": [
+        {
+          "id": "net-fundamentos", "code": "OSI", "short": "OSI e TCP/IP", "name": "OSI, TCP/IP e endereçamento",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Modelo OSI, arquitetura TCP/IP, IPv4 e IPv6, CIDR e equipamentos de rede.",
+          "bonus": { "label": "Reconhecimento discreto", "effect": { "kind": "noiseReduction", "tag": "recon", "pct": 15 } }
+        },
+        {
+          "id": "net-perimetro", "code": "FW", "short": "Perímetro", "name": "Arquitetura de perímetro",
+          "ring": 2, "offset": 0, "requires": ["net-fundamentos"],
+          "summary": "Segmentação, DMZ, firewalls, IDS/IPS, NAC, WAF, proxy reverso e balanceamento seguro.",
+          "bonus": { "label": "Leitura de perímetro", "effect": { "kind": "noiseReduction", "tag": "rede", "pct": 10 } }
+        },
+        {
+          "id": "net-protocolos", "code": "SSH", "short": "Protocolos", "name": "Protocolos seguros",
+          "ring": 3, "offset": 0, "requires": ["net-perimetro"],
+          "summary": "DNSSEC, DNS sobre TLS/HTTPS, SNMPv3, SSH, SMTP, HTTPS e hardening de serviços.",
+          "bonus": { "label": "Serviços endurecidos", "effect": { "kind": "costReduction", "tag": "rede", "pct": 10 } }
+        }
+      ]
+    },
+    {
+      "id": "cripto",
+      "name": "Criptografia e nuvem",
+      "nodes": [
+        {
+          "id": "cri-primitivas", "code": "AES", "short": "Primitivas", "name": "Simétrica, assimétrica e hash",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "AES e modos de operação, RSA e ECC, SHA-2 e SHA-3, HMAC e armazenamento de senhas.",
+          "bonus": { "label": "Fluência criptográfica", "effect": { "kind": "costReduction", "tag": "cripto", "pct": 15 } }
+        },
+        {
+          "id": "cri-pki", "code": "PKI", "short": "PKI", "name": "PKI e certificados",
+          "ring": 2, "offset": -0.8, "requires": ["cri-primitivas"],
+          "summary": "Infraestrutura de chaves públicas, ICP-Brasil, cadeia de confiança, revogação e certificados digitais.",
+          "bonus": { "label": "Leitura de cadeia", "effect": { "kind": "unlock", "text": "Libera a análise de cadeias de certificados via AIA em missões." } }
+        },
+        {
+          "id": "cri-tls", "code": "TLS", "short": "TLS 1.2/1.3", "name": "TLS 1.2 e 1.3",
+          "ring": 3, "offset": -0.8, "requires": ["cri-pki"],
+          "summary": "Handshake, suítes de cifra, sigilo direto, diferenças entre TLS 1.2 e 1.3 e HSTS.",
+          "bonus": { "label": "Consultoria de TLS", "effect": { "kind": "unlock", "text": "Libera a explicação técnica de suítes e sigilo direto ao cliente." } }
+        },
+        {
+          "id": "cld-nuvem", "code": "CLD", "short": "Nuvem", "name": "Segurança em nuvem",
+          "ring": 2, "offset": 0.8, "requires": ["cri-primitivas"],
+          "summary": "Responsabilidade compartilhada, IAM, proteção de dados em AWS, Azure e GCP, serverless e contêineres.",
+          "bonus": { "label": "Nativo de nuvem", "effect": { "kind": "costReduction", "tag": "cloud", "pct": 15 } }
+        }
+      ]
+    },
+    {
+      "id": "hardening",
+      "name": "Hardening e acesso",
+      "nodes": [
+        {
+          "id": "hard-acesso", "code": "MFA", "short": "Acesso", "name": "Controle de acesso e cifragem de disco",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Políticas de senha, MFA, Kerberos, LDAP, PAM no Linux, BitLocker e LUKS.",
+          "bonus": { "label": "Identidade forte", "effect": { "kind": "costReduction", "tag": "ident", "pct": 10 } }
+        },
+        {
+          "id": "hard-linux", "code": "LNX", "short": "Linux", "name": "Hardening Linux",
+          "ring": 2, "offset": -0.8, "requires": ["hard-acesso"],
+          "summary": "CIS Benchmarks, SELinux e AppArmor, SSH, sudo, nftables, fail2ban, auditd, Lynis e patches.",
+          "bonus": { "label": "Host silencioso", "effect": { "kind": "noiseReduction", "tag": "host", "pct": 10 } }
+        },
+        {
+          "id": "hard-windows", "code": "WIN", "short": "Windows", "name": "Hardening Windows e AD",
+          "ring": 2, "offset": 0.8, "requires": ["hard-acesso"],
+          "summary": "Active Directory, GPOs, WSUS, Defender for Endpoint, NTFS, contas de serviço, auditoria e LAPS.",
+          "bonus": { "label": "Olhos no AD", "effect": { "kind": "unlock", "text": "Libera a leitura de GPOs e da auditoria do AD em missões." } }
+        }
+      ]
+    },
+    {
+      "id": "devsecops",
+      "name": "DevSecOps e APIs",
+      "nodes": [
+        {
+          "id": "dev-owasp", "code": "WEB", "short": "OWASP", "name": "OWASP Top 10 e CWE",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "OWASP Top 10:2025 e CWE Top 25: controle de acesso, injeção, XSS, CSRF, SSRF e validação.",
+          "bonus": { "label": "Olho para falhas web", "effect": { "kind": "costReduction", "tag": "web", "pct": 15 } }
+        },
+        {
+          "id": "dev-testes", "code": "SDL", "short": "Testes", "name": "SDL e testes de segurança",
+          "ring": 2, "offset": -0.8, "requires": ["dev-owasp"],
+          "summary": "SDL, NIST SSDF, SAST, DAST, IAST, SCA e testes de intrusão web.",
+          "bonus": { "label": "Análise de código", "effect": { "kind": "unlock", "text": "Libera a execução de SAST e SCA em missões de código." } }
+        },
+        {
+          "id": "dev-pipeline", "code": "CICD", "short": "Pipelines", "name": "CI/CD e contêineres",
+          "ring": 3, "offset": -0.8, "requires": ["dev-testes"],
+          "summary": "Segurança em pipelines, imagens Docker, Kubernetes, GitOps, Ansible e AWX.",
+          "bonus": { "label": "Pipeline blindado", "effect": { "kind": "costReduction", "tag": "pipeline", "pct": 15 } }
+        },
+        {
+          "id": "dev-apis", "code": "API", "short": "APIs", "name": "APIs e microsserviços",
+          "ring": 2, "offset": 0.8, "requires": ["dev-owasp"],
+          "summary": "JWT, OAuth 2.0, API gateway, rate limiting e service mesh.",
+          "bonus": { "label": "Tráfego de API", "effect": { "kind": "noiseReduction", "tag": "web", "pct": 10 } }
+        }
+      ]
+    },
+    {
+      "id": "defesa",
+      "name": "Monitoramento e resposta",
+      "nodes": [
+        {
+          "id": "ops-siem", "code": "SIEM", "short": "SIEM e EDR", "name": "SIEM, SOAR e EDR/XDR",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Coleta e correlação de eventos, automação de resposta, detecção em endpoints, antivírus e antispam.",
+          "bonus": { "label": "Triagem rápida", "effect": { "kind": "costReduction", "tag": "logs", "pct": 15 } }
+        },
+        {
+          "id": "ops-logs", "code": "LOG", "short": "Logs", "name": "Análise e correlação de logs",
+          "ring": 2, "offset": -0.8, "requires": ["ops-siem"],
+          "summary": "Event Viewer, IDs de eventos do Windows, syslog e correlação entre fontes.",
+          "bonus": { "label": "Correlação", "effect": { "kind": "unlock", "text": "Libera a correlação de eventos entre fontes em missões." } }
+        },
+        {
+          "id": "ops-forense", "code": "DFIR", "short": "Forense", "name": "Forense e malware",
+          "ring": 3, "offset": -0.8, "requires": ["ops-logs"],
+          "summary": "Análise de malware, preservação de evidências, cadeia de custódia, Autopsy, Volatility e FTK.",
+          "bonus": { "label": "Memória viva", "effect": { "kind": "unlock", "text": "Libera a análise de memória com Volatility em incidentes." } }
+        },
+        {
+          "id": "ops-vuln", "code": "VULN", "short": "Vulnerabilidades", "name": "Vulnerabilidades e pentest",
+          "ring": 2, "offset": 0.8, "requires": ["ops-siem"],
+          "summary": "Gestão de vulnerabilidades, CVE e CVSS, Nessus, OpenVAS e testes de intrusão.",
+          "bonus": { "label": "Varredura calibrada", "effect": { "kind": "noiseReduction", "tag": "recon", "pct": 10 } }
+        }
+      ]
+    },
+    {
+      "id": "dados",
+      "name": "Dados e privacidade",
+      "nodes": [
+        {
+          "id": "dat-classificacao", "code": "CLS", "short": "Classificação", "name": "Classificação e mascaramento",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Classificação da informação, dados pessoais e sensíveis, mascaramento, tokenização e pseudonimização.",
+          "bonus": { "label": "Dado no lugar certo", "effect": { "kind": "costReduction", "tag": "dados", "pct": 10 } }
+        },
+        {
+          "id": "dat-dlp", "code": "DLP", "short": "DLP", "name": "DLP e criptografia de dados",
+          "ring": 2, "offset": -0.8, "requires": ["dat-classificacao"],
+          "summary": "Prevenção de vazamento, dados em repouso, em trânsito e em uso.",
+          "bonus": { "label": "Vazamento contido", "effect": { "kind": "noiseReduction", "tag": "dados", "pct": 10 } }
+        },
+        {
+          "id": "dat-backup", "code": "BKP", "short": "Backup", "name": "Backup e redundância",
+          "ring": 2, "offset": 0.8, "requires": ["dat-classificacao"],
+          "summary": "Políticas de backup e recuperação, regra 3-2-1, cópias imutáveis e redundância geográfica.",
+          "bonus": { "label": "Cópia imutável", "effect": { "kind": "unlock", "text": "Libera a restauração a partir de cópias imutáveis em incidentes." } }
+        }
+      ]
+    },
+    {
+      "id": "tendencias",
+      "name": "Tendências e ameaças",
+      "nodes": [
+        {
+          "id": "ten-zt", "code": "ZTA", "short": "Zero Trust", "name": "Zero Trust",
+          "ring": 1, "offset": 0, "requires": [],
+          "summary": "Princípios e implementação de Zero Trust segundo a NIST SP 800-207.",
+          "bonus": { "label": "Verificação contínua", "effect": { "kind": "costReduction", "tag": "ident", "pct": 10 } }
+        },
+        {
+          "id": "ten-ameacas", "code": "ATK", "short": "ATT&CK", "name": "MITRE ATT&CK e STRIDE",
+          "ring": 2, "offset": 0, "requires": ["ten-zt"],
+          "summary": "Táticas, técnicas e subtécnicas do ATT&CK; modelagem de ameaças com STRIDE.",
+          "bonus": { "label": "Linguagem do adversário", "effect": { "kind": "unlock", "text": "Mapeia achados para técnicas do ATT&CK no relatório das missões." } }
+        },
+        {
+          "id": "ten-ia", "code": "IA", "short": "IA e ML", "name": "IA, MLOps e AIOps",
+          "ring": 3, "offset": 0, "requires": ["ten-ameacas"],
+          "summary": "IA e ML na detecção de ameaças e análise preditiva, MLOps seguro e AIOps.",
+          "bonus": { "label": "Detecção assistida", "effect": { "kind": "noiseReduction", "tag": "logs", "pct": 10 } }
+        }
+      ]
+    }
+  ]
+}

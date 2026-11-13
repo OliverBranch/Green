@@ -1,0 +1,109 @@
+{
+  "branch": "hardening",
+  "questions": [
+    {
+      "id": "hard-ace-1-01", "node": "hard-acesso", "level": 1,
+      "prompt": "Qual combinação representa autenticação multifator de verdade?",
+      "options": [
+        "Senha e código de um aplicativo autenticador no celular",
+        "Senha e resposta a uma pergunta secreta",
+        "Duas senhas diferentes",
+        "PIN e data de nascimento"
+      ],
+      "answer": 0,
+      "explain": "MFA exige fatores de categorias diferentes: algo que você sabe, tem ou é. Senha e pergunta secreta são ambas algo que você sabe."
+    },
+    {
+      "id": "hard-ace-1-02", "node": "hard-acesso", "level": 1,
+      "prompt": "No Kerberos, qual ticket o Authentication Service emite após a autenticação inicial do usuário?",
+      "options": ["TGT, Ticket Granting Ticket", "Ticket de serviço (TGS)", "Token SAML", "Cookie de sessão"],
+      "answer": 0,
+      "explain": "O usuário recebe o TGT do AS e depois o apresenta ao TGS para obter tickets de cada serviço, sem digitar a senha de novo."
+    },
+    {
+      "id": "hard-ace-1-03", "node": "hard-acesso", "level": 1,
+      "prompt": "Por que o Kerberos é sensível à diferença de horário entre o cliente e o KDC?",
+      "options": [
+        "Tickets e autenticadores têm carimbo de tempo para impedir replay; no AD a tolerância padrão é de 5 minutos",
+        "Porque a chave de cifragem é derivada do horário atual",
+        "Porque o KDC desliga fora do horário comercial",
+        "Não é sensível: o horário só aparece nos logs"
+      ],
+      "answer": 0,
+      "explain": "Um autenticador antigo reaproveitado seria rejeitado pelo carimbo de tempo. Por isso NTP é crítico em ambientes com Active Directory."
+    },
+    {
+      "id": "hard-ace-1-04", "node": "hard-acesso", "level": 1,
+      "prompt": "No contexto do Linux, PAM é:",
+      "options": [
+        "Um framework modular que define como aplicações autenticam usuários, com módulos como pam_unix e pam_faillock",
+        "Uma solução de gestão de acessos privilegiados com cofre de senhas",
+        "Um firewall de aplicação",
+        "Um formato de chave SSH"
+      ],
+      "answer": 0,
+      "explain": "Pluggable Authentication Modules deixa trocar ou empilhar métodos de autenticação, como MFA ou bloqueio após falhas, sem alterar cada aplicação. Gestão de acessos privilegiados usa a mesma sigla, mas é outro conceito."
+    },
+    {
+      "id": "hard-ace-1-05", "node": "hard-acesso", "level": 1,
+      "prompt": "BitLocker e LUKS protegem principalmente contra:",
+      "options": [
+        "Acesso aos dados em caso de roubo ou perda do disco ou do equipamento desligado",
+        "Malware rodando com o usuário logado e o disco desbloqueado",
+        "Phishing",
+        "SQL injection"
+      ],
+      "answer": 0,
+      "explain": "Cifragem de disco protege dados em repouso. Com o sistema ligado e o volume desbloqueado, os dados ficam acessíveis a qualquer processo com permissão."
+    },
+    {
+      "id": "hard-ace-2-01", "node": "hard-acesso", "level": 2,
+      "prompt": "Os logs mostram uma conta comum solicitando dezenas de tickets de serviço com cifra RC4, para várias contas com SPN, em poucos minutos. O que provavelmente está acontecendo e como mitigar?",
+      "context": "4769  ticket de serviço solicitado  conta=estagiario02  serviço=svc_sql      cifra=0x17\n4769  ticket de serviço solicitado  conta=estagiario02  serviço=svc_backup   cifra=0x17\n4769  ticket de serviço solicitado  conta=estagiario02  serviço=svc_iis      cifra=0x17\n...   38 serviços distintos em 3 minutos",
+      "options": [
+        "Kerberoasting; usar gMSA ou senhas longas e aleatórias nas contas de serviço e desabilitar RC4",
+        "Golden ticket; redefinir a senha da krbtgt",
+        "Pass-the-hash; desativar o NTLM no servidor web",
+        "Força bruta online; bloquear a conta após 5 tentativas"
+      ],
+      "answer": 0,
+      "explain": "O ticket de serviço é cifrado com o hash da senha da conta de serviço. O atacante coleta os tickets e quebra offline, sem gerar falhas de login. 0x17 é RC4, mais fácil de quebrar."
+    },
+    {
+      "id": "hard-ace-2-02", "node": "hard-acesso", "level": 2,
+      "prompt": "Uma aplicação autentica usuários com bind simples em LDAP na porta 389. Qual o risco e a correção?",
+      "options": [
+        "As credenciais trafegam em claro; usar LDAPS (636) ou StartTLS e exigir assinatura e channel binding",
+        "Nenhum risco, pois o LDAP cifra o bind por padrão",
+        "O risco é de disponibilidade; aumentar o timeout",
+        "Trocar a porta 389 por 3389"
+      ],
+      "answer": 0,
+      "explain": "Bind simples envia usuário e senha legíveis. Qualquer um na rota captura. 3389 é a porta do RDP, sem relação."
+    },
+    {
+      "id": "hard-ace-2-03", "node": "hard-acesso", "level": 2,
+      "prompt": "A política atual exige troca de senha a cada 30 dias e mínimo de 8 caracteres. Segundo a NIST SP 800-63B, qual a melhor revisão?",
+      "options": [
+        "Senhas mais longas, checagem contra listas de senhas vazadas, MFA e troca apenas quando houver indício de comprometimento",
+        "Reduzir o prazo de troca para 15 dias",
+        "Exigir símbolos e trocar a senha a cada login",
+        "Proibir gerenciadores de senha"
+      ],
+      "answer": 0,
+      "explain": "Troca periódica forçada leva a padrões previsíveis (Senha01, Senha02). O NIST recomenda comprimento, bloqueio de senhas conhecidas e MFA."
+    },
+    {
+      "id": "hard-ace-2-04", "node": "hard-acesso", "level": 2,
+      "prompt": "Um notebook com BitLocker usando apenas TPM, sem PIN, é roubado enquanto estava em suspensão. Qual o risco residual?",
+      "options": [
+        "A chave já está em memória, e o TPM a libera sem interação no boot; ataques à memória ou ao barramento continuam possíveis. TPM com PIN e hibernação reduzem o risco",
+        "Nenhum: o BitLocker apaga o disco ao detectar o roubo",
+        "Os dados ficam em claro no disco enquanto o equipamento está suspenso",
+        "O risco é só de disponibilidade"
+      ],
+      "answer": 0,
+      "explain": "Em suspensão o volume está desbloqueado e a chave está na RAM. Só TPM significa que ligar a máquina basta para destravar. Um PIN pré-boot exige algo que o ladrão não tem."
+    }
+  ]
+}

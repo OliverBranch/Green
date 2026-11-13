@@ -1,0 +1,181 @@
+{
+  "id": "m01",
+  "title": "Cadeado partido",
+  "client": "Cooperativa Vale Azul (fictícia)",
+  "kind": "Auditoria de TLS",
+  "difficulty": 1,
+  "summary": "Clientes da cooperativa veem aviso de conexão não segura em alguns celulares. Descubra a causa sem sair do escopo e entregue um relatório útil.",
+  "related": ["cri-pki", "cri-tls", "net-perimetro"],
+  "resources": { "energy": 100 },
+  "scope": {
+    "in": ["portal.valeazul.example (203.0.113.10)", "api.valeazul.example (203.0.113.11)", "Testes não destrutivos, horário comercial"],
+    "out": ["Qualquer outro host ou faixa de IP", "Rede interna 10.20.0.0/16", "Testes de senha e negação de serviço"]
+  },
+  "steps": [
+    {
+      "id": "briefing",
+      "type": "briefing",
+      "title": "Contrato recebido",
+      "text": [
+        "A Vale Azul abriu um chamado: desde a semana passada, parte dos clientes vê \"Sua conexão não é privada\" ao abrir o internet banking no celular. No computador, ninguém reclama.",
+        "Você foi contratado para uma auditoria de TLS. O contato do cliente é Marina, coordenadora de infraestrutura. As regras de engajamento estão ao lado: tudo fora do escopo é proibido, mesmo com boa intenção.",
+        "Energia representa o tempo do contrato. Ruído é o quanto o SOC do cliente percebe sua atividade: se chegar a 100, seu IP é bloqueado e a missão falha."
+      ],
+      "cta": "Aceitar contrato"
+    },
+    {
+      "id": "recon",
+      "type": "choice",
+      "title": "Por onde começar",
+      "text": ["O sintoma é um aviso de certificado em parte dos dispositivos. Qual o primeiro passo?"],
+      "options": [
+        {
+          "id": "scan-all", "label": "Varredura de todas as portas (1–65535) com nmap -T5 na faixa 203.0.113.0/24",
+          "tags": ["recon"], "cost": { "energy": 15, "noise": 35 }, "rep": -5, "outcome": "bad",
+          "feedback": "A faixa /24 inclui dezenas de IPs fora do escopo, e -T5 é o perfil mais agressivo do nmap. Além de gerar ruído, você testou hosts sem autorização. O escopo tem só dois endereços."
+        },
+        {
+          "id": "s-client", "label": "Inspecionar o certificado e a cadeia do portal com openssl s_client",
+          "tags": ["cripto", "recon"], "cost": { "energy": 10, "noise": 2 }, "outcome": "good", "xp": 40,
+          "feedback": "Boa escolha. O sintoma aponta para o certificado, então você vai direto à fonte com uma única conexão TLS, indistinguível de um cliente comum."
+        },
+        {
+          "id": "restart", "label": "Pedir acesso administrativo e reiniciar o servidor web para ver se o problema some",
+          "tags": [], "cost": { "energy": 8, "noise": 0 }, "rep": -3, "outcome": "bad",
+          "feedback": "Reiniciar não diagnostica nada e é uma ação operacional, fora do papel de auditor. Se o problema sumir por acaso, você perde a evidência."
+        }
+      ]
+    },
+    {
+      "id": "chain",
+      "type": "choice",
+      "title": "Leitura do certificado",
+      "text": ["A saída do openssl está abaixo. O que explica o aviso aparecer só em alguns dispositivos?"],
+      "context": "$ openssl s_client -connect portal.valeazul.example:443 -servername portal.valeazul.example\nCONNECTED(00000003)\ndepth=0 CN = portal.valeazul.example\nverify error:num=20:unable to get local issuer certificate\nverify error:num=21:unable to verify the first certificate\n---\nCertificate chain\n 0 s:CN = portal.valeazul.example\n   i:C = BR, O = Ipe Trust, CN = Ipe Trust TLS CA G2\n   v:NotBefore: Mar  2 00:00:00 2026 GMT; NotAfter: Mar  1 23:59:59 2027 GMT\n---\nServer public key is 2048 bit\nVerify return code: 21 (unable to verify the first certificate)",
+      "options": [
+        {
+          "id": "missing-intermediate", "label": "O servidor não envia o certificado intermediário; navegadores de desktop costumam completar a cadeia por cache ou AIA, e muitos clientes móveis não",
+          "tags": ["cripto"], "cost": { "energy": 8, "noise": 0 }, "outcome": "good", "xp": 50,
+          "feedback": "Exato. A cadeia mostra só o certificado do servidor (depth 0), emitido por uma AC intermediária que não foi enviada. Quem já tem o intermediário em cache valida; quem não tem, recebe o aviso. A correção é configurar a cadeia completa (fullchain) no servidor."
+        },
+        {
+          "id": "expired", "label": "O certificado expirou",
+          "tags": ["cripto"], "cost": { "energy": 6, "noise": 0 }, "outcome": "bad",
+          "feedback": "Não há erro de validade: o certificado vale até março de 2027. Um certificado vencido geraria \"num=10: certificate has expired\", e o aviso apareceria em todos os dispositivos."
+        },
+        {
+          "id": "weak-key", "label": "A chave RSA de 2048 bits é fraca e alguns celulares a rejeitam",
+          "tags": ["cripto"], "cost": { "energy": 6, "noise": 0 }, "outcome": "bad",
+          "feedback": "RSA 2048 ainda é aceito por navegadores e pelas ACs públicas. O erro mostrado é de cadeia (20 e 21), não de tamanho de chave."
+        },
+        {
+          "id": "aia", "label": "Buscar o intermediário pela extensão AIA (caIssuers) e validar a cadeia completa offline",
+          "requires": { "node": "cri-pki", "level": 1 },
+          "tags": ["cripto"], "cost": { "energy": 6, "noise": 0 }, "outcome": "good", "xp": 80,
+          "feedback": "Você baixa o intermediário pela URL do campo AIA e monta a cadeia: openssl verify -untrusted ipe-g2.pem portal.pem retorna OK. Agora você tem a prova de que o certificado é válido e de que só falta o servidor enviar o intermediário. Achado comprovado, não suposto."
+        }
+      ]
+    },
+    {
+      "id": "ciphers",
+      "type": "choice",
+      "title": "Protocolos e suítes",
+      "text": ["Você enumera as versões de TLS e as suítes aceitas pelo portal. Qual recomendação vai para o cliente?"],
+      "context": "$ nmap --script ssl-enum-ciphers -p 443 portal.valeazul.example\nPORT    STATE SERVICE\n443/tcp open  https\n| ssl-enum-ciphers:\n|   TLSv1.0:\n|     ciphers:\n|       TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C\n|       TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A\n|   TLSv1.2:\n|     ciphers:\n|       TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (secp256r1) - A\n|       TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (secp256r1) - A\n|       TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A\n|   TLSv1.3:\n|     ciphers:\n|       TLS_AES_128_GCM_SHA256 (ecdh_x25519) - A\n|       TLS_AES_256_GCM_SHA384 (ecdh_x25519) - A\n|_  least strength: C",
+      "options": [
+        {
+          "id": "harden-tls", "label": "Desabilitar o TLS 1.0 e as suítes com troca de chaves RSA estática e 3DES; manter TLS 1.2 com ECDHE e GCM, e TLS 1.3",
+          "tags": ["cripto", "rede"], "cost": { "energy": 10, "noise": 4 }, "outcome": "good", "xp": 50,
+          "feedback": "Correto. TLS 1.0 está obsoleto (RFC 8996), 3DES é vulnerável ao Sweet32 e suítes TLS_RSA_* não têm sigilo direto. O que sobra (ECDHE com GCM e TLS 1.3) atende a clientes modernos."
+        },
+        {
+          "id": "disable-13", "label": "Desabilitar o TLS 1.3, que ainda é experimental",
+          "tags": ["cripto", "rede"], "cost": { "energy": 6, "noise": 4 }, "outcome": "bad",
+          "feedback": "O TLS 1.3 é padrão desde 2018 (RFC 8446) e é a versão mais segura da lista. Desabilitá-lo pioraria a configuração."
+        },
+        {
+          "id": "keep-all", "label": "Manter tudo como está: nota mínima C é aceitável para um banco",
+          "tags": ["cripto", "rede"], "cost": { "energy": 6, "noise": 4 }, "outcome": "bad",
+          "feedback": "A nota mínima é definida pelo elo mais fraco. Enquanto 3DES e TLS 1.0 estiverem habilitados, um atacante em posição de rede pode forçar o uso deles com clientes antigos."
+        },
+        {
+          "id": "cbc-only", "label": "Remover AES-GCM e manter só CBC, por compatibilidade",
+          "tags": ["cripto", "rede"], "cost": { "energy": 6, "noise": 4 }, "outcome": "bad",
+          "feedback": "É o contrário: GCM é um modo autenticado (AEAD) e é o recomendado. CBC no TLS tem histórico de ataques de padding oracle e foi removido no TLS 1.3."
+        },
+        {
+          "id": "explain-pfs", "label": "Recomendar a mudança e explicar à Marina o ganho de sigilo direto e o risco do Sweet32, com a ordem de prioridade das suítes",
+          "requires": { "node": "cri-tls", "level": 1 },
+          "tags": ["cripto", "rede"], "cost": { "energy": 8, "noise": 4 }, "outcome": "good", "xp": 90,
+          "feedback": "Marina entende por que vale o esforço: com ECDHE, uma chave privada vazada no futuro não decifra o tráfego gravado hoje. Ela aprova a mudança na mesma semana. Relatório que convence é relatório que vira correção."
+        }
+      ]
+    },
+    {
+      "id": "headers",
+      "type": "choice",
+      "title": "Wi-Fi público",
+      "text": ["Um cliente relata que, num café, digitou valeazul.example sem https e caiu numa página falsa. Você confere os cabeçalhos do portal. Qual o achado principal?"],
+      "context": "$ curl -sI https://portal.valeazul.example\nHTTP/2 200\nserver: nginx\ncontent-type: text/html; charset=utf-8\nset-cookie: SESSIONID=8f3a91c2e07b; Path=/\nx-frame-options: SAMEORIGIN",
+      "options": [
+        {
+          "id": "hsts", "label": "Falta o cabeçalho Strict-Transport-Security (HSTS), e o cookie de sessão está sem Secure, HttpOnly e SameSite",
+          "tags": ["web"], "cost": { "energy": 8, "noise": 2 }, "outcome": "good", "xp": 50,
+          "feedback": "Isso. Sem HSTS, a primeira requisição em HTTP pode ser interceptada e mantida em HTTP (SSL stripping). E sem a flag Secure, o cookie de sessão pode vazar numa requisição sem TLS."
+        },
+        {
+          "id": "xfo", "label": "Falta o cabeçalho X-Frame-Options",
+          "tags": ["web"], "cost": { "energy": 5, "noise": 2 }, "outcome": "bad",
+          "feedback": "O X-Frame-Options está presente (SAMEORIGIN). E ele trata de clickjacking, que não explica o cenário do café."
+        },
+        {
+          "id": "http2", "label": "O servidor usa HTTP/2, que trafega sem cifragem",
+          "tags": ["web"], "cost": { "energy": 5, "noise": 2 }, "outcome": "bad",
+          "feedback": "Os navegadores só usam HTTP/2 sobre TLS. O problema não é a versão do HTTP, e sim a ausência de HSTS."
+        }
+      ]
+    },
+    {
+      "id": "ethics",
+      "type": "choice",
+      "title": "Fora do escopo",
+      "text": [
+        "No certificado da API, o campo SAN lista um nome a mais: jenkins.dev.valeazul.example. O DNS público resolve para 203.0.113.42, que não está no escopo.",
+        "Um colega no chat sugere: \"testa admin/admin no Jenkins, só pra ver se entra\"."
+      ],
+      "options": [
+        {
+          "id": "try-login", "label": "Testar admin/admin no Jenkins: se entrar, o achado fica muito mais forte",
+          "tags": [], "cost": { "energy": 6, "noise": 25 }, "rep": -15, "outcome": "bad",
+          "feedback": "Fora do escopo e com teste de senha, que o contrato proíbe. Mesmo com boa intenção, isso é acesso não autorizado: pode encerrar o contrato e ter consequências legais. A reputação de um profissional de segurança se constrói exatamente aqui."
+        },
+        {
+          "id": "report-oos", "label": "Não testar; registrar o host exposto e avisar a Marina, pedindo autorização formal caso queiram incluí-lo",
+          "tags": [], "cost": { "energy": 4, "noise": 0 }, "rep": 5, "outcome": "good", "xp": 40,
+          "feedback": "Postura profissional. Um Jenkins de desenvolvimento exposto na internet é um risco real, e o cliente precisa saber. Quem decide se ele entra no escopo é o cliente, por escrito."
+        },
+        {
+          "id": "ignore", "label": "Ignorar: não está no escopo, então não é problema meu",
+          "tags": [], "cost": { "energy": 2, "noise": 0 }, "outcome": "ok", "xp": 15,
+          "feedback": "Não testar está certo, mas omitir um risco relevante que você viu não ajuda o cliente. O ideal é registrar e comunicar, sem tocar no host."
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "type": "report",
+      "title": "Relatório final",
+      "text": ["Selecione os achados que entram no relatório. Achado errado custa credibilidade; achado omitido deixa o cliente exposto."],
+      "xp": 150,
+      "items": [
+        { "id": "r-chain", "label": "Cadeia de certificados incompleta: o servidor não envia o intermediário", "correct": true },
+        { "id": "r-legacy", "label": "TLS 1.0, 3DES e suítes sem sigilo direto habilitados", "correct": true },
+        { "id": "r-hsts", "label": "Ausência de HSTS e cookie de sessão sem Secure, HttpOnly e SameSite", "correct": true },
+        { "id": "r-oos", "label": "Jenkins de desenvolvimento exposto via SAN do certificado (comunicado, não testado)", "correct": true },
+        { "id": "r-rsa", "label": "Chave RSA de 2048 bits insuficiente", "correct": false, "why": "RSA 2048 ainda é aceito; não é um achado." },
+        { "id": "r-tls13", "label": "TLS 1.3 deve ser desabilitado por instabilidade", "correct": false, "why": "TLS 1.3 é a versão mais segura e deve ser mantida." },
+        { "id": "r-expired", "label": "Certificado do portal expirado", "correct": false, "why": "O certificado vale até 2027; o erro era de cadeia." }
+      ]
+    }
+  ]
+}

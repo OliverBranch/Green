@@ -1,0 +1,108 @@
+{
+  "branch": "dados",
+  "questions": [
+    {
+      "id": "dat-cls-1-01", "node": "dat-classificacao", "level": 1,
+      "prompt": "O que faz o mascaramento dinâmico de dados?",
+      "options": [
+        "Oculta parte dos dados no momento da consulta, conforme o perfil do usuário, sem alterar o dado armazenado",
+        "Substitui permanentemente os dados na base de produção",
+        "Cifra o banco inteiro com uma chave mestra",
+        "Apaga os dados após um prazo definido"
+      ],
+      "answer": 0,
+      "explain": "O atendente vê ***.***.123-45, o auditor autorizado vê o CPF completo, e o dado guardado é o mesmo. O mascaramento estático, ao contrário, altera a cópia."
+    },
+    {
+      "id": "dat-cls-1-02", "node": "dat-classificacao", "level": 1,
+      "prompt": "Segundo a LGPD, o dado anonimizado:",
+      "options": [
+        "Não é considerado dado pessoal, salvo se a anonimização puder ser revertida com esforços razoáveis",
+        "Continua sendo dado pessoal sensível em qualquer caso",
+        "Só pode ser tratado com consentimento do titular",
+        "Deve ser apagado em até 30 dias"
+      ],
+      "answer": 0,
+      "explain": "É o que diz o art. 12 da LGPD. A ressalva é importante: se for possível reidentificar o titular com meios razoáveis, o dado volta a ser pessoal."
+    },
+    {
+      "id": "dat-cls-1-03", "node": "dat-classificacao", "level": 1,
+      "prompt": "Na tokenização, um dado sensível, como o número de um cartão, é substituído por:",
+      "options": [
+        "Um token sem relação matemática com o original, mapeado ao dado real num cofre protegido",
+        "O mesmo dado cifrado com a chave pública do cliente",
+        "Um hash MD5 do dado original",
+        "Uma versão com os quatro primeiros dígitos visíveis"
+      ],
+      "answer": 0,
+      "explain": "Sem acesso ao cofre, o token não vale nada. Isso reduz o número de sistemas que lidam com o dado real, e com isso o escopo de auditorias como a do PCI DSS."
+    },
+    {
+      "id": "dat-cls-1-04", "node": "dat-classificacao", "level": 1,
+      "prompt": "Quem define o nível de classificação de uma informação?",
+      "options": [
+        "O proprietário da informação (owner), com o custodiante aplicando os controles",
+        "O analista de suporte que administra o servidor",
+        "O fornecedor do sistema onde a informação é armazenada",
+        "Qualquer usuário que acesse a informação"
+      ],
+      "answer": 0,
+      "explain": "Quem responde pelo negócio sabe o valor e o impacto da informação. A TI, como custodiante, implementa os controles correspondentes ao nível definido."
+    },
+    {
+      "id": "dat-cls-1-05", "node": "dat-classificacao", "level": 1,
+      "prompt": "Qual destes é dado pessoal sensível segundo a LGPD?",
+      "options": ["Dado biométrico", "E-mail corporativo", "Endereço residencial", "Número do CPF"],
+      "answer": 0,
+      "explain": "CPF, endereço e e-mail são dados pessoais comuns. Sensíveis são, entre outros, dados biométricos, genéticos, de saúde, origem racial ou étnica e convicção religiosa."
+    },
+    {
+      "id": "dat-cls-2-01", "node": "dat-classificacao", "level": 2,
+      "prompt": "O time de testes precisa de uma cópia da base de produção, que contém dados de clientes. Qual abordagem é a mais adequada?",
+      "options": [
+        "Aplicar mascaramento estático ou anonimização irreversível antes de copiar, preservando formato e integridade referencial",
+        "Copiar a base como está, já que o ambiente de testes é interno",
+        "Copiar a base e cifrar apenas o disco do servidor de testes",
+        "Usar mascaramento dinâmico na cópia de testes"
+      ],
+      "answer": 0,
+      "explain": "Ambientes de teste costumam ter controles mais fracos e mais gente com acesso. O dado real não deveria chegar lá. Mascaramento dinâmico não resolve, porque o dado real continuaria guardado na cópia."
+    },
+    {
+      "id": "dat-cls-2-02", "node": "dat-classificacao", "level": 2,
+      "prompt": "Um relatório com nome, CPF e dados de saúde de clientes será compartilhado com uma consultoria contratada. Qual combinação de controles é mais adequada?",
+      "options": [
+        "Classificar como restrito, compartilhar só o mínimo necessário (pseudonimizando quando possível), formalizar em contrato o papel de operador e usar canal cifrado",
+        "Enviar por e-mail sem restrições, porque já existe contrato",
+        "Compactar com senha 123456 e enviar a senha no mesmo e-mail",
+        "Classificar como público para facilitar o trabalho da consultoria"
+      ],
+      "answer": 0,
+      "explain": "Dados de saúde são sensíveis. Minimização, base contratual e transporte protegido reduzem o risco. Senha no mesmo canal do arquivo não protege nada."
+    },
+    {
+      "id": "dat-cls-2-03", "node": "dat-classificacao", "level": 2,
+      "prompt": "Um banco substitui o CPF por um identificador aleatório e guarda a tabela de correspondência em outro servidor. Para a LGPD, esse conjunto de dados é:",
+      "options": [
+        "Pseudonimizado, e continua sendo dado pessoal",
+        "Anonimizado, e deixa de ser dado pessoal",
+        "Dado público, por não ter CPF",
+        "Dado sensível, por ter sido transformado"
+      ],
+      "answer": 0,
+      "explain": "Com a tabela de correspondência é possível reidentificar o titular, então o dado continua pessoal. A pseudonimização é uma boa medida de segurança, mas não tira o dado do escopo da lei."
+    },
+    {
+      "id": "dat-cls-2-04", "node": "dat-classificacao", "level": 2,
+      "prompt": "Um documento tem o rótulo Confidencial, mas foi copiado para um pendrive sem nenhum bloqueio. O que está faltando?",
+      "options": [
+        "Controles técnicos ligados ao rótulo, como DLP ou IRM, aplicando as regras de manuseio do nível de classificação",
+        "Mudar o rótulo para Ultrassecreto",
+        "Remover o rótulo, porque ele chama atenção",
+        "Nada: o rótulo sozinho já protege o arquivo"
+      ],
+      "answer": 0,
+      "explain": "Rótulo sem controle só orienta. Classificação gera valor quando ferramentas usam o rótulo para bloquear, cifrar ou alertar."
+    }
+  ]
+}
