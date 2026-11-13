@@ -6,12 +6,14 @@ Versão 0.4: **combate por cartas**. Na Operação (o modo roguelike), cada aç�
 
 ## Como jogar
 
-- **Mapa**: 9 ramos e 30 nós, baseados no conteúdo programático de Segurança da Informação. Os nós do anel interno estão disponíveis desde o início.
+- **Habilidades (mapa)**: 9 ramos e 30 nós, baseados no conteúdo programático de Segurança da Informação. Os nós do anel interno estão disponíveis desde o início.
 - **Prova de maestria**: 4 questões, aprovação com 3, 90 s por questão (ajustável). Explicações só no final. Reprovar coloca o nó em recarga (24 h por padrão). Sair ou recarregar a página no meio conta como reprovação.
 - **Níveis**: cada nó tem Conhecimento, Aplicação e Domínio.
 - **Contratos (missões)**: aprendizado guiado. Cada escolha gasta energia e pode gerar ruído; a explicação aparece na hora.
 - **Operação**: veja abaixo.
 - **Terminal**: tecla `` ` `` ou botão no rodapé. Digite `help` (`ficha` mostra seus atributos).
+- **Personagem**: na primeira vez o jogo abre o criador do seu analista: corpo, tom de pele, cabelo (8 estilos e 10 cores), barba, óculos, roupa e cor, capuz, fone e boné. Ele aparece de costas na estação de trabalho durante os combates, no cartão do menu e no perfil. Para mudar: Perfil → Editar personagem, o link no menu ou o comando `personagem`.
+- **Menu lateral**: Operação é a aba inicial. Cada seção mostra o que tem para fazer (operação em andamento, provas disponíveis) e o rodapé do menu traz sua ficha do analista. Alt+1 a Alt+4 trocam de seção.
 
 ## Operação (roguelike)
 
@@ -127,6 +129,8 @@ src/
   ui/run-view.js        operação: página, mapa, nós, recompensas, relatório final
   ui/battle-view.js     tela de combate: intenção, cartas, cronômetro, registro
   ui/battle-scene.js    cena em pixel art (canvas 256×144, efeitos e animações)
+  ui/avatar.js          personagem desenhado em código: busto de frente e de costas na estação
+  ui/avatar-view.js     editor de personagem
   ui/pixel-data.js      sprites, ícones e fonte de pixel, desenhados como texto
   ui/sfx.js             efeitos sonoros sintetizados (WebAudio, sem arquivos)
 content/

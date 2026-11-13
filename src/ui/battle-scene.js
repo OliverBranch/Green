@@ -5,6 +5,8 @@
 import { PALETTE as P, sprite, spritePixels, drawText, textWidth, iconCanvas } from './pixel.js';
 import { prefersReducedMotion } from './dom.js';
 
+import { workstation, tinted } from './avatar.js';
+
 export const W = 256;
 export const H = 144;
 
@@ -53,7 +55,9 @@ export function enemyLayers(kind) { return (ENEMIES[kind] || ENEMIES.moth).layer
 const rand = (a, b) => a + Math.random() * (b - a);
 const ease = (t) => 1 - Math.pow(1 - t, 3);
 
-export function createScene(canvas, { enemy = 'moth', onReady } = {}) {
+export function createScene(canvas, { enemy = 'moth', avatar = null, onReady } = {}) {
+  const opImg = avatar ? workstation(avatar) : sprite('operator');
+  const opHitImg = avatar ? tinted(opImg, P.R) : sprite('operator', P.R);
   const ctx = canvas.getContext('2d');
   canvas.width = W; canvas.height = H;
   ctx.imageSmoothingEnabled = false;
@@ -291,7 +295,7 @@ export function createScene(canvas, { enemy = 'moth', onReady } = {}) {
 
   function drawOperator(now) {
     const shakeX = opHit > 0 && !reduced ? Math.round(rand(-2, 2)) : 0;
-    ctx.drawImage(sprite('operator'), OP_X + shakeX, OP_Y);
+    ctx.drawImage(opImg, OP_X + shakeX, OP_Y);
     // telas piscando: verdes quando estável, vermelhas quando a integridade cai
     const danger = st.integrity < 0.35;
     const flick = (Math.sin(now / 90) + 1) / 2;
@@ -302,7 +306,7 @@ export function createScene(canvas, { enemy = 'moth', onReady } = {}) {
     ctx.globalAlpha = 1;
     if (opHit > 0) {
       ctx.globalAlpha = Math.min(1, opHit) * 0.8;
-      ctx.drawImage(sprite('operator', P.R), OP_X + shakeX, OP_Y);
+      ctx.drawImage(opHitImg, OP_X + shakeX, OP_Y);
       ctx.globalAlpha = 1;
     }
   }

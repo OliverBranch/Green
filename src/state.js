@@ -10,6 +10,8 @@ export function defaultState() {
     version: SAVE_VERSION,
     createdAt: Date.now(),
     operator: null,
+    avatar: null,         // personagem (ui/avatar.js); null até a pessoa criar
+    avatarSkipped: false, // escolheu "deixar para depois" na primeira vez
     xp: 0,
     reputation: 50,
     nodes: {},        // id -> { level, cooldownUntil, attempts, provenAt: {1: ts, 2: ts, 3: ts} }

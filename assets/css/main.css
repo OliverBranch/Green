@@ -261,8 +261,12 @@ a { color: var(--phos); }
   border: 1px solid var(--line); background: rgba(1, 8, 4, .7); position: relative;
 }
 .nav-card::before { content: ''; position: absolute; top: -2px; left: -2px; width: 8px; height: 8px; border: 2px solid var(--phos); border-right: none; border-bottom: none; }
-.nav-card:hover { border-color: var(--line-2); }
-.nav-card-top { display: flex; align-items: center; gap: 10px; }
+.nav-card-top { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.nav-card-top:hover .nav-who b { color: var(--phos); }
+.nav-avatar.is-pix { width: 64px; height: 64px; background: radial-gradient(circle at 50% 40%, rgba(67, 255, 149, .14), rgba(1, 8, 4, .9) 70%); border: 1px solid var(--line-2); box-shadow: none; overflow: hidden; }
+.nav-avatar.is-pix canvas { display: block; width: 64px; height: 64px; image-rendering: pixelated; }
+.nav-edit { justify-self: start; background: none; border: none; padding: 0; font: inherit; font-size: 11px; color: var(--phos-2); cursor: pointer; }
+.nav-edit:hover { color: var(--phos); text-decoration: underline; }
 .nav-avatar {
   display: grid; place-items: center; width: 34px; height: 34px; flex: none;
   font-family: var(--display); font-size: 26px; line-height: 1; color: var(--ink); background: var(--phos); box-shadow: var(--glow);

@@ -12,6 +12,7 @@ import {
 import { createScene, enemyLayers } from './battle-scene.js';
 import { PALETTE as P, SPRITES, sprite, iconURL } from './pixel.js';
 import { sfx } from './sfx.js';
+import * as store from '../state.js';
 
 export const nodeName = (id) => content.nodes.get(id)?.short || id;
 
@@ -91,7 +92,7 @@ export function mountBattle(frame, { enc, b, head, onEnd }) {
     ui.main = h('div', { class: 'inc-main' }, ui.stage, ui.actions);
     ui.grid = h('div', { class: 'inc-grid' }, ui.main, ui.side);
     mount(frame, head(), ui.grid);
-    scene = createScene(ui.canvas, { enemy: enc.sprite });
+    scene = createScene(ui.canvas, { enemy: enc.sprite, avatar: store.get().avatar });
     syncScene();
     window.addEventListener('keydown', onKey);
     document.addEventListener('visibilitychange', onVisibility);

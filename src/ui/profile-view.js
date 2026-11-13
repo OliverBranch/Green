@@ -6,6 +6,8 @@ import * as store from '../state.js';
 import { rank, mastery, branchMastery, activeEffects, effectText } from '../skilltree.js';
 import { log } from './console.js';
 import { sheet, playerAttrs } from './run-view.js';
+import { portrait as avatarPortrait, workstation, scaled } from './avatar.js';
+import { openAvatarEditor } from './avatar-view.js';
 
 function select(label, value, options, onChange) {
   const id = `set-${label.replace(/\W+/g, '-')}`;
@@ -68,6 +70,15 @@ export function mountProfile(container, { onNode }) {
         h('h2', { class: 'sec-title' }, 'Domínio por área'),
         h('p', { class: 'sec-lead' }, 'Cada traço é um nível comprovado em prova. XP mede atividade; este quadro mede o que você sabe.'),
         h('ul', { class: 'areas' }, branchRows)),
+
+      h('section', { class: 'sec prof-avatar' },
+        s.avatar
+          ? h('div', { class: 'prof-av-art' }, scaled(avatarPortrait(s.avatar), 4), scaled(workstation(s.avatar), 3))
+          : h('p', { class: 'sec-lead' }, 'Você ainda não criou seu personagem. Ele aparece na estação de trabalho durante os combates.'),
+        h('div', {},
+          h('h2', { class: 'sec-title' }, 'Personagem'),
+          h('p', { class: 'sec-lead' }, 'Seu analista na estação de trabalho do SOC: corpo, pele, cabelo, rosto, roupa e acessórios.'),
+          h('button', { class: 'btn', onclick: () => openAvatarEditor({ first: !s.avatar }) }, s.avatar ? 'Editar personagem' : 'Criar personagem'))),
 
       h('section', { class: 'sec' },
         h('h2', { class: 'sec-title' }, 'Ficha do analista'),

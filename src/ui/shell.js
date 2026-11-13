@@ -9,6 +9,8 @@ import { mountMissions, openMission } from './mission-view.js';
 import { mountOperation, openRun, playerAttrs, sheet } from './run-view.js';
 import { ACT_NAMES } from '../run.js';
 import { PALETTE as P, iconURL } from './pixel.js';
+import { portrait as avatarPortrait, scaled } from './avatar.js';
+import { openAvatarEditor } from './avatar-view.js';
 import { ATTRS } from '../attributes.js';
 import { mountProfile } from './profile-view.js';
 import { openExam } from './exam-view.js';
@@ -100,10 +102,14 @@ export function mountShell(root) {
             h('span', { class: 'nav-sub' }, st.sub)),
           st.badge ? h('span', { class: `nav-badge is-${st.kind || 'info'}`, title: st.badgeTitle || null }, st.live ? h('i', { class: 'nav-dot', 'aria-hidden': 'true' }) : null, st.badge) : null));
       })),
-      h('a', { class: 'nav-card', href: '#/perfil', title: 'Ficha do analista: atributos vindos do que você estuda' },
-        h('span', { class: 'nav-card-top' },
-          h('span', { class: 'nav-avatar', 'aria-hidden': 'true' }, (s.operator || '?').slice(0, 1).toUpperCase()),
-          h('span', { class: 'nav-who' }, h('b', {}, s.operator || 'operador'), h('span', {}, r.name.toLowerCase()))),
+      h('div', { class: 'nav-card' },
+        h('a', { class: 'nav-card-top', href: '#/perfil', title: 'Perfil e ficha do analista' },
+          s.avatar
+            ? h('span', { class: 'nav-avatar is-pix', 'aria-hidden': 'true' }, scaled(avatarPortrait(s.avatar), 2))
+            : h('span', { class: 'nav-avatar', 'aria-hidden': 'true' }, (s.operator || '?').slice(0, 1).toUpperCase()),
+          h('span', { class: 'nav-who' }, h('b', {}, s.operator || 'operador'), h('span', {}, r.name.toLowerCase()),
+          )),
+        h('button', { class: 'nav-edit', onclick: () => openAvatarEditor({ first: !s.avatar }) }, s.avatar ? '✎ editar personagem' : '+ criar personagem'),
         h('span', { class: 'nav-xp', role: 'meter', 'aria-label': `${s.xp} XP`, 'aria-valuenow': String(s.xp) }, h('span', { style: { width: `${Math.round(r.progress * 100)}%` } })),
         h('span', { class: 'nav-xp-text' }, r.ceil ? `${s.xp} / ${r.ceil} xp` : `${s.xp} xp`),
         h('span', { class: 'nav-k' }, 'ficha do analista'),
@@ -135,7 +141,7 @@ export function mountShell(root) {
 
   const commands = {
     help: (_, { print }) => {
-      print('comandos: status · nos [ramo] · prova <código> · missao [id] · operacao · ficha · ir <mapa|missoes|operacao|perfil> · som · exportar · limpar · whoami');
+      print('comandos: status · nos [ramo] · prova <código> · missao [id] · operacao · ficha · personagem · ir <mapa|missoes|operacao|perfil> · som · exportar · limpar · whoami');
     },
     status: (_, { print }) => {
       const s = store.get(); const r = rank(s.xp); const m = mastery();
@@ -172,6 +178,8 @@ export function mountShell(root) {
       print('nenhuma operação em andamento. abra a aba operação para começar uma.', 'info');
       location.hash = '#/operacao';
     },
+    personagem: (_, { setOpen }) => { setOpen(false); openAvatarEditor({}); },
+    avatar: (_, { setOpen }) => { setOpen(false); openAvatarEditor({}); },
     ficha: (_, { print }) => {
       const a = playerAttrs();
       for (const at of ATTRS) print(`${at.name.toLowerCase().padEnd(12)} ${at.fmt(a[at.key]).padEnd(22)} ${at.branch} · patamar ${a.tiers[at.branch]} · ${a.xp[at.branch]} xp`);
@@ -198,6 +206,9 @@ export function mountShell(root) {
   renderTop();
   store.subscribe(() => { renderTop(); renderNav(); applyFx(); });
   window.addEventListener('hashchange', route);
+  // primeira vez (ou save antigo): convida a criar o personagem
+  const s0 = store.get();
+  if (!s0.avatar && !s0.avatarSkipped) setTimeout(() => { if (!document.querySelector('.overlay')) openAvatarEditor({ first: true }); }, 400);
   // Alt+1..4 troca de seção (fora de provas e da operação aberta)
   window.addEventListener('keydown', (e) => {
     if (!e.altKey || e.ctrlKey || e.metaKey || document.querySelector('.overlay')) return;
