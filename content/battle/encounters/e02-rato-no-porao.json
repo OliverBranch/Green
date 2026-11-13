@@ -1,0 +1,29 @@
+{
+  "id": "e02",
+  "title": "Rato no porão",
+  "kind": "Resposta a incidente",
+  "difficulty": 2,
+  "client": "Loja Maré Alta · e-commerce em Linux · 80 mil clientes",
+  "summary": "Um scanner bateu no e-commerce e não foi embora. Do formulário de produtos até o banco de clientes são poucos passos, e o atacante conhece todos.",
+  "briefing": [
+    "O web01 roda a loja em nginx e PHP. O db01 guarda a base de 80 mil clientes, com CPF e endereço. Os dois conversam por SSH para o deploy.",
+    "O intruso, RATO, entra pelas frestas da aplicação e vai descendo até o porão: shell no servidor web, root por configuração esquecida, chave SSH roubada e, por fim, a base inteira saindo por DNS.",
+    "Cada camada que você endurece é uma fresta a menos. Deixe ele chegar ao db01 e a loja vira notícia."
+  ],
+  "enemy": { "name": "RATO", "alias": "intruso de aplicação", "sprite": "rat", "presence": 120 },
+  "visibility": 30,
+  "objective": "Base de clientes vazada",
+  "defeat": "A base com 80 mil CPFs saiu por DNS. A ANPD vai querer conversar, e os clientes também.",
+  "chain": [
+    { "tactic": "Reconhecimento", "techniques": ["t-scan"] },
+    { "tactic": "Acesso inicial", "techniques": ["t-sqli", "t-webshell"] },
+    { "tactic": "Execução", "techniques": ["t-unix-shell"] },
+    { "tactic": "Escalada e persistência", "techniques": ["t-sudo", "t-cron"] },
+    { "tactic": "Movimentação lateral", "techniques": ["t-ssh-lateral"] },
+    { "tactic": "Exfiltração", "techniques": ["t-dns-exfil"] }
+  ],
+  "requires": "e01",
+  "xp": 200,
+  "rep": 5,
+  "related": ["dev-owasp", "hard-linux", "net-fundamentos", "ten-zt", "dat-classificacao", "ops-siem"]
+}

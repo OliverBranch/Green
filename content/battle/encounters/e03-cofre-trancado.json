@@ -1,0 +1,32 @@
+{
+  "id": "e03",
+  "title": "Cofre trancado",
+  "kind": "Resposta a incidente · chefe",
+  "difficulty": 3,
+  "client": "Vale Verde · domínio Active Directory · 6 filiais",
+  "summary": "Um afiliado de ransomware entrou por uma nota fiscal falsa e quer o domínio inteiro cifrado antes do amanhecer. É o incidente mais longo e mais caro do turno.",
+  "briefing": [
+    "Uma colaboradora abriu um .docm que dizia ser uma NF-e. A partir dali, o afiliado conhecido como CADEADO segue o manual do ransomware moderno: PowerShell em memória, credenciais do LSASS e do Kerberos, PsExec pelas filiais.",
+    "Quando se sentir acuado, ele apaga os logs e acelera. Antes de cifrar, vai sabotar os backups: só cópias imutáveis sobrevivem a isso.",
+    "Você precisa cortar cada passo e caçá-lo dentro da rede antes que o servidor de arquivos vire um cofre trancado."
+  ],
+  "enemy": { "name": "CADEADO", "alias": "afiliado de ransomware", "sprite": "lock", "presence": 170 },
+  "visibility": 30,
+  "objective": "Domínio cifrado",
+  "defeat": "O FS01 e mais 41 máquinas foram cifrados. A nota de resgate pede 38 BTC e os backups do domínio já não existem.",
+  "chain": [
+    { "tactic": "Acesso inicial", "techniques": ["t-macro"] },
+    { "tactic": "Execução", "techniques": ["t-ps-enc"] },
+    { "tactic": "Acesso a credenciais", "techniques": ["t-lsass", "t-kerberoast"] },
+    { "tactic": "Movimentação lateral", "techniques": ["t-psexec"] },
+    { "tactic": "Preparação do impacto", "techniques": ["t-vss", "t-clear-logs"] },
+    { "tactic": "Impacto", "techniques": ["t-encrypt"] }
+  ],
+  "phases": [
+    { "at": 0.5, "name": "Fase 2", "text": "CADEADO percebeu que está sendo caçado. Ele apaga os logs e acelera: técnicas não contidas causam 30% a mais de dano.", "severityMul": 1.3, "force": "t-clear-logs" }
+  ],
+  "requires": "e02",
+  "xp": 320,
+  "rep": 7,
+  "related": ["hard-windows", "ops-siem", "hard-acesso", "dat-backup", "ops-logs", "cri-primitivas"]
+}

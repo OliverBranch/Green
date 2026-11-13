@@ -1,4 +1,4 @@
-// Carrega e valida o conteúdo (árvore, provas e missões) a partir de content/.
+// Carrega e valida o conteúdo (árvore, provas, missões e incidentes) a partir de content/.
 
 const BASE = 'content/';
 
@@ -20,6 +20,8 @@ export const content = {
   nodes: new Map(),
   questions: new Map(), // nodeId -> { 1: [], 2: [], 3: [] }
   missions: [],
+  battle: { techniques: new Map() },
+  run: { monsters: [], bosses: [], affixes: new Map(), relics: new Map(), scripts: new Map(), events: [], cards: [] },
   upcoming: [],
   warnings: [],
   totalQuestions: 0,
@@ -81,6 +83,78 @@ function indexMission(file, m) {
   content.missions.push(m);
 }
 
+export function indexTechniques(file, data) {
+  const B = content.battle;
+  for (const t of data.techniques || []) {
+    const where = `${file} › ${t.id || '?'}`;
+    if (!t.id || B.techniques.has(t.id)) { warn(`${where}: id ausente ou duplicado`); continue; }
+    const missing = ['name', 'attack', 'tactic', 'evidence', 'explain'].filter((k) => t[k] == null);
+    if (missing.length) { warn(`${where}: falta ${missing.join(', ')}`); continue; }
+    if (t.node && !content.nodes.has(t.node)) warn(`${where}: nó ${t.node} não existe`);
+    B.techniques.set(t.id, t);
+  }
+}
+
+function checkTechniques() {
+  const B = content.battle;
+  for (const t of B.techniques.values()) {
+    for (const c of t.confusers || []) if (!B.techniques.has(c)) warn(`${t.id}: confusor ${c} não existe`);
+    if ((t.confusers || []).length < 2) warn(`${t.id}: a análise de log precisa de pelo menos 2 confusores`);
+  }
+}
+
+const INTENT_KEYS = new Set(['type', 'tech', 'name', 'dmg', 'hits', 'block', 'str', 'heal', 'status', 'turns', 'w']);
+
+function checkEnemy(where, e) {
+  const B = content.battle;
+  if (!e.id || !e.name || !e.hp || !Array.isArray(e.intents) || !e.intents.length) { warn(`${where}: incompleto (precisa de id, name, hp e intents)`); return false; }
+  for (const it of e.intents) {
+    if (it.tech && !B.techniques.has(it.tech)) warn(`${where}: técnica ${it.tech} não existe`);
+    if (!it.tech && !it.name) warn(`${where}: intenção sem técnica nem nome`);
+    const bad = Object.keys(it).filter((k) => !INTENT_KEYS.has(k));
+    if (bad.length) warn(`${where}: campo de intenção desconhecido ${bad.join(', ')}`);
+  }
+  for (const id of e.nodes || []) if (!content.nodes.has(id)) warn(`${where}: nó ${id} não existe`);
+  return true;
+}
+
+function indexCards(data) {
+  const seen = new Set();
+  for (const c of data.cards || []) {
+    if (!c.id || seen.has(c.id)) { warn(`flashcard ${c.id || '?'}: id ausente ou duplicado`); continue; }
+    if (!content.nodes.has(c.node)) { warn(`flashcard ${c.id}: nó ${c.node} não existe`); continue; }
+    if (!c.q || !Array.isArray(c.a) || c.a.length < 2) { warn(`flashcard ${c.id}: precisa de pergunta e 2+ alternativas`); continue; }
+    seen.add(c.id);
+    content.run.cards.push(c);
+  }
+  for (const n of content.nodes.values()) if (!content.run.cards.some((c) => c.node === n.id)) warn(`nó ${n.id} sem flashcards`);
+}
+
+export function branchOf(nodeId) {
+  return content.nodes.get(nodeId)?.branch || null;
+}
+
+function indexRun(mon, bos, aff, items, evs, cards) {
+  const R = content.run;
+  for (const m of mon.monsters || []) if (checkEnemy(`monstro ${m.id}`, m)) R.monsters.push(m);
+  for (const b of bos.bosses || []) if (checkEnemy(`chefe ${b.id}`, b)) R.bosses.push(b);
+  indexCards(cards);
+  for (const a of aff.affixes || []) R.affixes.set(a.id, a);
+  for (const r of items.relics || []) R.relics.set(r.id, r);
+  for (const s of items.scripts || []) R.scripts.set(s.id, s);
+  for (const ev of evs.events || []) {
+    for (const c of ev.choices || []) {
+      if (c.requires?.node && !content.nodes.has(c.requires.node)) warn(`evento ${ev.id}: requer nó inexistente ${c.requires.node}`);
+      for (const n of c.quiz?.nodes || []) if (!content.nodes.has(n)) warn(`evento ${ev.id}: quiz com nó inexistente ${n}`);
+    }
+    R.events.push(ev);
+  }
+  for (const act of [1, 2, 3]) {
+    if (!R.bosses.some((b) => b.act === act)) warn(`nenhum chefe para o ato ${act}`);
+    if (!R.monsters.some((m) => m.acts.includes(act))) warn(`nenhum monstro para o ato ${act}`);
+  }
+}
+
 export async function loadContent(onStep = () => {}) {
   const manifest = await getJSON('manifest.json');
   content.version = manifest.version || '0.0.0';
@@ -98,6 +172,20 @@ export async function loadContent(onStep = () => {}) {
   const missions = await Promise.all((manifest.missions || []).map(async (f) => [f, await getJSON(f)]));
   for (const [f, data] of missions) indexMission(f, data);
   onStep('missões', `${content.missions.length} contrato(s)`);
+
+  if (manifest.battle) {
+    const techFiles = [].concat(manifest.battle.techniques || []);
+    const techs = await Promise.all(techFiles.map(getJSON));
+    techs.forEach((t, i) => indexTechniques(techFiles[i], t));
+    checkTechniques();
+  }
+
+  if (manifest.run) {
+    const rn = manifest.run;
+    const [mon, bos, aff, items, evs, cards] = await Promise.all([rn.monsters, rn.bosses, rn.affixes, rn.items, rn.events, rn.flashcards].map(getJSON));
+    indexRun(mon, bos, aff, items, evs, cards);
+    onStep('operação', `${content.run.monsters.length} monstros · ${content.run.bosses.length} chefes · ${content.run.cards.length} flashcards · ${content.battle.techniques.size} técnicas`);
+  }
 
   return content;
 }

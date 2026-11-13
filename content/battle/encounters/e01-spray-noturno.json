@@ -1,0 +1,26 @@
+{
+  "id": "e01",
+  "title": "Spray noturno",
+  "kind": "Resposta a incidente",
+  "difficulty": 1,
+  "client": "Cooperativa Vale Verde · 340 colaboradores · Microsoft 365",
+  "summary": "Três da manhã, alerta de autenticação disparando. Alguém está testando senhas em massa no Microsoft 365, e se uma conta cair o próximo passo é a fraude de pagamento.",
+  "briefing": [
+    "O plantão te acordou: o Entra ID está registrando falhas de login em centenas de contas ao mesmo tempo, todas de poucos IPs.",
+    "O atacante, que o time de inteligência apelidou de MARIPOSA, trabalha à noite e segue um roteiro conhecido de BEC: conseguir uma conta, esconder rastros na caixa de e-mail e usar a confiança interna para desviar um pagamento.",
+    "Leia cada evidência, identifique a técnica e responda com o controle certo antes que ele chegue ao financeiro."
+  ],
+  "enemy": { "name": "MARIPOSA", "alias": "operador de spray", "sprite": "moth", "presence": 90 },
+  "visibility": 40,
+  "objective": "Fraude de pagamento por e-mail",
+  "defeat": "O financeiro pagou a fatura falsa: R$ 186 mil foram para uma conta laranja. O atacante chegou ao objetivo.",
+  "chain": [
+    { "tactic": "Acesso a credenciais", "techniques": ["t-spray", "t-guess"] },
+    { "tactic": "Acesso inicial", "techniques": ["t-valid", "t-mfa-fatigue"] },
+    { "tactic": "Ocultação e coleta", "techniques": ["t-inbox-rule", "t-forward"] },
+    { "tactic": "Movimentação lateral", "techniques": ["t-int-phish"] }
+  ],
+  "xp": 120,
+  "rep": 4,
+  "related": ["hard-acesso", "ops-siem", "gov-politicas", "dat-classificacao", "cri-primitivas"]
+}

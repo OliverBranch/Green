@@ -1,0 +1,1986 @@
+{
+ "version": 1,
+ "note": "A primeira alternativa de \"a\" é a correta; o jogo embaralha.",
+ "cards": [
+  {
+   "id": "fc-fun-cid-1",
+   "node": "fun-cid",
+   "q": "Ransomware cifrou o servidor de arquivos. Qual pilar foi atingido primeiro?",
+   "a": [
+    "Disponibilidade",
+    "Irretratabilidade",
+    "Autenticidade",
+    "Anonimato"
+   ],
+   "why": "Os dados continuam lá, mas ninguém consegue usar: perda de disponibilidade. Na dupla extorsão, o vazamento atinge também a confidencialidade."
+  },
+  {
+   "id": "fc-fun-cid-2",
+   "node": "fun-cid",
+   "q": "Comparar o hash de um arquivo antes e depois protege qual propriedade?",
+   "a": [
+    "Integridade",
+    "Confidencialidade",
+    "Disponibilidade",
+    "Anonimato"
+   ],
+   "why": "Hash detecta alteração: se um bit muda, o resumo muda. Não esconde o conteúdo nem garante acesso."
+  },
+  {
+   "id": "fc-fun-cid-3",
+   "node": "fun-cid",
+   "q": "Assinatura digital garante integridade, autenticidade e…",
+   "a": [
+    "Irretratabilidade",
+    "Confidencialidade",
+    "Disponibilidade",
+    "Elasticidade"
+   ],
+   "why": "Só o dono da chave privada poderia ter assinado, então ele não pode negar a autoria (não repúdio). Assinatura não cifra o conteúdo."
+  },
+  {
+   "id": "fc-fun-cid-4",
+   "node": "fun-cid",
+   "q": "Um DDoS que derruba o portal viola qual pilar?",
+   "a": [
+    "Disponibilidade",
+    "Integridade",
+    "Confidencialidade",
+    "Autenticidade"
+   ],
+   "why": "Nada vaza nem é alterado: o serviço só fica fora do ar para quem precisa dele."
+  },
+  {
+   "id": "fc-fun-cid-5",
+   "node": "fun-cid",
+   "q": "A planilha de salários foi parar num grupo público. Qual pilar caiu?",
+   "a": [
+    "Confidencialidade",
+    "Disponibilidade",
+    "Integridade",
+    "Irretratabilidade"
+   ],
+   "why": "Informação vista por quem não deveria é quebra de confidencialidade."
+  },
+  {
+   "id": "fc-fun-riscos-1",
+   "node": "fun-riscos",
+   "q": "Na forma mais comum, risco é…",
+   "a": [
+    "Probabilidade × impacto",
+    "Ameaça + ativo",
+    "Vulnerabilidade ÷ controle",
+    "Impacto − custo"
+   ],
+   "why": "Risco combina a chance de um evento acontecer com o estrago que ele causa. Ameaça explorando vulnerabilidade gera a probabilidade."
+  },
+  {
+   "id": "fc-fun-riscos-2",
+   "node": "fun-riscos",
+   "q": "Contratar seguro cibernético é qual tratamento de risco?",
+   "a": [
+    "Transferir",
+    "Mitigar",
+    "Aceitar",
+    "Evitar"
+   ],
+   "why": "O impacto financeiro passa (em parte) para a seguradora. O risco técnico continua existindo."
+  },
+  {
+   "id": "fc-fun-riscos-3",
+   "node": "fun-riscos",
+   "q": "Desligar de vez um serviço arriscado é…",
+   "a": [
+    "Evitar o risco",
+    "Transferir o risco",
+    "Aceitar o risco",
+    "Mitigar o risco"
+   ],
+   "why": "Eliminar a atividade que gera o risco é evitá-lo. Mitigar seria reduzir com controles."
+  },
+  {
+   "id": "fc-fun-riscos-4",
+   "node": "fun-riscos",
+   "q": "A perda anual esperada (ALE) é calculada como…",
+   "a": [
+    "SLE × ARO",
+    "AV + EF",
+    "ARO ÷ SLE",
+    "EF × AV × 12"
+   ],
+   "why": "ALE = SLE (perda por ocorrência, que é AV × EF) multiplicada pela taxa anual de ocorrência (ARO)."
+  },
+  {
+   "id": "fc-fun-riscos-5",
+   "node": "fun-riscos",
+   "q": "Qual norma ISO dá diretrizes de gestão de riscos para qualquer organização?",
+   "a": [
+    "ISO 31000",
+    "ISO 27001",
+    "ISO 22301",
+    "ISO 9001"
+   ],
+   "why": "A ISO 31000 é genérica para riscos. A 27005 aplica a ideia à segurança da informação."
+  },
+  {
+   "id": "fc-fun-normas-1",
+   "node": "fun-normas",
+   "q": "Qual norma traz os requisitos certificáveis de um SGSI?",
+   "a": [
+    "ISO/IEC 27001",
+    "ISO/IEC 27002",
+    "ISO 31000",
+    "ISO 22301"
+   ],
+   "why": "A 27001 define requisitos e é a que se certifica. A 27002 é o guia de implementação dos controles."
+  },
+  {
+   "id": "fc-fun-normas-2",
+   "node": "fun-normas",
+   "q": "Quantos controles tem o Anexo A da ISO 27001:2022?",
+   "a": [
+    "93",
+    "114",
+    "133",
+    "14"
+   ],
+   "why": "A revisão de 2022 consolidou os 114 controles de 2013 em 93, agrupados em 4 temas."
+  },
+  {
+   "id": "fc-fun-normas-3",
+   "node": "fun-normas",
+   "q": "Os temas de controle da ISO 27002:2022 são organizacionais, de pessoas, físicos e…",
+   "a": [
+    "Tecnológicos",
+    "Jurídicos",
+    "Financeiros",
+    "Ambientais"
+   ],
+   "why": "São quatro temas: organizacionais (37), pessoas (8), físicos (14) e tecnológicos (34)."
+  },
+  {
+   "id": "fc-fun-normas-4",
+   "node": "fun-normas",
+   "q": "O NIST CSF 2.0 tem Govern, Identify, Protect, Detect, Respond e…",
+   "a": [
+    "Recover",
+    "Report",
+    "Review",
+    "Remediate"
+   ],
+   "why": "A versão 2.0 adicionou Govern às cinco funções originais, que terminam em Recover."
+  },
+  {
+   "id": "fc-fun-normas-5",
+   "node": "fun-normas",
+   "q": "Qual padrão é obrigatório para quem processa dados de cartão de pagamento?",
+   "a": [
+    "PCI DSS",
+    "SOX",
+    "HIPAA",
+    "COBIT"
+   ],
+   "why": "O PCI DSS é exigido pelas bandeiras de cartão. SOX é controle financeiro, HIPAA é saúde nos EUA."
+  },
+  {
+   "id": "fc-gov-politicas-1",
+   "node": "gov-politicas",
+   "q": "Documento de alto nível, aprovado pela diretoria, que declara as intenções de segurança:",
+   "a": [
+    "Política",
+    "Procedimento",
+    "Runbook",
+    "Checklist"
+   ],
+   "why": "A política diz o quê e por quê. Normas, padrões e procedimentos detalham o como."
+  },
+  {
+   "id": "fc-gov-politicas-2",
+   "node": "gov-politicas",
+   "q": "O passo a passo operacional para executar uma tarefa é um…",
+   "a": [
+    "Procedimento",
+    "Política",
+    "Princípio",
+    "Objetivo de controle"
+   ],
+   "why": "Procedimento é o nível mais detalhado da hierarquia documental."
+  },
+  {
+   "id": "fc-gov-politicas-3",
+   "node": "gov-politicas",
+   "q": "Dar a cada pessoa só o acesso necessário para a função é…",
+   "a": [
+    "Menor privilégio",
+    "Defesa em profundidade",
+    "Segurança por obscuridade",
+    "Need-to-share"
+   ],
+   "why": "Menor privilégio limita o estrago de uma conta comprometida ou de um erro."
+  },
+  {
+   "id": "fc-gov-politicas-4",
+   "node": "gov-politicas",
+   "q": "Quem cadastra o pagamento não pode aprová-lo. Que princípio é esse?",
+   "a": [
+    "Segregação de funções",
+    "Menor privilégio",
+    "Rodízio de funções",
+    "Duplo fator"
+   ],
+   "why": "Dividir etapas críticas entre pessoas diferentes exige conluio para fraudar."
+  },
+  {
+   "id": "fc-gov-politicas-5",
+   "node": "gov-politicas",
+   "q": "Treinamento de conscientização mitiga principalmente qual vetor?",
+   "a": [
+    "Engenharia social",
+    "SQL injection",
+    "DDoS volumétrico",
+    "Downgrade de TLS"
+   ],
+   "why": "Phishing, vishing e golpes de BEC exploram pessoas. Treino e simulações reduzem a taxa de clique."
+  },
+  {
+   "id": "fc-gov-dados-1",
+   "node": "gov-dados",
+   "q": "Na LGPD, quem toma as decisões sobre o tratamento de dados pessoais?",
+   "a": [
+    "Controlador",
+    "Operador",
+    "Encarregado",
+    "Titular"
+   ],
+   "why": "O controlador decide; o operador trata em nome dele; o encarregado (DPO) é o canal com titulares e ANPD."
+  },
+  {
+   "id": "fc-gov-dados-2",
+   "node": "gov-dados",
+   "q": "Como a LGPD chama o DPO?",
+   "a": [
+    "Encarregado",
+    "Controlador",
+    "Operador",
+    "Curador"
+   ],
+   "why": "O encarregado faz a ponte entre controlador, titulares e a ANPD."
+  },
+  {
+   "id": "fc-gov-dados-3",
+   "node": "gov-dados",
+   "q": "Qual órgão fiscaliza a LGPD?",
+   "a": [
+    "ANPD",
+    "BACEN",
+    "CVM",
+    "ANATEL"
+   ],
+   "why": "A Autoridade Nacional de Proteção de Dados fiscaliza e aplica sanções."
+  },
+  {
+   "id": "fc-gov-dados-4",
+   "node": "gov-dados",
+   "q": "Multa máxima da LGPD por infração:",
+   "a": [
+    "2% do faturamento, até R$ 50 milhões",
+    "4% do faturamento global",
+    "R$ 10 milhões fixos",
+    "10% do lucro"
+   ],
+   "why": "Art. 52: até 2% do faturamento no Brasil, limitado a R$ 50 milhões por infração. Os 4% globais são do GDPR."
+  },
+  {
+   "id": "fc-gov-dados-5",
+   "node": "gov-dados",
+   "q": "COBIT é um framework voltado para…",
+   "a": [
+    "Governança de TI",
+    "Criptografia",
+    "Testes de invasão",
+    "Hardening de servidores"
+   ],
+   "why": "COBIT alinha TI aos objetivos de negócio com processos, métricas e responsabilidades."
+  },
+  {
+   "id": "fc-gov-continuidade-1",
+   "node": "gov-continuidade",
+   "q": "O RPO responde à pergunta…",
+   "a": [
+    "Quanto dado posso perder?",
+    "Em quanto tempo volto?",
+    "Quanto custa parar?",
+    "Quem aprova o plano?"
+   ],
+   "why": "RPO é a perda máxima aceitável, medida em tempo desde o último ponto de recuperação."
+  },
+  {
+   "id": "fc-gov-continuidade-2",
+   "node": "gov-continuidade",
+   "q": "O RTO responde à pergunta…",
+   "a": [
+    "Em quanto tempo o serviço precisa voltar?",
+    "Quanto dado posso perder?",
+    "Qual a frequência do backup?",
+    "Quantas cópias manter?"
+   ],
+   "why": "RTO é o tempo máximo de indisponibilidade tolerado até restaurar o serviço."
+  },
+  {
+   "id": "fc-gov-continuidade-3",
+   "node": "gov-continuidade",
+   "q": "Qual norma ISO trata de gestão de continuidade de negócios?",
+   "a": [
+    "ISO 22301",
+    "ISO 27001",
+    "ISO 20000",
+    "ISO 31000"
+   ],
+   "why": "A ISO 22301 define requisitos de um sistema de gestão de continuidade (SGCN)."
+  },
+  {
+   "id": "fc-gov-continuidade-4",
+   "node": "gov-continuidade",
+   "q": "Análise que identifica processos críticos e o impacto de uma parada:",
+   "a": [
+    "BIA",
+    "DPIA",
+    "SLA",
+    "RCA"
+   ],
+   "why": "A Business Impact Analysis define prioridades, RTO e RPO de cada processo."
+  },
+  {
+   "id": "fc-gov-continuidade-5",
+   "node": "gov-continuidade",
+   "q": "Site de contingência com infraestrutura pronta e dados replicados:",
+   "a": [
+    "Hot site",
+    "Cold site",
+    "Warm site",
+    "Dark site"
+   ],
+   "why": "Hot site assume em minutos ou horas. Warm tem parte pronta; cold é só o espaço."
+  },
+  {
+   "id": "fc-net-fundamentos-1",
+   "node": "net-fundamentos",
+   "q": "Qual a porta padrão do RDP?",
+   "a": [
+    "3389/TCP",
+    "22/TCP",
+    "445/TCP",
+    "5900/TCP"
+   ],
+   "why": "RDP usa 3389. 22 é SSH, 445 é SMB e 5900 é VNC."
+  },
+  {
+   "id": "fc-net-fundamentos-2",
+   "node": "net-fundamentos",
+   "q": "Em qual camada OSI o IPsec opera?",
+   "a": [
+    "Camada 3 (rede)",
+    "Camada 2 (enlace)",
+    "Camada 4 (transporte)",
+    "Camada 7 (aplicação)"
+   ],
+   "why": "IPsec protege pacotes IP, na camada de rede. TLS fica acima do transporte."
+  },
+  {
+   "id": "fc-net-fundamentos-3",
+   "node": "net-fundamentos",
+   "q": "Porta padrão do DNS:",
+   "a": [
+    "53",
+    "25",
+    "123",
+    "389"
+   ],
+   "why": "DNS usa 53 (UDP e TCP). 25 é SMTP, 123 é NTP e 389 é LDAP."
+  },
+  {
+   "id": "fc-net-fundamentos-4",
+   "node": "net-fundamentos",
+   "q": "Um switch tradicional encaminha quadros pela camada…",
+   "a": [
+    "2, por endereço MAC",
+    "3, por endereço IP",
+    "4, por porta",
+    "1, por sinal"
+   ],
+   "why": "Switches de camada 2 aprendem MACs por porta. Roteadores trabalham na camada 3."
+  },
+  {
+   "id": "fc-net-fundamentos-5",
+   "node": "net-fundamentos",
+   "q": "O handshake de três vias do TCP é…",
+   "a": [
+    "SYN → SYN-ACK → ACK",
+    "SYN → ACK → FIN",
+    "HELLO → KEY → DONE",
+    "ACK → SYN → RST"
+   ],
+   "why": "O cliente pede (SYN), o servidor aceita (SYN-ACK) e o cliente confirma (ACK)."
+  },
+  {
+   "id": "fc-net-fundamentos-6",
+   "node": "net-fundamentos",
+   "q": "Porta padrão do SMB:",
+   "a": [
+    "445/TCP",
+    "139/UDP",
+    "1433/TCP",
+    "161/UDP"
+   ],
+   "why": "SMB direto sobre TCP usa 445. 1433 é SQL Server e 161 é SNMP."
+  },
+  {
+   "id": "fc-net-fundamentos-7",
+   "node": "net-fundamentos",
+   "q": "O ARP traduz…",
+   "a": [
+    "IP em MAC",
+    "MAC em IP",
+    "Nome em IP",
+    "Porta em serviço"
+   ],
+   "why": "O ARP descobre o MAC de um IP na rede local. Por não ter autenticação, permite spoofing."
+  },
+  {
+   "id": "fc-net-fundamentos-8",
+   "node": "net-fundamentos",
+   "q": "Quantos hosts utilizáveis cabem numa sub-rede /24?",
+   "a": [
+    "254",
+    "256",
+    "255",
+    "252"
+   ],
+   "why": "2^8 = 256 endereços, menos rede e broadcast."
+  },
+  {
+   "id": "fc-net-perimetro-1",
+   "node": "net-perimetro",
+   "q": "Segmento que isola servidores expostos à internet da rede interna:",
+   "a": [
+    "DMZ",
+    "VLAN de voz",
+    "Rede de gerência",
+    "Loopback"
+   ],
+   "why": "A DMZ fica entre dois filtros: se o servidor público cair, o atacante ainda não está na rede interna."
+  },
+  {
+   "id": "fc-net-perimetro-2",
+   "node": "net-perimetro",
+   "q": "Firewall que acompanha o estado das conexões e libera o retorno automaticamente:",
+   "a": [
+    "Stateful",
+    "Stateless",
+    "Hub",
+    "Bridge transparente"
+   ],
+   "why": "O stateful guarda a tabela de sessões. Uma ACL stateless avalia pacote por pacote."
+  },
+  {
+   "id": "fc-net-perimetro-3",
+   "node": "net-perimetro",
+   "q": "O WAF protege principalmente…",
+   "a": [
+    "Aplicações web (HTTP)",
+    "A rede Wi-Fi",
+    "O servidor de e-mail",
+    "Consultas DNS"
+   ],
+   "why": "O WAF inspeciona requisições HTTP atrás de injeção, XSS e abuso. Não substitui código seguro."
+  },
+  {
+   "id": "fc-net-perimetro-4",
+   "node": "net-perimetro",
+   "q": "A diferença do IPS para o IDS é que o IPS…",
+   "a": [
+    "Bloqueia em linha",
+    "Só gera alerta",
+    "Só guarda fluxo",
+    "Dispensa assinaturas"
+   ],
+   "why": "O IDS observa uma cópia do tráfego e alerta. O IPS fica no caminho e pode descartar."
+  },
+  {
+   "id": "fc-net-perimetro-5",
+   "node": "net-perimetro",
+   "q": "O que um NGFW acrescenta a um firewall de portas?",
+   "a": [
+    "Visibilidade de aplicação e usuário",
+    "Roteamento dinâmico",
+    "Mais portas físicas",
+    "DHCP"
+   ],
+   "why": "Next-gen identifica a aplicação e a identidade, não só porta e IP, e costuma integrar IPS."
+  },
+  {
+   "id": "fc-net-protocolos-1",
+   "node": "net-protocolos",
+   "q": "Qual versão do SNMP tem autenticação e criptografia?",
+   "a": [
+    "SNMPv3",
+    "SNMPv2c",
+    "SNMPv1",
+    "Nenhuma"
+   ],
+   "why": "v1 e v2c usam community string em texto claro. v3 tem usuário, autenticação e privacidade."
+  },
+  {
+   "id": "fc-net-protocolos-2",
+   "node": "net-protocolos",
+   "q": "O DNSSEC garante…",
+   "a": [
+    "Autenticidade e integridade das respostas",
+    "Sigilo das consultas",
+    "Que o DNS não caia",
+    "Bloqueio de domínios"
+   ],
+   "why": "DNSSEC assina os registros. Para esconder as consultas usa-se DoH ou DoT."
+  },
+  {
+   "id": "fc-net-protocolos-3",
+   "node": "net-protocolos",
+   "q": "LDAP sobre TLS (LDAPS) usa a porta…",
+   "a": [
+    "636",
+    "389",
+    "88",
+    "3268"
+   ],
+   "why": "389 é LDAP, 636 é LDAPS, 88 é Kerberos e 3268 é o catálogo global do AD."
+  },
+  {
+   "id": "fc-net-protocolos-4",
+   "node": "net-protocolos",
+   "q": "O substituto seguro do Telnet é…",
+   "a": [
+    "SSH",
+    "RDP",
+    "FTP",
+    "SNMP"
+   ],
+   "why": "Telnet manda tudo em texto claro, inclusive a senha. SSH cifra a sessão."
+  },
+  {
+   "id": "fc-net-protocolos-5",
+   "node": "net-protocolos",
+   "q": "O SFTP roda sobre…",
+   "a": [
+    "SSH",
+    "TLS",
+    "FTP puro",
+    "SMB"
+   ],
+   "why": "SFTP é um subsistema do SSH. FTPS é FTP com TLS: protocolos diferentes."
+  },
+  {
+   "id": "fc-net-protocolos-6",
+   "node": "net-protocolos",
+   "q": "Porta padrão do Kerberos:",
+   "a": [
+    "88",
+    "464",
+    "135",
+    "53"
+   ],
+   "why": "O KDC atende em 88. 464 é troca de senha Kerberos e 135 é o RPC."
+  },
+  {
+   "id": "fc-cri-primitivas-1",
+   "node": "cri-primitivas",
+   "q": "O AES é uma cifra…",
+   "a": [
+    "Simétrica de bloco",
+    "Assimétrica",
+    "De hash",
+    "De curva elíptica"
+   ],
+   "why": "AES usa a mesma chave para cifrar e decifrar, em blocos de 128 bits."
+  },
+  {
+   "id": "fc-cri-primitivas-2",
+   "node": "cri-primitivas",
+   "q": "Qual destes é uma função de hash?",
+   "a": [
+    "SHA-256",
+    "RSA",
+    "AES",
+    "ECDH"
+   ],
+   "why": "SHA-256 gera um resumo de 256 bits. RSA é assimétrico, AES simétrico, ECDH acordo de chaves."
+  },
+  {
+   "id": "fc-cri-primitivas-3",
+   "node": "cri-primitivas",
+   "q": "Para cifrar uma mensagem para a Ana com criptografia assimétrica, use a chave…",
+   "a": [
+    "Pública da Ana",
+    "Privada da Ana",
+    "Pública sua",
+    "Privada sua"
+   ],
+   "why": "Só a chave privada da Ana decifra o que foi cifrado com a pública dela."
+  },
+  {
+   "id": "fc-cri-primitivas-4",
+   "node": "cri-primitivas",
+   "q": "Para assinar um documento, você usa a chave…",
+   "a": [
+    "Privada sua",
+    "Pública sua",
+    "Pública do destinatário",
+    "Privada do destinatário"
+   ],
+   "why": "Assina-se com a privada; qualquer um confere com a sua pública."
+  },
+  {
+   "id": "fc-cri-primitivas-5",
+   "node": "cri-primitivas",
+   "q": "Salt em hashes de senha serve para…",
+   "a": [
+    "Derrotar tabelas pré-computadas",
+    "Cifrar a senha",
+    "Acelerar o login",
+    "Dispensar MFA"
+   ],
+   "why": "Com salt único, senhas iguais geram hashes diferentes e rainbow tables não servem."
+  },
+  {
+   "id": "fc-cri-primitivas-6",
+   "node": "cri-primitivas",
+   "q": "Qual algoritmo é adequado para guardar senhas?",
+   "a": [
+    "Argon2id",
+    "MD5",
+    "SHA-1",
+    "CRC32"
+   ],
+   "why": "Argon2, bcrypt e scrypt são lentos de propósito. MD5 e SHA-1 são rápidos demais para senha."
+  },
+  {
+   "id": "fc-cri-primitivas-7",
+   "node": "cri-primitivas",
+   "q": "Diffie-Hellman serve para…",
+   "a": [
+    "Acordar uma chave por canal inseguro",
+    "Assinar documentos",
+    "Gerar hashes",
+    "Comprimir dados"
+   ],
+   "why": "Os dois lados chegam ao mesmo segredo sem transmiti-lo."
+  },
+  {
+   "id": "fc-cri-pki-1",
+   "node": "cri-pki",
+   "q": "Numa PKI, quem assina os certificados?",
+   "a": [
+    "Autoridade certificadora (CA)",
+    "Autoridade de registro (RA)",
+    "Servidor OCSP",
+    "O próprio titular"
+   ],
+   "why": "A CA assina. A RA valida a identidade do solicitante antes da emissão."
+  },
+  {
+   "id": "fc-cri-pki-2",
+   "node": "cri-pki",
+   "q": "A lista publicada de certificados revogados é a…",
+   "a": [
+    "CRL",
+    "CSR",
+    "PFX",
+    "SAN"
+   ],
+   "why": "Certificate Revocation List. CSR é o pedido de certificado."
+  },
+  {
+   "id": "fc-cri-pki-3",
+   "node": "cri-pki",
+   "q": "Protocolo que consulta o status de um certificado em tempo real:",
+   "a": [
+    "OCSP",
+    "ACME",
+    "SCEP",
+    "LDAP"
+   ],
+   "why": "O OCSP responde good, revoked ou unknown. ACME automatiza emissão (Let’s Encrypt)."
+  },
+  {
+   "id": "fc-cri-pki-4",
+   "node": "cri-pki",
+   "q": "Padrão de formato dos certificados digitais:",
+   "a": [
+    "X.509",
+    "X.25",
+    "PKCS#12",
+    "RFC 1918"
+   ],
+   "why": "X.509 define os campos. PKCS#12 é um contêiner (.pfx) que guarda certificado e chave."
+  },
+  {
+   "id": "fc-cri-pki-5",
+   "node": "cri-pki",
+   "q": "O arquivo que você gera para pedir um certificado à CA é o…",
+   "a": [
+    "CSR",
+    "CRL",
+    "PEM da CA",
+    "OCSP stapling"
+   ],
+   "why": "Certificate Signing Request: leva a chave pública e os dados do titular."
+  },
+  {
+   "id": "fc-cri-pki-6",
+   "node": "cri-pki",
+   "q": "Quem opera a AC Raiz da ICP-Brasil?",
+   "a": [
+    "ITI",
+    "Serpro",
+    "ANPD",
+    "Receita Federal"
+   ],
+   "why": "O Instituto Nacional de Tecnologia da Informação mantém a raiz da ICP-Brasil."
+  },
+  {
+   "id": "fc-cri-tls-1",
+   "node": "cri-tls",
+   "q": "Qual versão do TLS removeu a troca de chaves RSA estática?",
+   "a": [
+    "TLS 1.3",
+    "TLS 1.2",
+    "TLS 1.1",
+    "SSL 3.0"
+   ],
+   "why": "O TLS 1.3 só aceita trocas efêmeras (ECDHE/DHE) e cifras AEAD."
+  },
+  {
+   "id": "fc-cri-tls-2",
+   "node": "cri-tls",
+   "q": "Forward secrecy no TLS vem de…",
+   "a": [
+    "Troca de chaves efêmera (ECDHE)",
+    "RSA estático",
+    "Certificado wildcard",
+    "HMAC-SHA1"
+   ],
+   "why": "Chaves de sessão descartáveis: roubar a chave do servidor depois não decifra o tráfego gravado."
+  },
+  {
+   "id": "fc-cri-tls-3",
+   "node": "cri-tls",
+   "q": "Um handshake completo do TLS 1.3 leva…",
+   "a": [
+    "1 RTT",
+    "2 RTT",
+    "3 RTT",
+    "0 RTT sempre"
+   ],
+   "why": "O 1.3 cortou uma ida e volta em relação ao 1.2. 0-RTT existe só na retomada de sessão."
+  },
+  {
+   "id": "fc-cri-tls-4",
+   "node": "cri-tls",
+   "q": "O cabeçalho HSTS faz o navegador…",
+   "a": [
+    "Usar sempre HTTPS naquele domínio",
+    "Aceitar certificado vencido",
+    "Fixar o IP do site",
+    "Desligar cookies"
+   ],
+   "why": "Com HSTS, o navegador recusa HTTP e impede o rebaixamento por SSL stripping."
+  },
+  {
+   "id": "fc-cri-tls-5",
+   "node": "cri-tls",
+   "q": "Ataque que força cliente e servidor a negociar uma versão mais fraca:",
+   "a": [
+    "Downgrade",
+    "Replay",
+    "Spraying",
+    "Kerberoasting"
+   ],
+   "why": "POODLE e FREAK são exemplos. Desativar versões antigas elimina o alvo."
+  },
+  {
+   "id": "fc-cld-nuvem-1",
+   "node": "cld-nuvem",
+   "q": "Em IaaS, quem cuida dos patches do sistema operacional da VM?",
+   "a": [
+    "O cliente",
+    "O provedor",
+    "Ninguém",
+    "O fabricante do hardware"
+   ],
+   "why": "Na responsabilidade compartilhada, o provedor cuida do físico e do hipervisor; o SO é do cliente."
+  },
+  {
+   "id": "fc-cld-nuvem-2",
+   "node": "cld-nuvem",
+   "q": "Endereço do serviço de metadados de instância na AWS:",
+   "a": [
+    "169.254.169.254",
+    "10.0.0.1",
+    "127.0.0.53",
+    "192.168.0.254"
+   ],
+   "why": "É alvo clássico de SSRF para roubar credenciais temporárias do papel da instância."
+  },
+  {
+   "id": "fc-cld-nuvem-3",
+   "node": "cld-nuvem",
+   "q": "Como o IMDSv2 dificulta o SSRF?",
+   "a": [
+    "Exige token obtido por PUT",
+    "Exige MFA",
+    "Muda o IP",
+    "Usa TLS mútuo"
+   ],
+   "why": "O token de sessão exige um PUT com cabeçalho próprio, que a maioria dos SSRFs não consegue fazer."
+  },
+  {
+   "id": "fc-cld-nuvem-4",
+   "node": "cld-nuvem",
+   "q": "Ferramenta que procura más configurações na conta de nuvem:",
+   "a": [
+    "CSPM",
+    "EDR",
+    "DLP de e-mail",
+    "WAF"
+   ],
+   "why": "Cloud Security Posture Management aponta buckets públicos, chaves antigas, portas abertas."
+  },
+  {
+   "id": "fc-cld-nuvem-5",
+   "node": "cld-nuvem",
+   "q": "Chave de acesso de longa duração no código deve virar…",
+   "a": [
+    "Papel com credencial temporária",
+    "Senha mais longa",
+    "Texto em Base64",
+    "Variável global"
+   ],
+   "why": "Identidades gerenciadas e papéis entregam credenciais que expiram sozinhas."
+  },
+  {
+   "id": "fc-hard-acesso-1",
+   "node": "hard-acesso",
+   "q": "MFA combina algo que você sabe, algo que você tem e algo que você…",
+   "a": [
+    "É",
+    "Quer",
+    "Lembra",
+    "Escolhe"
+   ],
+   "why": "Biometria é o fator inerente. MFA exige categorias diferentes."
+  },
+  {
+   "id": "fc-hard-acesso-2",
+   "node": "hard-acesso",
+   "q": "Senha + PIN conta como MFA?",
+   "a": [
+    "Não, os dois são algo que você sabe",
+    "Sim, são dois segredos",
+    "Só se o PIN tiver 6 dígitos",
+    "Sim, em sistemas Windows"
+   ],
+   "why": "Dois fatores da mesma categoria são só dois segredos. MFA exige categorias diferentes."
+  },
+  {
+   "id": "fc-hard-acesso-3",
+   "node": "hard-acesso",
+   "q": "Acesso concedido conforme o cargo ou função da pessoa:",
+   "a": [
+    "RBAC",
+    "DAC",
+    "MAC",
+    "Lista de convidados"
+   ],
+   "why": "Role-Based Access Control. DAC é a critério do dono; MAC é por rótulos definidos centralmente."
+  },
+  {
+   "id": "fc-hard-acesso-4",
+   "node": "hard-acesso",
+   "q": "Criptografia de disco nativa do Windows:",
+   "a": [
+    "BitLocker",
+    "LUKS",
+    "FileVault",
+    "dm-verity"
+   ],
+   "why": "LUKS é do Linux e FileVault do macOS."
+  },
+  {
+   "id": "fc-hard-acesso-5",
+   "node": "hard-acesso",
+   "q": "Qual MFA resiste melhor a phishing?",
+   "a": [
+    "Chave FIDO2",
+    "Código por SMS",
+    "Push sem número",
+    "Código por e-mail"
+   ],
+   "why": "FIDO2 amarra a autenticação ao domínio verdadeiro: a página falsa não recebe nada útil."
+  },
+  {
+   "id": "fc-hard-linux-1",
+   "node": "hard-linux",
+   "q": "Onde ficam os hashes de senha no Linux?",
+   "a": [
+    "/etc/shadow",
+    "/etc/passwd",
+    "/etc/group",
+    "/etc/hosts"
+   ],
+   "why": "O /etc/passwd é legível por todos; os hashes foram movidos para o shadow, legível só pelo root."
+  },
+  {
+   "id": "fc-hard-linux-2",
+   "node": "hard-linux",
+   "q": "Permissão 600 num arquivo significa…",
+   "a": [
+    "Só o dono lê e escreve",
+    "Todos leem",
+    "Dono executa, grupo lê",
+    "Ninguém acessa"
+   ],
+   "why": "6 = leitura + escrita para o dono; 0 para grupo e outros. Bom para chaves privadas."
+  },
+  {
+   "id": "fc-hard-linux-3",
+   "node": "hard-linux",
+   "q": "Bit que faz um binário rodar com os privilégios do dono do arquivo:",
+   "a": [
+    "SUID",
+    "Sticky bit",
+    "noexec",
+    "umask"
+   ],
+   "why": "Binário SUID root mal escolhido é caminho clássico de escalada de privilégio."
+  },
+  {
+   "id": "fc-hard-linux-4",
+   "node": "hard-linux",
+   "q": "Opção do sshd que bloqueia login direto como root:",
+   "a": [
+    "PermitRootLogin no",
+    "PasswordAuthentication yes",
+    "X11Forwarding no",
+    "UseDNS no"
+   ],
+   "why": "Força o login com um usuário nominal e sudo, o que deixa rastro de quem fez o quê."
+  },
+  {
+   "id": "fc-hard-linux-5",
+   "node": "hard-linux",
+   "q": "Controle de acesso mandatório padrão no RHEL:",
+   "a": [
+    "SELinux",
+    "AppArmor",
+    "iptables",
+    "sudo"
+   ],
+   "why": "O AppArmor é o padrão no Ubuntu/Debian. Os dois confinam processos além das permissões normais."
+  },
+  {
+   "id": "fc-hard-linux-6",
+   "node": "hard-linux",
+   "q": "Arquivo que define quem pode usar sudo:",
+   "a": [
+    "/etc/sudoers",
+    "/etc/shadow",
+    "/etc/profile",
+    "/etc/fstab"
+   ],
+   "why": "Edite com visudo, que valida a sintaxe antes de salvar."
+  },
+  {
+   "id": "fc-hard-windows-1",
+   "node": "hard-windows",
+   "q": "Processo do Windows que guarda credenciais em memória:",
+   "a": [
+    "LSASS",
+    "svchost",
+    "explorer",
+    "spoolsv"
+   ],
+   "why": "Dump do LSASS (Mimikatz, procdump) é o roubo de credenciais mais comum em Windows."
+  },
+  {
+   "id": "fc-hard-windows-2",
+   "node": "hard-windows",
+   "q": "Kerberoasting mira…",
+   "a": [
+    "Contas de serviço com SPN",
+    "Contas de convidado",
+    "Objetos de GPO",
+    "Registros DNS"
+   ],
+   "why": "Qualquer usuário pede tickets de serviço; a parte cifrada com o hash da conta é quebrada offline."
+  },
+  {
+   "id": "fc-hard-windows-3",
+   "node": "hard-windows",
+   "q": "Solução da Microsoft para senhas únicas e rotativas do admin local:",
+   "a": [
+    "LAPS",
+    "WSUS",
+    "BitLocker",
+    "AppLocker"
+   ],
+   "why": "Sem LAPS, a mesma senha de admin local em todas as máquinas facilita a movimentação lateral."
+  },
+  {
+   "id": "fc-hard-windows-4",
+   "node": "hard-windows",
+   "q": "Grupo que administra todos os domínios de uma floresta AD:",
+   "a": [
+    "Enterprise Admins",
+    "Domain Admins",
+    "Account Operators",
+    "Server Operators"
+   ],
+   "why": "Domain Admins manda num domínio; Enterprise Admins vale para a floresta inteira."
+  },
+  {
+   "id": "fc-hard-windows-5",
+   "node": "hard-windows",
+   "q": "O Credential Guard protege…",
+   "a": [
+    "Segredos do LSASS, isolados por virtualização",
+    "O disco contra roubo",
+    "O tráfego SMB",
+    "Anexos de e-mail"
+   ],
+   "why": "Com VBS, hashes e tickets ficam num processo isolado que o Mimikatz não lê."
+  },
+  {
+   "id": "fc-hard-windows-6",
+   "node": "hard-windows",
+   "q": "Protocolo de autenticação legado que deve ser desativado:",
+   "a": [
+    "NTLMv1",
+    "Kerberos",
+    "LDAPS",
+    "SMBv3"
+   ],
+   "why": "NTLMv1 é quebrável e permite relay. Kerberos é o padrão do AD."
+  },
+  {
+   "id": "fc-dev-owasp-1",
+   "node": "dev-owasp",
+   "q": "Primeiro lugar do OWASP Top 10 (2021):",
+   "a": [
+    "Broken Access Control",
+    "Injection",
+    "Cryptographic Failures",
+    "SSRF"
+   ],
+   "why": "Controle de acesso quebrado subiu para A01 em 2021. Injeção caiu para A03."
+  },
+  {
+   "id": "fc-dev-owasp-2",
+   "node": "dev-owasp",
+   "q": "Defesa principal contra SQL injection:",
+   "a": [
+    "Consultas parametrizadas",
+    "Trocar aspas por espaço",
+    "Só um WAF",
+    "Base64 nos campos"
+   ],
+   "why": "Com parâmetros, a entrada nunca vira código SQL. Filtro e WAF são camadas extras."
+  },
+  {
+   "id": "fc-dev-owasp-3",
+   "node": "dev-owasp",
+   "q": "Um XSS executa o código do atacante…",
+   "a": [
+    "No navegador da vítima",
+    "No banco de dados",
+    "No servidor web",
+    "No resolvedor DNS"
+   ],
+   "why": "O script roda no contexto do site e pode roubar sessão ou agir pelo usuário."
+  },
+  {
+   "id": "fc-dev-owasp-4",
+   "node": "dev-owasp",
+   "q": "Trocar /fatura/1001 por /fatura/1002 e ver a fatura de outro cliente é…",
+   "a": [
+    "IDOR",
+    "XSS",
+    "CSRF",
+    "Clickjacking"
+   ],
+   "why": "Referência direta a objeto sem checar se ele pertence ao usuário: falha de controle de acesso."
+  },
+  {
+   "id": "fc-dev-owasp-5",
+   "node": "dev-owasp",
+   "q": "CWE é um catálogo de…",
+   "a": [
+    "Tipos de fraqueza de software",
+    "Vulnerabilidades específicas",
+    "Notas de severidade",
+    "Exploits públicos"
+   ],
+   "why": "CWE-89 é SQL injection como categoria. Uma falha concreta num produto ganha um CVE."
+  },
+  {
+   "id": "fc-dev-owasp-6",
+   "node": "dev-owasp",
+   "q": "Flag de cookie que impede a leitura por JavaScript:",
+   "a": [
+    "HttpOnly",
+    "Secure",
+    "SameSite",
+    "Path"
+   ],
+   "why": "HttpOnly reduz o impacto de XSS no roubo de sessão. Secure exige HTTPS; SameSite ajuda contra CSRF."
+  },
+  {
+   "id": "fc-dev-owasp-7",
+   "node": "dev-owasp",
+   "q": "No SSRF, o atacante faz…",
+   "a": [
+    "O servidor requisitar destinos que ele escolhe",
+    "O navegador rodar um script",
+    "O banco executar um comando",
+    "O usuário clicar sem ver"
+   ],
+   "why": "Serve para alcançar serviços internos, como o endpoint de metadados da nuvem."
+  },
+  {
+   "id": "fc-dev-testes-1",
+   "node": "dev-testes",
+   "q": "O SAST analisa…",
+   "a": [
+    "O código-fonte, sem executar",
+    "A aplicação em produção",
+    "Só as dependências",
+    "O tráfego de rede"
+   ],
+   "why": "Estático: acha padrões inseguros cedo, com mais falso positivo."
+  },
+  {
+   "id": "fc-dev-testes-2",
+   "node": "dev-testes",
+   "q": "O DAST testa…",
+   "a": [
+    "A aplicação rodando, por fora",
+    "O código-fonte",
+    "O Dockerfile",
+    "Os commits"
+   ],
+   "why": "Dinâmico: ataca a aplicação em execução como um usuário externo faria."
+  },
+  {
+   "id": "fc-dev-testes-3",
+   "node": "dev-testes",
+   "q": "A SCA encontra…",
+   "a": [
+    "Vulnerabilidades em bibliotecas de terceiros",
+    "Erros de lógica de negócio",
+    "Senhas fracas",
+    "Portas abertas"
+   ],
+   "why": "Software Composition Analysis cruza dependências com bases de CVE e licenças."
+  },
+  {
+   "id": "fc-dev-testes-4",
+   "node": "dev-testes",
+   "q": "Modelagem de ameaças entra em qual fase do ciclo de desenvolvimento?",
+   "a": [
+    "Design",
+    "Deploy",
+    "Operação",
+    "Descarte"
+   ],
+   "why": "Corrigir uma falha de arquitetura no desenho é muito mais barato do que em produção."
+  },
+  {
+   "id": "fc-dev-testes-5",
+   "node": "dev-testes",
+   "q": "Mandar entradas malformadas e aleatórias para achar falhas é…",
+   "a": [
+    "Fuzzing",
+    "Linting",
+    "Code review",
+    "Smoke test"
+   ],
+   "why": "O fuzzer procura travamentos e comportamentos inesperados."
+  },
+  {
+   "id": "fc-dev-pipeline-1",
+   "node": "dev-pipeline",
+   "q": "Uma chave de API foi commitada no Git. Primeira ação?",
+   "a": [
+    "Revogar e rotacionar a chave",
+    "Apagar o commit",
+    "Tornar o repositório privado",
+    "Avisar no canal do time"
+   ],
+   "why": "O segredo já pode ter sido copiado. Reescrever o histórico vem depois de invalidá-lo."
+  },
+  {
+   "id": "fc-dev-pipeline-2",
+   "node": "dev-pipeline",
+   "q": "Boa prática para o usuário do processo no contêiner:",
+   "a": [
+    "Usuário sem privilégio",
+    "root",
+    "SYSTEM",
+    "Mesmo UID do host"
+   ],
+   "why": "Se o processo for comprometido, root no contêiner facilita escapar para o host."
+  },
+  {
+   "id": "fc-dev-pipeline-3",
+   "node": "dev-pipeline",
+   "q": "SBOM é…",
+   "a": [
+    "O inventário de componentes do software",
+    "Um scanner de portas",
+    "Uma política de branch",
+    "Um tipo de container"
+   ],
+   "why": "Software Bill of Materials: saber o que está dentro para reagir rápido a uma CVE nova."
+  },
+  {
+   "id": "fc-dev-pipeline-4",
+   "node": "dev-pipeline",
+   "q": "Assinar imagens de contêiner (ex.: cosign) garante…",
+   "a": [
+    "Origem e integridade",
+    "Sigilo do conteúdo",
+    "Desempenho",
+    "Disponibilidade"
+   ],
+   "why": "O cluster pode recusar imagens não assinadas pelo pipeline oficial."
+  },
+  {
+   "id": "fc-dev-pipeline-5",
+   "node": "dev-pipeline",
+   "q": "Imagem base mínima (distroless, alpine) reduz…",
+   "a": [
+    "A superfície de ataque",
+    "O consumo de CPU do host",
+    "A latência de rede",
+    "O número de réplicas"
+   ],
+   "why": "Menos pacotes, menos CVEs e menos ferramentas para o atacante usar."
+  },
+  {
+   "id": "fc-dev-apis-1",
+   "node": "dev-apis",
+   "q": "Primeiro risco do OWASP API Security Top 10 (2023):",
+   "a": [
+    "BOLA, autorização quebrada por objeto",
+    "Injeção",
+    "Falta de rate limit",
+    "Logs insuficientes"
+   ],
+   "why": "API1:2023: a API não confere se o objeto pedido pertence a quem pediu."
+  },
+  {
+   "id": "fc-dev-apis-2",
+   "node": "dev-apis",
+   "q": "Rate limiting numa API mitiga…",
+   "a": [
+    "Força bruta e consumo abusivo",
+    "XSS armazenado",
+    "Downgrade de TLS",
+    "Vazamento por logs"
+   ],
+   "why": "Limitar requisições por cliente segura enumeração, credential stuffing e custo."
+  },
+  {
+   "id": "fc-dev-apis-3",
+   "node": "dev-apis",
+   "q": "Um JWT com \"alg\": \"none\" deve ser…",
+   "a": [
+    "Rejeitado",
+    "Aceito se o payload for válido",
+    "Aceito só em homologação",
+    "Reassinado pelo servidor"
+   ],
+   "why": "Aceitar alg none permite forjar tokens sem assinatura. Fixe o algoritmo esperado."
+  },
+  {
+   "id": "fc-dev-apis-4",
+   "node": "dev-apis",
+   "q": "OAuth 2.0 é, na essência, um protocolo de…",
+   "a": [
+    "Autorização delegada",
+    "Autenticação",
+    "Criptografia",
+    "Auditoria"
+   ],
+   "why": "Autenticação de usuário vem do OpenID Connect, construído em cima do OAuth."
+  },
+  {
+   "id": "fc-dev-apis-5",
+   "node": "dev-apis",
+   "q": "Entre microsserviços, o mTLS garante…",
+   "a": [
+    "Autenticação mútua dos serviços",
+    "Rate limit",
+    "Cache",
+    "Balanceamento"
+   ],
+   "why": "Os dois lados apresentam certificado: um serviço intruso não consegue se passar por outro."
+  },
+  {
+   "id": "fc-ops-siem-1",
+   "node": "ops-siem",
+   "q": "Função principal de um SIEM:",
+   "a": [
+    "Coletar e correlacionar logs",
+    "Bloquear malware no endpoint",
+    "Fazer backup",
+    "Testar invasão"
+   ],
+   "why": "O SIEM centraliza eventos e dispara regras de correlação e alertas."
+  },
+  {
+   "id": "fc-ops-siem-2",
+   "node": "ops-siem",
+   "q": "O SOAR serve para…",
+   "a": [
+    "Orquestrar e automatizar a resposta",
+    "Guardar logs por 5 anos",
+    "Cifrar o tráfego",
+    "Gerar certificados"
+   ],
+   "why": "Playbooks automáticos: enriquecer o alerta, isolar a máquina, abrir o chamado."
+  },
+  {
+   "id": "fc-ops-siem-3",
+   "node": "ops-siem",
+   "q": "O EDR atua…",
+   "a": [
+    "Nos endpoints, detectando e respondendo",
+    "No perímetro da rede",
+    "Na caixa de e-mail",
+    "No banco de dados"
+   ],
+   "why": "Telemetria de processo, arquivo e rede no host, com isolamento remoto."
+  },
+  {
+   "id": "fc-ops-siem-4",
+   "node": "ops-siem",
+   "q": "O XDR estende o EDR para…",
+   "a": [
+    "Rede, e-mail, nuvem e identidade",
+    "Só servidores Linux",
+    "Só a nuvem",
+    "Apenas dispositivos móveis"
+   ],
+   "why": "Correlaciona várias camadas numa só investigação."
+  },
+  {
+   "id": "fc-ops-siem-5",
+   "node": "ops-siem",
+   "q": "O alerta disparou, mas não havia ataque. Isso é um…",
+   "a": [
+    "Falso positivo",
+    "Falso negativo",
+    "Verdadeiro positivo",
+    "Verdadeiro negativo"
+   ],
+   "why": "Excesso de falso positivo gera fadiga de alerta no SOC."
+  },
+  {
+   "id": "fc-ops-siem-6",
+   "node": "ops-siem",
+   "q": "Houve ataque e nada alertou. Isso é um…",
+   "a": [
+    "Falso negativo",
+    "Falso positivo",
+    "Verdadeiro positivo",
+    "Incidente de baixa"
+   ],
+   "why": "O pior caso: a detecção falhou em silêncio."
+  },
+  {
+   "id": "fc-ops-logs-1",
+   "node": "ops-logs",
+   "q": "Evento do Windows para logon com falha:",
+   "a": [
+    "4625",
+    "4624",
+    "4688",
+    "1102"
+   ],
+   "why": "4624 é sucesso, 4625 é falha, 4688 é criação de processo e 1102 é limpeza do log."
+  },
+  {
+   "id": "fc-ops-logs-2",
+   "node": "ops-logs",
+   "q": "Evento do Windows que indica que o log de segurança foi limpo:",
+   "a": [
+    "1102",
+    "4720",
+    "4625",
+    "7045"
+   ],
+   "why": "1102 é sinal forte de antiforense. 7045 é serviço instalado; 4720 é conta criada."
+  },
+  {
+   "id": "fc-ops-logs-3",
+   "node": "ops-logs",
+   "q": "O evento 4688 registra…",
+   "a": [
+    "Criação de processo",
+    "Logon com sucesso",
+    "Conta bloqueada",
+    "Ticket Kerberos"
+   ],
+   "why": "Com auditoria de linha de comando ligada, ele mostra o comando executado."
+  },
+  {
+   "id": "fc-ops-logs-4",
+   "node": "ops-logs",
+   "q": "No Sysmon, o evento ID 1 é…",
+   "a": [
+    "Criação de processo",
+    "Conexão de rede",
+    "Arquivo criado",
+    "Driver carregado"
+   ],
+   "why": "Sysmon 1 traz hash, linha de comando e processo pai. Conexão de rede é o ID 3."
+  },
+  {
+   "id": "fc-ops-logs-5",
+   "node": "ops-logs",
+   "q": "Para correlacionar logs de várias máquinas, todas precisam de…",
+   "a": [
+    "Relógio sincronizado por NTP",
+    "O mesmo sistema operacional",
+    "O mesmo IP",
+    "O mesmo antivírus"
+   ],
+   "why": "Sem horário confiável, a linha do tempo do incidente não fecha."
+  },
+  {
+   "id": "fc-ops-forense-1",
+   "node": "ops-forense",
+   "q": "Pela ordem de volatilidade, o que coletar primeiro?",
+   "a": [
+    "Memória RAM",
+    "Disco",
+    "Backup",
+    "Logs no SIEM"
+   ],
+   "why": "RAM some ao desligar: processos, conexões e chaves só existem ali."
+  },
+  {
+   "id": "fc-ops-forense-2",
+   "node": "ops-forense",
+   "q": "Registro de quem manipulou a evidência, quando e por quê:",
+   "a": [
+    "Cadeia de custódia",
+    "Linha do tempo",
+    "Relatório executivo",
+    "Ticket de mudança"
+   ],
+   "why": "Sem cadeia de custódia, a prova pode ser contestada."
+  },
+  {
+   "id": "fc-ops-forense-3",
+   "node": "ops-forense",
+   "q": "Por que calcular o hash da imagem forense?",
+   "a": [
+    "Para provar que ela não foi alterada",
+    "Para comprimir a imagem",
+    "Para cifrar a imagem",
+    "Para achar malware"
+   ],
+   "why": "O hash na coleta e na análise precisa bater."
+  },
+  {
+   "id": "fc-ops-forense-4",
+   "node": "ops-forense",
+   "q": "Ferramenta clássica para analisar dumps de memória:",
+   "a": [
+    "Volatility",
+    "Wireshark",
+    "Nmap",
+    "Burp Suite"
+   ],
+   "why": "Volatility lista processos, conexões e injeções a partir da imagem da RAM."
+  },
+  {
+   "id": "fc-ops-forense-5",
+   "node": "ops-forense",
+   "q": "Regras para reconhecer malware por padrões em arquivos:",
+   "a": [
+    "YARA",
+    "Sigma",
+    "SPF",
+    "CVSS"
+   ],
+   "why": "YARA casa strings e bytes em arquivos. Sigma descreve detecções em logs."
+  },
+  {
+   "id": "fc-ops-vuln-1",
+   "node": "ops-vuln",
+   "q": "O CVSS mede…",
+   "a": [
+    "A severidade técnica de uma vulnerabilidade",
+    "A chance de exploração",
+    "O custo de correção",
+    "O tempo de patch"
+   ],
+   "why": "Nota de 0 a 10. Probabilidade de exploração é o EPSS."
+  },
+  {
+   "id": "fc-ops-vuln-2",
+   "node": "ops-vuln",
+   "q": "Catálogo da CISA com vulnerabilidades exploradas de verdade:",
+   "a": [
+    "KEV",
+    "NVD",
+    "CWE",
+    "CAPEC"
+   ],
+   "why": "Known Exploited Vulnerabilities: ótimo critério para priorizar patch."
+  },
+  {
+   "id": "fc-ops-vuln-3",
+   "node": "ops-vuln",
+   "q": "O EPSS estima…",
+   "a": [
+    "A probabilidade de exploração em 30 dias",
+    "O impacto no negócio",
+    "A severidade CVSS",
+    "O número de hosts afetados"
+   ],
+   "why": "Ajuda a decidir o que corrigir primeiro entre milhares de CVEs."
+  },
+  {
+   "id": "fc-ops-vuln-4",
+   "node": "ops-vuln",
+   "q": "Pentest em que o testador começa sem informação interna:",
+   "a": [
+    "Caixa-preta",
+    "Caixa-branca",
+    "Caixa-cinza",
+    "Auditoria de código"
+   ],
+   "why": "Simula um atacante externo. Caixa-branca dá código e arquitetura."
+  },
+  {
+   "id": "fc-ops-vuln-5",
+   "node": "ops-vuln",
+   "q": "Documento que define escopo, horários e limites do pentest:",
+   "a": [
+    "Regras de engajamento",
+    "Relatório executivo",
+    "SBOM",
+    "Política de senhas"
+   ],
+   "why": "Sem autorização escrita e escopo, o teste vira invasão."
+  },
+  {
+   "id": "fc-dat-classificacao-1",
+   "node": "dat-classificacao",
+   "q": "Mostrar o CPF como ***.456.789-** é…",
+   "a": [
+    "Mascaramento",
+    "Criptografia",
+    "Hash",
+    "Compressão"
+   ],
+   "why": "Esconde parte do dado na exibição. O original continua guardado."
+  },
+  {
+   "id": "fc-dat-classificacao-2",
+   "node": "dat-classificacao",
+   "q": "Tokenização troca o dado por…",
+   "a": [
+    "Um token sem valor, mapeado num cofre",
+    "Um hash com salt",
+    "Uma versão cifrada com AES",
+    "Asteriscos"
+   ],
+   "why": "Comum em cartões: o sistema de vendas só vê o token."
+  },
+  {
+   "id": "fc-dat-classificacao-3",
+   "node": "dat-classificacao",
+   "q": "Pela LGPD, dado anonimizado de forma irreversível…",
+   "a": [
+    "Deixa de ser dado pessoal",
+    "Continua sendo dado pessoal",
+    "Vira dado sensível",
+    "Precisa de consentimento novo"
+   ],
+   "why": "Art. 12. Se der para reverter com esforço razoável, era só pseudonimização."
+  },
+  {
+   "id": "fc-dat-classificacao-4",
+   "node": "dat-classificacao",
+   "q": "Pela LGPD, dado pseudonimizado…",
+   "a": [
+    "Continua sendo dado pessoal",
+    "Deixa de ser dado pessoal",
+    "É sempre dado sensível",
+    "Não pode ser tratado"
+   ],
+   "why": "Quem tem a chave de correspondência ainda identifica o titular."
+  },
+  {
+   "id": "fc-dat-classificacao-5",
+   "node": "dat-classificacao",
+   "q": "Saúde, biometria e convicção religiosa são, na LGPD…",
+   "a": [
+    "Dados pessoais sensíveis",
+    "Dados públicos",
+    "Dados anonimizados",
+    "Dados cadastrais"
+   ],
+   "why": "Art. 5º, II. Têm bases legais mais restritas."
+  },
+  {
+   "id": "fc-dat-classificacao-6",
+   "node": "dat-classificacao",
+   "q": "Primeiro passo de um programa de proteção de dados:",
+   "a": [
+    "Inventariar e classificar",
+    "Comprar um DLP",
+    "Cifrar tudo",
+    "Bloquear USB"
+   ],
+   "why": "Não dá para proteger o que você não sabe que tem nem onde está."
+  },
+  {
+   "id": "fc-dat-dlp-1",
+   "node": "dat-dlp",
+   "q": "Um DLP serve para…",
+   "a": [
+    "Detectar e impedir a saída indevida de dados",
+    "Fazer backup",
+    "Testar senhas",
+    "Filtrar spam"
+   ],
+   "why": "Inspeciona e-mail, web, endpoint e nuvem atrás de dados classificados."
+  },
+  {
+   "id": "fc-dat-dlp-2",
+   "node": "dat-dlp",
+   "q": "Os três estados do dado são em repouso, em trânsito e…",
+   "a": [
+    "Em uso",
+    "Em backup",
+    "Em cache",
+    "Em quarentena"
+   ],
+   "why": "Cada estado pede um controle: cifragem de disco, TLS, controle de acesso e enclaves."
+  },
+  {
+   "id": "fc-dat-dlp-3",
+   "node": "dat-dlp",
+   "q": "Para reduzir falso positivo ao detectar número de cartão, o DLP usa regex e…",
+   "a": [
+    "O algoritmo de Luhn",
+    "O CVSS",
+    "O hash MD5",
+    "O DNS reverso"
+   ],
+   "why": "O dígito verificador de Luhn descarta sequências de 16 números que não são cartões."
+  },
+  {
+   "id": "fc-dat-dlp-4",
+   "node": "dat-dlp",
+   "q": "Exfiltrar dados em subdomínios de consultas DNS longas é…",
+   "a": [
+    "DNS tunneling",
+    "DNS amplification",
+    "Typosquatting",
+    "Fast flux"
+   ],
+   "why": "O sinal é volume alto de nomes longos e aleatórios para um mesmo domínio."
+  },
+  {
+   "id": "fc-dat-dlp-5",
+   "node": "dat-dlp",
+   "q": "Banco cifrado com chave guardada num HSM protege o dado…",
+   "a": [
+    "Em repouso",
+    "Em trânsito",
+    "Em uso",
+    "Em todos os estados"
+   ],
+   "why": "Disco ou arquivo roubado não serve sem a chave. Em memória, o dado está decifrado."
+  },
+  {
+   "id": "fc-dat-backup-1",
+   "node": "dat-backup",
+   "q": "A regra 3-2-1 de backup é…",
+   "a": [
+    "3 cópias, 2 mídias, 1 fora do local",
+    "3 backups por dia, 2 testes, 1 auditoria",
+    "3 servidores, 2 sites, 1 nuvem",
+    "3 anos, 2 meses, 1 dia"
+   ],
+   "why": "Versões modernas acrescentam 1 cópia imutável ou offline e 0 erros no teste de restauração."
+  },
+  {
+   "id": "fc-dat-backup-2",
+   "node": "dat-backup",
+   "q": "Backup imutável protege principalmente contra…",
+   "a": [
+    "Ransomware apagando os backups",
+    "Falha de energia",
+    "Disco lento",
+    "Duplicidade de arquivos"
+   ],
+   "why": "Nem um administrador comprometido consegue alterar ou apagar antes do prazo de retenção."
+  },
+  {
+   "id": "fc-dat-backup-3",
+   "node": "dat-backup",
+   "q": "RAID 1 é…",
+   "a": [
+    "Espelhamento",
+    "Distribuição sem redundância",
+    "Paridade distribuída",
+    "Cópia fora do local"
+   ],
+   "why": "RAID 0 distribui sem proteção; RAID 5 usa paridade distribuída."
+  },
+  {
+   "id": "fc-dat-backup-4",
+   "node": "dat-backup",
+   "q": "RAID substitui backup?",
+   "a": [
+    "Não: arquivo apagado some nos dois discos",
+    "Sim, se for RAID 1",
+    "Sim, se for RAID 6",
+    "Só em servidores"
+   ],
+   "why": "RAID protege contra falha de disco, não contra exclusão, corrupção ou ransomware."
+  },
+  {
+   "id": "fc-dat-backup-5",
+   "node": "dat-backup",
+   "q": "O backup incremental copia…",
+   "a": [
+    "O que mudou desde o último backup de qualquer tipo",
+    "Tudo, sempre",
+    "O que mudou desde o último completo",
+    "Só os bancos de dados"
+   ],
+   "why": "Desde o último completo é o diferencial. O incremental é menor, mas a restauração precisa da cadeia toda."
+  },
+  {
+   "id": "fc-ten-zt-1",
+   "node": "ten-zt",
+   "q": "Princípio central do Zero Trust:",
+   "a": [
+    "Nunca confiar, sempre verificar",
+    "Confiar na rede interna",
+    "Bloquear toda a internet",
+    "Uma senha forte basta"
+   ],
+   "why": "Cada acesso é avaliado por identidade, dispositivo e contexto, venha de onde vier."
+  },
+  {
+   "id": "fc-ten-zt-2",
+   "node": "ten-zt",
+   "q": "Publicação do NIST sobre arquitetura Zero Trust:",
+   "a": [
+    "SP 800-207",
+    "SP 800-53",
+    "SP 800-61",
+    "SP 800-30"
+   ],
+   "why": "800-53 é o catálogo de controles; 800-61 é resposta a incidentes; 800-30 é avaliação de risco."
+  },
+  {
+   "id": "fc-ten-zt-3",
+   "node": "ten-zt",
+   "q": "Na arquitetura Zero Trust, quem decide se o acesso é liberado?",
+   "a": [
+    "PDP (ponto de decisão)",
+    "PEP (ponto de aplicação)",
+    "O roteador de borda",
+    "O usuário"
+   ],
+   "why": "O PDP decide com base na política; o PEP executa a decisão no caminho do acesso."
+  },
+  {
+   "id": "fc-ten-zt-4",
+   "node": "ten-zt",
+   "q": "A microssegmentação reduz principalmente…",
+   "a": [
+    "A movimentação lateral",
+    "O spam",
+    "A latência",
+    "O custo de licença"
+   ],
+   "why": "Cada carga só fala com o que precisa. Um servidor comprometido não alcança o resto."
+  },
+  {
+   "id": "fc-ten-zt-5",
+   "node": "ten-zt",
+   "q": "O ZTNA costuma substituir…",
+   "a": [
+    "A VPN de acesso amplo à rede",
+    "O antivírus",
+    "O backup",
+    "O SIEM"
+   ],
+   "why": "Em vez de colocar o usuário na rede, dá acesso só à aplicação autorizada."
+  },
+  {
+   "id": "fc-ten-ameacas-1",
+   "node": "ten-ameacas",
+   "q": "No STRIDE, o S significa…",
+   "a": [
+    "Spoofing",
+    "Sniffing",
+    "Scanning",
+    "Stealing"
+   ],
+   "why": "Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege."
+  },
+  {
+   "id": "fc-ten-ameacas-2",
+   "node": "ten-ameacas",
+   "q": "Ameaça STRIDE de alguém negar que realizou uma ação:",
+   "a": [
+    "Repudiation",
+    "Tampering",
+    "Spoofing",
+    "Denial of service"
+   ],
+   "why": "Mitiga-se com logs confiáveis e assinatura."
+  },
+  {
+   "id": "fc-ten-ameacas-3",
+   "node": "ten-ameacas",
+   "q": "No ATT&CK, a técnica T1566 é…",
+   "a": [
+    "Phishing",
+    "Brute Force",
+    "Valid Accounts",
+    "Data Encrypted for Impact"
+   ],
+   "why": "T1110 é força bruta, T1078 contas válidas, T1486 é o ransomware cifrando."
+  },
+  {
+   "id": "fc-ten-ameacas-4",
+   "node": "ten-ameacas",
+   "q": "A tática TA0008 do ATT&CK é…",
+   "a": [
+    "Lateral Movement",
+    "Initial Access",
+    "Exfiltration",
+    "Persistence"
+   ],
+   "why": "TA0001 acesso inicial, TA0003 persistência, TA0008 movimentação lateral, TA0010 exfiltração."
+  },
+  {
+   "id": "fc-ten-ameacas-5",
+   "node": "ten-ameacas",
+   "q": "Na Pirâmide da Dor, o que mais custa para o atacante mudar?",
+   "a": [
+    "TTPs",
+    "Hashes",
+    "Endereços IP",
+    "Domínios"
+   ],
+   "why": "Trocar hash ou IP é trivial. Mudar como opera exige reaprender."
+  },
+  {
+   "id": "fc-ten-ameacas-6",
+   "node": "ten-ameacas",
+   "q": "No ATT&CK, a diferença entre tática e técnica é…",
+   "a": [
+    "Tática é o objetivo; técnica é o como",
+    "Tática é o como; técnica é o objetivo",
+    "São sinônimos",
+    "Técnica é o grupo atacante"
+   ],
+   "why": "Exemplo: tática Acesso a credenciais; técnica OS Credential Dumping."
+  },
+  {
+   "id": "fc-ten-ia-1",
+   "node": "ten-ia",
+   "q": "Prompt injection é…",
+   "a": [
+    "Instruções maliciosas na entrada que sequestram o modelo",
+    "Envenenar o treino",
+    "Roubar os pesos",
+    "Um DDoS no endpoint de IA"
+   ],
+   "why": "Pode vir direto do usuário ou escondida num documento, e-mail ou página que o modelo lê."
+  },
+  {
+   "id": "fc-ten-ia-2",
+   "node": "ten-ia",
+   "q": "Manipular dados de treino para mudar o comportamento do modelo é…",
+   "a": [
+    "Data poisoning",
+    "Model inversion",
+    "Prompt injection",
+    "Jailbreak"
+   ],
+   "why": "Um backdoor no treino pode ativar respostas erradas com um gatilho específico."
+  },
+  {
+   "id": "fc-ten-ia-3",
+   "node": "ten-ia",
+   "q": "Base de conhecimento da MITRE sobre ataques a sistemas de IA:",
+   "a": [
+    "ATLAS",
+    "D3FEND",
+    "CAPEC",
+    "ATT&CK for ICS"
+   ],
+   "why": "O ATLAS segue o formato do ATT&CK com táticas e técnicas contra ML."
+  },
+  {
+   "id": "fc-ten-ia-4",
+   "node": "ten-ia",
+   "q": "Primeiro item do OWASP Top 10 para aplicações com LLM (2025):",
+   "a": [
+    "Prompt Injection",
+    "Excessive Agency",
+    "Data Poisoning",
+    "Model Theft"
+   ],
+   "why": "LLM01:2025. Excessive Agency (dar poder demais ao agente) também está na lista."
+  },
+  {
+   "id": "fc-ten-ia-5",
+   "node": "ten-ia",
+   "q": "O AIOps usa IA principalmente para…",
+   "a": [
+    "Correlacionar eventos e detectar anomalias na operação de TI",
+    "Escrever políticas",
+    "Assinar certificados",
+    "Gerar senhas"
+   ],
+   "why": "Reduz ruído de alertas e acelera a causa raiz em ambientes grandes."
+  },
+  {
+   "id": "fc-ten-ia-6",
+   "node": "ten-ia",
+   "q": "Ligação com a voz do CEO pedindo transferência urgente. Melhor controle:",
+   "a": [
+    "Confirmar por outro canal já conhecido",
+    "Antivírus atualizado",
+    "WAF",
+    "Cifrar o e-mail"
+   ],
+   "why": "Contra deepfake, o processo vence a tecnologia: callback e dupla aprovação."
+  }
+ ]
+}

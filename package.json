@@ -1,0 +1,6 @@
+{
+  "name": "green",
+  "private": true,
+  "type": "module",
+  "description": "GREEN · terminal de estudo. Este arquivo só existe para o Node rodar tools/sim.mjs; o jogo não precisa de build."
+}

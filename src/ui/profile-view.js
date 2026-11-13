@@ -5,6 +5,7 @@ import { content } from '../content.js';
 import * as store from '../state.js';
 import { rank, mastery, branchMastery, activeEffects, effectText } from '../skilltree.js';
 import { log } from './console.js';
+import { sheet, playerAttrs } from './run-view.js';
 
 function select(label, value, options, onChange) {
   const id = `set-${label.replace(/\W+/g, '-')}`;
@@ -19,8 +20,9 @@ export function mountProfile(container, { onNode }) {
     const s = store.get();
     const r = rank(s.xp);
     const m = mastery();
-    const answered = s.history.length;
-    const right = s.history.filter((x) => x.ok).length;
+    const exams = s.history.filter((x) => !x.kind);
+    const answered = exams.length;
+    const right = exams.filter((x) => x.ok).length;
     const effects = activeEffects();
 
     const branchRows = content.branches.map((b) => {
@@ -67,13 +69,20 @@ export function mountProfile(container, { onNode }) {
         h('p', { class: 'sec-lead' }, 'Cada traço é um nível comprovado em prova. XP mede atividade; este quadro mede o que você sabe.'),
         h('ul', { class: 'areas' }, branchRows)),
 
+      h('section', { class: 'sec' },
+        h('h2', { class: 'sec-title' }, 'Ficha do analista'),
+        h('p', { class: 'sec-lead' }, 'O que você comprova em cada área vira atributo de combate na operação. Ramos fortes, analista forte.'),
+        sheet(playerAttrs())),
+
       h('section', { class: 'sec sec-split' },
         h('div', {},
           h('h2', { class: 'sec-title' }, 'Registro'),
           h('dl', { class: 'stats' },
             h('dt', {}, 'provas feitas'), h('dd', {}, String(s.stats.exams)),
             h('dt', {}, 'aprovações'), h('dd', {}, String(s.stats.passed)),
-            h('dt', {}, 'acerto nas questões'), h('dd', {}, answered ? `${Math.round((right / answered) * 100)}% de ${answered}` : '—'),
+            h('dt', {}, 'acerto nas provas'), h('dd', {}, answered ? `${Math.round((right / answered) * 100)}% de ${answered}` : '—'),
+            h('dt', {}, 'acerto nas cartas'), h('dd', {}, s.stats.cards ? `${Math.round(((s.stats.cardsOk || 0) / s.stats.cards) * 100)}% de ${s.stats.cards}` : '—'),
+            h('dt', {}, 'operações vencidas'), h('dd', {}, `${s.stats.runsWon || 0}/${s.stats.runs || 0}`),
             h('dt', {}, 'contratos concluídos'), h('dd', {}, String(s.stats.missions)),
             h('dt', {}, 'contratos perdidos'), h('dd', {}, String(s.stats.missionsFailed)),
             h('dt', {}, 'reputação'), h('dd', {}, `${s.reputation}/100`))),

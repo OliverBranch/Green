@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.4.0",
   "tree": "tree.json",
   "exams": [
     "exams/fundamentos.json",
@@ -15,9 +15,30 @@
   "missions": [
     "missions/m01-cadeado-partido.json"
   ],
+  "battle": {
+    "techniques": [
+      "battle/techniques.json",
+      "battle/techniques-2.json"
+    ]
+  },
   "upcoming": [
-    { "title": "Spray noturno", "kind": "Resposta a incidente", "related": "ops-siem" },
-    { "title": "Fatura alheia", "kind": "Pentest de API", "related": "dev-owasp" },
-    { "title": "Política de gaveta", "kind": "Auditoria de governança", "related": "gov-politicas" }
-  ]
+    {
+      "title": "Fatura alheia",
+      "kind": "Pentest de API",
+      "related": "dev-owasp"
+    },
+    {
+      "title": "Política de gaveta",
+      "kind": "Auditoria de governança",
+      "related": "gov-politicas"
+    }
+  ],
+  "run": {
+    "monsters": "run/monsters.json",
+    "bosses": "run/bosses.json",
+    "affixes": "run/affixes.json",
+    "items": "run/items.json",
+    "events": "run/events.json",
+    "flashcards": "run/flashcards.json"
+  }
 }

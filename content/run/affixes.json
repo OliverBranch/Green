@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "affixes": [
+    {
+      "id": "blindado",
+      "name": "Blindado",
+      "icon": "shield",
+      "text": "Ganha 5 de bloqueio no início de cada turno dele.",
+      "mods": {
+        "blockPerTurn": 5
+      }
+    },
+    {
+      "id": "veloz",
+      "name": "Veloz",
+      "icon": "bolt",
+      "text": "Você tem 30% menos tempo em todas as cartas.",
+      "mods": {
+        "timerMul": 0.7
+      }
+    },
+    {
+      "id": "furtivo",
+      "name": "Furtivo",
+      "icon": "blind",
+      "text": "Os logs chegam com metade das palavras redigidas.",
+      "mods": {
+        "redact": 50
+      }
+    },
+    {
+      "id": "regenerativo",
+      "name": "Regenerativo",
+      "icon": "hook",
+      "text": "Recupera 4 de vida no início de cada turno dele.",
+      "mods": {
+        "regen": 4
+      }
+    },
+    {
+      "id": "brutal",
+      "name": "Brutal",
+      "icon": "target",
+      "text": "Golpes causam 30% a mais de dano.",
+      "mods": {
+        "dmgMul": 1.3
+      }
+    },
+    {
+      "id": "polimorfico",
+      "name": "Polimórfico",
+      "icon": "mask",
+      "text": "Você vê o tipo da próxima ação, mas não o valor.",
+      "mods": {
+        "hideIntent": true
+      }
+    },
+    {
+      "id": "numeroso",
+      "name": "Numeroso",
+      "icon": "net",
+      "text": "40% a mais de vida.",
+      "mods": {
+        "hpMul": 1.4
+      }
+    }
+  ]
+}

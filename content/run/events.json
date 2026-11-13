@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "events": [
+    {
+      "id": "ev-pendrive", "title": "Pen drive no estacionamento", "topic": "Engenharia social", "icon": "plug", "acts": [1, 2, 3],
+      "text": ["Um colaborador entrega um pen drive achado no estacionamento. A etiqueta diz \"SALÁRIOS 2026 - CONFIDENCIAL\".", "Todo mundo na sala quer saber o que tem dentro."],
+      "choices": [
+        { "label": "Plugar no notebook para descobrir de quem é", "outcomes": [
+          { "chance": 0.3, "text": "Eram fotos de férias e um telefone. O dono agradeceu com um vale-café.", "effects": { "credits": 25 } },
+          { "chance": 0.7, "text": "Era um atalho .lnk disfarçado de planilha. O antivírus pegou tarde: horas de limpeza.", "effects": { "hp": -16 } }
+        ] },
+        { "label": "Analisar numa sandbox isolada", "requires": { "node": "ops-siem", "level": 1 }, "outcomes": [
+          { "chance": 1, "text": "A sandbox mostrou o payload inteiro. Você virou o indicador em uma regra e guardou o script de resposta.", "effects": { "script": "random", "credits": 10 } }
+        ] },
+        { "label": "Descartar como lixo eletrônico", "outcomes": [
+          { "chance": 1, "text": "Curiosidade não é controle de segurança. Nada aconteceu, e isso é bom.", "effects": {} }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-auditoria", "title": "Auditoria surpresa", "topic": "Governança e conformidade", "icon": "doc", "acts": [1, 2, 3],
+      "text": ["A auditoria interna aparece sem aviso com uma pergunta técnica e uma prancheta.", "Uma resposta boa vira verba. Uma resposta ruim vira achado no relatório."],
+      "choices": [
+        { "label": "Responder ao auditor", "quiz": { "nodes": ["gov-politicas", "fun-cid", "gov-dados", "fun-riscos", "fun-normas"],
+          "win": { "text": "Resposta precisa. O auditor anotou \"controle efetivo\" e liberou verba.", "effects": { "credits": 45, "maxHp": 4 } },
+          "lose": { "text": "Achado no relatório. Você passa a tarde corrigindo evidências.", "effects": { "hp": -10 } } } },
+        { "label": "Pedir prazo para responder por escrito", "outcomes": [
+          { "chance": 1, "text": "Prazo concedido, com multa de atraso no plano de ação.", "effects": { "credits": -15 } }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-sexta", "title": "Patch na sexta às 18h", "topic": "Gestão de vulnerabilidades", "icon": "patch", "acts": [1, 2, 3],
+      "text": ["Saiu um patch crítico (CVSS 9.8) para o servidor do ERP. O fornecedor recomenda aplicar \"o quanto antes\".", "São 18h de sexta."],
+      "choices": [
+        { "label": "Aplicar agora mesmo", "outcomes": [
+          { "chance": 0.55, "text": "Aplicado sem drama. O servidor está mais duro.", "effects": { "maxHp": 6, "hp": 6 } },
+          { "chance": 0.45, "text": "O patch quebrou a integração do ERP. Fim de semana perdido.", "effects": { "hp": -18 } }
+        ] },
+        { "label": "Testar em homologação antes", "requires": { "node": "dev-owasp", "level": 1 }, "outcomes": [
+          { "chance": 1, "text": "O teste pegou a quebra antes da produção. Você aplicou com a correção junto.", "effects": { "maxHp": 6, "hp": 6 } }
+        ] },
+        { "label": "Agendar para a janela de segunda", "outcomes": [
+          { "chance": 1, "text": "Risco aceito por um fim de semana, com monitoramento reforçado. Você dormiu.", "effects": { "hp": 8 } }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-estagiario", "title": "O estagiário quer admin", "topic": "Controle de acesso e menor privilégio", "icon": "key", "acts": [1, 2],
+      "text": ["\"É só pra instalar uma extensão no navegador\", diz o estagiário, pedindo direito de administrador local."],
+      "choices": [
+        { "label": "Dar admin, só por hoje", "outcomes": [
+          { "chance": 0.4, "text": "Ele instalou a extensão e devolveu o acesso. Dessa vez deu sorte.", "effects": {} },
+          { "chance": 0.6, "text": "A \"extensão\" era um minerador de criptomoeda. O notebook virou forno.", "effects": { "hp": -14 } }
+        ] },
+        { "label": "Desenhar um acesso com o menor privilégio", "quiz": { "nodes": ["hard-acesso", "ten-zt", "gov-politicas"],
+          "win": { "text": "Acesso pontual, com escopo e prazo. O estagiário saiu feliz e o risco ficou contido.", "effects": { "relic": "comum" } },
+          "lose": { "text": "O desenho ficou confuso e o chamado rodou três dias.", "effects": { "hp": -6 } } } },
+        { "label": "Negar e indicar o catálogo de software", "outcomes": [
+          { "chance": 1, "text": "Burocrático, mas correto.", "effects": { "credits": 10 } }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-alerta", "title": "Alerta às 3h da manhã", "topic": "Monitoramento e SIEM", "icon": "eye", "acts": [1, 2, 3],
+      "text": ["O SIEM dispara um alerta de \"login anômalo\" pela quinta vez nesta semana. Nas outras quatro, era falso positivo."],
+      "choices": [
+        { "label": "Investigar mesmo assim", "outcomes": [
+          { "chance": 0.6, "text": "Falso positivo de novo, mas você achou a origem do ruído e afinou a regra.", "effects": { "hp": -6, "script": "s-grep" } },
+          { "chance": 0.4, "text": "Dessa vez era real. O atacante ainda está lá.", "effects": { "fight": "common" } }
+        ] },
+        { "label": "Silenciar a regra", "outcomes": [
+          { "chance": 0.5, "text": "Silêncio. Era mesmo ruído.", "effects": { "hp": 4 } },
+          { "chance": 0.5, "text": "Era real, e ninguém viu. Você descobriu dias depois.", "effects": { "hp": -20 } }
+        ] },
+        { "label": "Reescrever a correlação", "quiz": { "nodes": ["ops-siem", "ops-logs"],
+          "win": { "text": "Regra nova, sem ruído e sem ponto cego.", "effects": { "relic": "comum" } },
+          "lose": { "text": "A regra nova ficou pior que a antiga.", "effects": { "hp": -8 } } } }
+      ]
+    },
+    {
+      "id": "ev-cafe", "title": "Copa do SOC", "topic": "Descanso", "icon": "heart", "acts": [1, 2, 3],
+      "text": ["Alguém trouxe pão de queijo. A copa está cheia de gente do time."],
+      "choices": [
+        { "label": "Tomar um café com calma", "outcomes": [ { "chance": 1, "text": "Dez minutos fora da tela fazem milagre.", "effects": { "hp": 14 } } ] },
+        { "label": "Trocar ideia com o red team", "outcomes": [ { "chance": 1, "text": "Eles explicaram exatamente onde você errou da última vez.", "effects": { "unrust": "all", "hp": 4 } } ] },
+        { "label": "Pegar um plantão extra", "outcomes": [ { "chance": 1, "text": "Dinheiro no bolso, olheiras no rosto.", "effects": { "credits": 40, "hp": -10 } } ] }
+      ]
+    },
+    {
+      "id": "ev-pastebin", "title": "Vazamento no Pastebin", "topic": "LGPD e resposta a incidentes", "icon": "drop", "acts": [2, 3],
+      "text": ["Uma lista com 3 mil e-mails e CPFs de clientes apareceu num site de colagem. Os dados batem com a sua base."],
+      "choices": [
+        { "label": "Conduzir a comunicação à ANPD e aos titulares", "quiz": { "nodes": ["dat-classificacao", "gov-politicas", "gov-dados"],
+          "win": { "text": "Comunicação correta e no prazo. A transparência protegeu a reputação.", "effects": { "credits": 40, "maxHp": 6, "hp": 6 } },
+          "lose": { "text": "A comunicação saiu incompleta e gerou uma segunda onda de notícias.", "effects": { "hp": -12 } } } },
+        { "label": "Pedir a remoção e não comunicar ninguém", "outcomes": [
+          { "chance": 0.35, "text": "A lista sumiu antes de alguém notar.", "effects": { "credits": 30 } },
+          { "chance": 0.65, "text": "Um jornalista achou a lista antes. Esconder piorou tudo.", "effects": { "hp": -24 } }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-conferencia", "title": "Conferência de segurança", "topic": "Aprendizado contínuo", "icon": "brain", "acts": [1, 2, 3],
+      "text": ["Tem uma conferência de segurança na cidade hoje. Palestras sobre exatamente o que você anda errando."],
+      "choices": [
+        { "label": "Assistir às palestras", "outcomes": [ { "chance": 1, "text": "Você voltou com anotações e a cabeça arrumada. Toda ferrugem saiu.", "effects": { "unrust": "all" } } ] },
+        { "label": "Ir ao estande das ferramentas (25 créditos)", "requires": { "credits": 25 }, "outcomes": [ { "chance": 1, "text": "Saiu com uma licença de avaliação bem útil.", "effects": { "credits": -25, "relic": "comum" } } ] },
+        { "label": "Ficar no SOC", "outcomes": [ { "chance": 1, "text": "Alguém precisa ficar de olho.", "effects": { "hp": 5 } } ] }
+      ]
+    },
+    {
+      "id": "ev-fornecedor", "title": "VPN eterna do fornecedor", "topic": "Zero Trust e acesso de terceiros", "icon": "split", "acts": [1, 2, 3],
+      "text": ["O fornecedor do ERP tem uma VPN ligada 24 horas, com usuário compartilhado entre 12 técnicos e acesso à rede inteira."],
+      "choices": [
+        { "label": "Trocar por acesso sob demanda e segmentado", "requires": { "node": "ten-zt", "level": 1 }, "outcomes": [
+          { "chance": 1, "text": "Acesso nominal, com MFA, por janela de tempo e só ao servidor do ERP.", "effects": { "maxHp": 8, "hp": 8 } }
+        ] },
+        { "label": "Perguntar ao arquiteto o que fazer", "quiz": { "nodes": ["ten-zt", "net-perimetro", "hard-acesso"],
+          "win": { "text": "Vocês desenharam juntos o acesso certo.", "effects": { "maxHp": 6, "credits": 15 } },
+          "lose": { "text": "A conversa terminou sem decisão. A VPN continua lá.", "effects": { "hp": -6 } } } },
+        { "label": "Deixar como está", "outcomes": [
+          { "chance": 0.5, "text": "Nada aconteceu. Ainda.", "effects": { "credits": 15 } },
+          { "chance": 0.5, "text": "A senha compartilhada vazou. Alguém entrou pela VPN do fornecedor.", "effects": { "fight": "common" } }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-md5", "title": "Senhas em MD5", "topic": "Criptografia e armazenamento de senhas", "icon": "key", "acts": [1, 2, 3],
+      "text": ["Revisando o código legado, você acha a tabela de usuários: senhas em MD5, sem sal."],
+      "choices": [
+        { "label": "Planejar a migração com o time de desenvolvimento", "quiz": { "nodes": ["cri-primitivas", "dev-owasp"],
+          "win": { "text": "Migração para Argon2id na próxima troca de senha. Bem feito.", "effects": { "relic": "comum" } },
+          "lose": { "text": "O plano escolheu o algoritmo errado e precisou ser refeito.", "effects": { "hp": -8 } } } },
+        { "label": "Colocar um sal fixo e seguir em frente", "outcomes": [
+          { "chance": 0.5, "text": "Melhorou um pouco. Só um pouco.", "effects": {} },
+          { "chance": 0.5, "text": "O sal fixo estava no repositório. Os hashes caíram do mesmo jeito.", "effects": { "hp": -14 } }
+        ] }
+      ]
+    },
+    {
+      "id": "ev-planilha", "title": "Planilha na nuvem pessoal", "topic": "Governança e shadow IT", "icon": "drop", "acts": [1, 2, 3],
+      "text": ["O comercial controla os clientes numa planilha no drive pessoal do gerente, compartilhada por link aberto."],
+      "choices": [
+        { "label": "Conversar e migrar para o drive corporativo", "outcomes": [ { "chance": 1, "text": "Deu trabalho, mas agora tem dono, rótulo e controle de acesso.", "effects": { "hp": 8 } } ] },
+        { "label": "Bloquear o domínio no proxy", "requires": { "node": "net-perimetro", "level": 1 }, "outcomes": [ { "chance": 1, "text": "Bloqueado. O comercial reclamou, a diretoria apoiou.", "effects": { "credits": 25 } } ] },
+        { "label": "Classificar os dados e aplicar rótulo", "quiz": { "nodes": ["dat-classificacao", "gov-dados", "gov-politicas"],
+          "win": { "text": "Rótulo certo, regra de DLP certa. O link aberto morreu sozinho.", "effects": { "credits": 30, "maxHp": 4 } },
+          "lose": { "text": "Rótulo errado: metade da empresa perdeu acesso ao que precisava.", "effects": { "hp": -8 } } } }
+      ]
+    },
+    {
+      "id": "ev-vizinho", "title": "O vizinho foi cifrado", "topic": "Backup e continuidade", "icon": "nobackup", "acts": [2, 3],
+      "text": ["A empresa do andar de cima levou ransomware. O gerente deles pede ajuda, desesperado."],
+      "choices": [
+        { "label": "Ajudar na resposta (custa energia)", "outcomes": [ { "chance": 1, "text": "Você passou a noite lá. Eles retribuíram com equipamento.", "effects": { "hp": -12, "relic": "rara" } } ] },
+        { "label": "Testar a restauração do seu próprio backup", "outcomes": [ { "chance": 1, "text": "A restauração funcionou. Dá para dormir tranquilo.", "effects": { "hp": 12 } } ] },
+        { "label": "Recusar", "outcomes": [ { "chance": 1, "text": "Cada um com seu incidente.", "effects": {} } ] }
+      ]
+    },
+    {
+      "id": "ev-campanha", "title": "Campanha de phishing do RH", "topic": "Conscientização", "icon": "mail", "acts": [1, 2, 3],
+      "text": ["O RH quer fazer uma simulação de phishing e pede que você monte o material de treinamento."],
+      "choices": [
+        { "label": "Montar o treinamento", "quiz": { "nodes": ["gov-politicas", "ops-siem", "fun-cid", "hard-acesso"],
+          "win": { "text": "A taxa de cliques caiu pela metade no mês seguinte.", "effects": { "script": "random", "credits": 20 } },
+          "lose": { "text": "O treinamento ensinou uma dica errada. Vai precisar de errata.", "effects": { "hp": -6 } } } },
+        { "label": "Deixar para o próximo trimestre", "outcomes": [ { "chance": 1, "text": "O RH vai lembrar disso na avaliação.", "effects": { "credits": -10 } } ] }
+      ]
+    },
+    {
+      "id": "ev-emboscada", "title": "Emboscada", "topic": "Resposta a incidentes", "icon": "target", "acts": [1, 2, 3],
+      "text": ["Você abre um chamado de rotina e percebe: o atacante estava esperando alguém do SOC entrar naquela máquina."],
+      "choices": [
+        { "label": "Enfrentar agora", "outcomes": [ { "chance": 1, "text": "Ele não esperava que você reagisse tão rápido.", "effects": { "fight": "elite" } } ] },
+        { "label": "Isolar a máquina e recuar", "outcomes": [ { "chance": 1, "text": "Você escapou, mas perdeu o equipamento.", "effects": { "hp": -12 } } ] }
+      ]
+    }
+  ]
+}

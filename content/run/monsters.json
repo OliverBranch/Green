@@ -1,0 +1,549 @@
+{
+  "version": 2,
+  "monsters": [
+    {
+      "id": "m-pescador",
+      "name": "PESCADOR",
+      "alias": "engenheiro social",
+      "sprite": "fish",
+      "topic": "Engenharia social e conscientização",
+      "nodes": [
+        "gov-politicas",
+        "ops-siem",
+        "hard-acesso"
+      ],
+      "acts": [
+        1,
+        2
+      ],
+      "flavor": "Ele não invade sistemas. Ele convence pessoas a abrir a porta.",
+      "hp": 34,
+      "ai": "random",
+      "opener": 0,
+      "style": "Golpes em série e sabotagem. Defender rende mais que analisar.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-phish-link",
+          "dmg": 7
+        },
+        {
+          "type": "debuff",
+          "tech": "t-vishing",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 4
+        },
+        {
+          "type": "attack",
+          "tech": "t-usb-bait",
+          "dmg": 3,
+          "hits": 2
+        },
+        {
+          "type": "buff",
+          "name": "Lista de alvos",
+          "str": 2,
+          "w": 0.7
+        }
+      ]
+    },
+    {
+      "id": "m-chaveiro",
+      "name": "CHAVEIRO",
+      "alias": "colecionador de senhas",
+      "sprite": "keys",
+      "topic": "Controle de acesso e MFA",
+      "nodes": [
+        "hard-acesso",
+        "cri-primitivas"
+      ],
+      "acts": [
+        1
+      ],
+      "flavor": "Cada chave no anel é uma senha de alguém que reutilizou a mesma em todo lugar.",
+      "hp": 30,
+      "ai": "random",
+      "opener": 0,
+      "style": "Vários golpes pequenos e um grande de vez em quando: guarde a análise para o golpe grande.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-spray",
+          "dmg": 3,
+          "hits": 3
+        },
+        {
+          "type": "attack",
+          "tech": "t-guess",
+          "dmg": 8
+        },
+        {
+          "type": "debuff",
+          "tech": "t-mfa-fatigue",
+          "status": "ruido",
+          "turns": 1,
+          "dmg": 3
+        },
+        {
+          "type": "attack",
+          "tech": "t-valid",
+          "dmg": 10,
+          "w": 0.6
+        }
+      ]
+    },
+    {
+      "id": "m-sonda",
+      "name": "SONDA",
+      "alias": "drone de reconhecimento",
+      "sprite": "probe",
+      "topic": "Redes e perímetro",
+      "nodes": [
+        "net-fundamentos",
+        "net-perimetro"
+      ],
+      "acts": [
+        1,
+        2
+      ],
+      "flavor": "Mapeia cada porta aberta e se põe no meio de quem conversa.",
+      "hp": 38,
+      "ai": "random",
+      "opener": 0,
+      "style": "Primeiro mapeia, depois bate mais forte. Anular o reconhecimento evita o reforço.",
+      "intents": [
+        {
+          "type": "buff",
+          "tech": "t-scan",
+          "str": 3
+        },
+        {
+          "type": "attack",
+          "tech": "t-netscan",
+          "dmg": 6
+        },
+        {
+          "type": "debuff",
+          "tech": "t-arp",
+          "status": "vulneravel",
+          "turns": 1,
+          "dmg": 5
+        }
+      ]
+    },
+    {
+      "id": "m-larva",
+      "name": "LARVA",
+      "alias": "parasita de aplicação",
+      "sprite": "larva",
+      "topic": "OWASP Top 10 e APIs",
+      "nodes": [
+        "dev-owasp",
+        "dev-apis"
+      ],
+      "acts": [
+        1,
+        2
+      ],
+      "flavor": "Vive dentro do código que ninguém revisou.",
+      "hp": 36,
+      "ai": "random",
+      "opener": 0,
+      "style": "Golpes médios e às vezes se esconde atrás de um bloqueio.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-sqli",
+          "dmg": 9
+        },
+        {
+          "type": "debuff",
+          "tech": "t-xss-cookie",
+          "status": "vazamento",
+          "turns": 2,
+          "dmg": 4
+        },
+        {
+          "type": "attack",
+          "tech": "t-idor",
+          "dmg": 7
+        },
+        {
+          "type": "block",
+          "name": "Ofuscar payload",
+          "block": 8,
+          "w": 0.7
+        }
+      ]
+    },
+    {
+      "id": "m-vazador",
+      "name": "GOTEIRA",
+      "alias": "vazamento ambulante",
+      "sprite": "drop",
+      "topic": "Dados, DLP e LGPD",
+      "nodes": [
+        "dat-classificacao",
+        "dat-dlp"
+      ],
+      "acts": [
+        1,
+        2,
+        3
+      ],
+      "flavor": "Pinga um pouco por vez, por qualquer fresta que achar.",
+      "hp": 32,
+      "ai": "random",
+      "opener": 0,
+      "style": "Vaza aos poucos: o dano por turno se acumula se você não fechar a torneira cedo.",
+      "intents": [
+        {
+          "type": "debuff",
+          "tech": "t-archive",
+          "status": "vazamento",
+          "turns": 3,
+          "dmg": 2
+        },
+        {
+          "type": "attack",
+          "tech": "t-forward",
+          "dmg": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-dns-exfil",
+          "dmg": 3,
+          "hits": 3
+        },
+        {
+          "type": "attack",
+          "tech": "t-insider-cloud",
+          "dmg": 8,
+          "w": 0.8
+        }
+      ]
+    },
+    {
+      "id": "m-fantasma",
+      "name": "FANTASMA",
+      "alias": "ameaça interna",
+      "sprite": "ghost",
+      "topic": "Governança e ameaça interna",
+      "nodes": [
+        "gov-politicas",
+        "gov-dados",
+        "dat-dlp"
+      ],
+      "acts": [
+        2,
+        3
+      ],
+      "flavor": "Tinha crachá, senha e acesso legítimo. Só faltava uma política que dissesse não.",
+      "hp": 40,
+      "ai": "random",
+      "opener": 0,
+      "style": "Ameaça interna: parece inofensivo até crescer. Bata cedo.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-sharepoint",
+          "dmg": 8
+        },
+        {
+          "type": "buff",
+          "tech": "t-local-account",
+          "str": 3,
+          "block": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-insider-cloud",
+          "dmg": 10
+        },
+        {
+          "type": "debuff",
+          "status": "ruido",
+          "turns": 1,
+          "name": "Desvio de atenção",
+          "dmg": 3,
+          "w": 0.7
+        }
+      ]
+    },
+    {
+      "id": "m-pinguim",
+      "name": "PINGUIM ZUMBI",
+      "alias": "servidor Linux possuído",
+      "sprite": "penguin",
+      "topic": "Hardening Linux",
+      "nodes": [
+        "hard-linux",
+        "hard-acesso"
+      ],
+      "acts": [
+        2
+      ],
+      "flavor": "O sudoers dele foi escrito em 2014 e nunca mais revisado.",
+      "hp": 44,
+      "ai": "random",
+      "opener": 0,
+      "style": "Se regenera pela persistência. Anule o cron e ele para de voltar.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-unix-shell",
+          "dmg": 7
+        },
+        {
+          "type": "buff",
+          "tech": "t-sudo",
+          "str": 3
+        },
+        {
+          "type": "heal",
+          "heal": 8,
+          "tech": "t-cron",
+          "block": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-webshell",
+          "dmg": 5,
+          "hits": 2
+        }
+      ]
+    },
+    {
+      "id": "m-criptofago",
+      "name": "CRIPTÓFAGO",
+      "alias": "devorador de chaves",
+      "sprite": "beetle",
+      "topic": "Criptografia, PKI e TLS",
+      "nodes": [
+        "cri-primitivas",
+        "cri-pki",
+        "cri-tls"
+      ],
+      "acts": [
+        2
+      ],
+      "flavor": "Come MD5 no café da manhã e certificados vencidos no almoço.",
+      "hp": 40,
+      "ai": "random",
+      "opener": 0,
+      "style": "Deixa você sem cobertura e depois quebra o hash com tudo.",
+      "intents": [
+        {
+          "type": "debuff",
+          "tech": "t-tls-downgrade",
+          "status": "vulneravel",
+          "turns": 1,
+          "dmg": 4
+        },
+        {
+          "type": "attack",
+          "tech": "t-hash-crack",
+          "dmg": 11,
+          "w": 0.8
+        },
+        {
+          "type": "debuff",
+          "tech": "t-cert-sign",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 6
+        }
+      ]
+    },
+    {
+      "id": "m-nimbo",
+      "name": "NIMBO",
+      "alias": "nuvem mal configurada",
+      "sprite": "cloudlet",
+      "topic": "Segurança em nuvem",
+      "nodes": [
+        "cld-nuvem",
+        "dev-owasp"
+      ],
+      "acts": [
+        2,
+        3
+      ],
+      "flavor": "Responsabilidade compartilhada: a parte que era sua ficou aberta.",
+      "hp": 42,
+      "ai": "random",
+      "opener": 0,
+      "style": "Muitos golpes pequenos e escudo de auto scaling.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-imds",
+          "dmg": 8
+        },
+        {
+          "type": "debuff",
+          "tech": "t-cloud-keys",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 5
+        },
+        {
+          "type": "attack",
+          "tech": "t-bucket",
+          "dmg": 3,
+          "hits": 3
+        },
+        {
+          "type": "block",
+          "name": "Auto scaling",
+          "block": 10,
+          "w": 0.7
+        }
+      ]
+    },
+    {
+      "id": "m-apagador",
+      "name": "APAGADOR",
+      "alias": "especialista em evasão",
+      "sprite": "eraser",
+      "topic": "Monitoramento, logs e evasão",
+      "nodes": [
+        "ops-siem",
+        "ops-logs",
+        "ops-forense"
+      ],
+      "acts": [
+        2,
+        3
+      ],
+      "flavor": "O que não está no SIEM não aconteceu. É nisso que ele aposta.",
+      "hp": 46,
+      "ai": "random",
+      "opener": 0,
+      "style": "Apaga rastros (ruído) e desliga suas defesas antes de bater.",
+      "intents": [
+        {
+          "type": "debuff",
+          "tech": "t-clear-logs",
+          "status": "ruido",
+          "turns": 1,
+          "block": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-masq",
+          "dmg": 8
+        },
+        {
+          "type": "buff",
+          "tech": "t-edr-kill",
+          "str": 3
+        },
+        {
+          "type": "attack",
+          "dmg": 4,
+          "hits": 2,
+          "name": "Rajada de comandos"
+        }
+      ]
+    },
+    {
+      "id": "m-eco",
+      "name": "ECO",
+      "alias": "IA manipulada",
+      "sprite": "echo",
+      "topic": "IA e ameaças emergentes",
+      "nodes": [
+        "ten-ia",
+        "ten-zt",
+        "dat-classificacao"
+      ],
+      "acts": [
+        3
+      ],
+      "flavor": "Repete o que ouve. O problema é quem ele escuta.",
+      "hp": 48,
+      "ai": "random",
+      "opener": 0,
+      "style": "Engana com voz e texto: ruído e credencial roubada. Respostas rápidas valem ouro aqui.",
+      "intents": [
+        {
+          "type": "debuff",
+          "tech": "t-deepfake",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 6
+        },
+        {
+          "type": "debuff",
+          "tech": "t-prompt-inj",
+          "status": "ruido",
+          "turns": 1,
+          "dmg": 5
+        },
+        {
+          "type": "attack",
+          "tech": "t-ai-leak",
+          "dmg": 9
+        },
+        {
+          "type": "attack",
+          "tech": "t-mfa-fatigue",
+          "dmg": 4,
+          "hits": 2
+        }
+      ]
+    },
+    {
+      "id": "m-arrombador",
+      "name": "ARROMBADOR",
+      "alias": "operador de Active Directory",
+      "sprite": "brute",
+      "topic": "Windows e Active Directory",
+      "nodes": [
+        "hard-windows",
+        "hard-acesso"
+      ],
+      "acts": [
+        3
+      ],
+      "flavor": "Não precisa de zero-day. Precisa de uma conta de serviço com senha fraca.",
+      "hp": 54,
+      "ai": "random",
+      "opener": 0,
+      "style": "Força bruta do AD: fica mais forte a cada credencial. O Kerberoasting é o golpe a anular.",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-macro",
+          "dmg": 7
+        },
+        {
+          "type": "buff",
+          "tech": "t-lsass",
+          "str": 4,
+          "w": 0.8
+        },
+        {
+          "type": "attack",
+          "tech": "t-kerberoast",
+          "dmg": 10
+        },
+        {
+          "type": "attack",
+          "tech": "t-psexec",
+          "dmg": 5,
+          "hits": 2
+        },
+        {
+          "type": "debuff",
+          "tech": "t-ps-enc",
+          "status": "vulneravel",
+          "turns": 1,
+          "dmg": 4
+        }
+      ]
+    }
+  ]
+}

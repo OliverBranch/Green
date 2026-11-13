@@ -1,0 +1,292 @@
+{
+  "version": 2,
+  "relics": [
+    {
+      "id": "r-cafe",
+      "name": "Café passado na hora",
+      "icon": "bolt",
+      "rarity": "comum",
+      "text": "+1 de banda no primeiro turno de cada combate.",
+      "mods": {
+        "firstTurnAp": 1
+      }
+    },
+    {
+      "id": "r-monitores",
+      "name": "Painel de quatro monitores",
+      "icon": "eye",
+      "rarity": "comum",
+      "text": "Começa cada combate com 8 de bloqueio.",
+      "mods": {
+        "firstTurnBlock": 8
+      }
+    },
+    {
+      "id": "r-cofre",
+      "name": "Cofre de senhas",
+      "icon": "key",
+      "rarity": "comum",
+      "text": "Você fica imune a credencial roubada.",
+      "mods": {
+        "immune": [
+          "credencial"
+        ]
+      }
+    },
+    {
+      "id": "r-feed",
+      "name": "Feed de inteligência",
+      "icon": "brain",
+      "rarity": "comum",
+      "text": "Toda análise de log começa com uma alternativa errada descartada.",
+      "mods": {
+        "logCut": 1
+      }
+    },
+    {
+      "id": "r-teclado",
+      "name": "Teclado mecânico",
+      "icon": "sword",
+      "rarity": "comum",
+      "text": "Atacar causa 25% a mais de dano.",
+      "mods": {
+        "atkMul": 0.25
+      }
+    },
+    {
+      "id": "r-ngfw",
+      "name": "Firewall de nova geração",
+      "icon": "wall",
+      "rarity": "comum",
+      "text": "Cada Defender gera +3 de bloqueio.",
+      "mods": {
+        "defBonus": 3
+      }
+    },
+    {
+      "id": "r-caneca",
+      "name": "Caneca \"eu amo logs\"",
+      "icon": "heart",
+      "rarity": "comum",
+      "text": "+6 de integridade ao fim de cada combate vencido.",
+      "mods": {
+        "healAfter": 6
+      }
+    },
+    {
+      "id": "r-pato",
+      "name": "Pato de borracha",
+      "icon": "doc",
+      "rarity": "comum",
+      "text": "A primeira resposta errada de cada combate pode ser refeita (sem crítico).",
+      "mods": {
+        "firstWrongFree": 1
+      }
+    },
+    {
+      "id": "r-politica",
+      "name": "Política assinada pela diretoria",
+      "icon": "shield",
+      "rarity": "comum",
+      "text": "Metade do bloqueio que sobrar passa para o turno seguinte.",
+      "mods": {
+        "blockCarry": 0.5
+      }
+    },
+    {
+      "id": "r-bounty",
+      "name": "Carteira de bug bounty",
+      "icon": "coin",
+      "rarity": "comum",
+      "text": "+30% de créditos ganhos.",
+      "mods": {
+        "creditMul": 0.3
+      }
+    },
+    {
+      "id": "r-pager",
+      "name": "Pager do plantão",
+      "icon": "plug",
+      "rarity": "comum",
+      "text": "Guarda até 2 de banda não usada para o próximo turno.",
+      "mods": {
+        "carryMax": 2
+      }
+    },
+    {
+      "id": "r-mochila",
+      "name": "Mochila de resposta",
+      "icon": "patch",
+      "rarity": "comum",
+      "text": "Carrega até 4 scripts, em vez de 3. Ganha um script agora.",
+      "mods": {
+        "scriptSlots": 1
+      },
+      "onGain": {
+        "script": "random"
+      }
+    },
+    {
+      "id": "r-honeypot",
+      "name": "Honeypot",
+      "icon": "target",
+      "rarity": "rara",
+      "text": "O primeiro ataque de cada combate cai no honeypot e é anulado.",
+      "mods": {
+        "autoNegate": 1
+      }
+    },
+    {
+      "id": "r-fita",
+      "name": "Backup em fita",
+      "icon": "nobackup",
+      "rarity": "rara",
+      "text": "Uma vez por operação, ao chegar a 0 de integridade, você volta com 30.",
+      "mods": {
+        "phoenix": 30
+      }
+    },
+    {
+      "id": "r-laminado",
+      "name": "Colinha plastificada",
+      "icon": "doc",
+      "rarity": "rara",
+      "text": "+4 s no cronômetro de todas as cartas.",
+      "mods": {
+        "timerBonus": 4
+      }
+    },
+    {
+      "id": "r-oscp",
+      "name": "Certificação na parede",
+      "icon": "cert",
+      "rarity": "rara",
+      "text": "Críticos multiplicam o dano por +0,5.",
+      "mods": {
+        "critMulBonus": 0.5
+      }
+    },
+    {
+      "id": "r-sandbox",
+      "name": "Sandbox",
+      "icon": "flask",
+      "rarity": "rara",
+      "text": "Cada golpe do inimigo causa 2 a menos de dano.",
+      "mods": {
+        "dmgReduce": 2
+      }
+    },
+    {
+      "id": "r-contrato",
+      "name": "Contrato de resposta a incidentes",
+      "icon": "bolt",
+      "rarity": "chefe",
+      "text": "+1 de banda em todos os turnos.",
+      "mods": {
+        "apBonus": 1
+      }
+    },
+    {
+      "id": "r-xdr",
+      "name": "Licença de XDR",
+      "icon": "eye",
+      "rarity": "chefe",
+      "text": "Analisar log custa 1 de banda, em vez de 2.",
+      "mods": {
+        "analyzeDiscount": 1
+      }
+    },
+    {
+      "id": "r-redteam",
+      "name": "Relatório de red team",
+      "icon": "target",
+      "rarity": "chefe",
+      "text": "O inimigo começa cada combate exposto por 2 turnos.",
+      "mods": {
+        "startExposed": 2
+      }
+    },
+    {
+      "id": "r-seguro",
+      "name": "Apólice de seguro cibernético",
+      "icon": "heart",
+      "rarity": "chefe",
+      "text": "+25 de integridade máxima.",
+      "mods": {
+        "maxHp": 25
+      }
+    }
+  ],
+  "scripts": [
+    {
+      "id": "s-kill",
+      "name": "kill -9",
+      "icon": "target",
+      "price": 32,
+      "text": "Causa 12 de dano ao inimigo.",
+      "effects": {
+        "flatDamage": 12
+      }
+    },
+    {
+      "id": "s-snapshot",
+      "name": "Snapshot da VM",
+      "icon": "heart",
+      "price": 30,
+      "text": "+18 de integridade.",
+      "effects": {
+        "heal": 18
+      }
+    },
+    {
+      "id": "s-grep",
+      "name": "grep -r nos logs",
+      "icon": "eye",
+      "price": 26,
+      "text": "Expõe o inimigo por 2 turnos (+50% de dano).",
+      "effects": {
+        "expose": 2
+      }
+    },
+    {
+      "id": "s-bloqueio",
+      "name": "Bloqueio de emergência",
+      "icon": "wall",
+      "price": 30,
+      "text": "+15 de bloqueio neste turno.",
+      "effects": {
+        "block": 15
+      }
+    },
+    {
+      "id": "s-energetico",
+      "name": "Energético",
+      "icon": "bolt",
+      "price": 28,
+      "text": "+2 de banda neste turno.",
+      "effects": {
+        "ap": 2
+      }
+    },
+    {
+      "id": "s-wiki",
+      "name": "Wiki interna",
+      "icon": "doc",
+      "price": 22,
+      "text": "A próxima carta vem com duas alternativas erradas a menos.",
+      "effects": {
+        "cardCut": 2
+      }
+    },
+    {
+      "id": "s-isolar",
+      "name": "Isolamento de rede",
+      "icon": "split",
+      "price": 26,
+      "text": "Remove credencial roubada, ruído, vazamento e falta de cobertura.",
+      "effects": {
+        "cleanse": true
+      }
+    }
+  ]
+}

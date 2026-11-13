@@ -1,0 +1,712 @@
+{
+  "version": 1,
+  "slots": 6,
+  "actions": [
+    {
+      "id": "b-investigar",
+      "base": true,
+      "name": "Investigar na mão",
+      "icon": "eye",
+      "cost": 1,
+      "effects": {
+        "vis": 12
+      },
+      "text": "+12 de visibilidade.",
+      "flavor": "grep, café e paciência."
+    },
+    {
+      "id": "b-varrer",
+      "base": true,
+      "name": "Varredura de antivírus",
+      "icon": "scan",
+      "cost": 2,
+      "effects": {
+        "damage": 7
+      },
+      "text": "Causa 7 de dano à presença do atacante.",
+      "flavor": "Pega o óbvio. O atacante raramente é óbvio."
+    },
+    {
+      "id": "b-cabo",
+      "base": true,
+      "name": "Puxar o cabo",
+      "icon": "plug",
+      "cost": 2,
+      "cd": 2,
+      "effects": {
+        "counterAll": true,
+        "selfDamage": 12
+      },
+      "text": "Contém qualquer técnica neste turno, mas custa 12 de integridade. Recarga de 2 turnos.",
+      "flavor": "Confidencialidade salva, disponibilidade sacrificada. Os três pilares cobram a conta."
+    },
+    {
+      "id": "a-impacto",
+      "node": "fun-cid",
+      "level": 1,
+      "name": "Classificar o impacto",
+      "icon": "doc",
+      "cost": 1,
+      "effects": {
+        "triageCut": 1,
+        "vis": 5
+      },
+      "text": "Elimina uma alternativa errada da triagem e dá +5 de visibilidade.",
+      "flavor": "Afeta confidencialidade, integridade ou disponibilidade? Começa por aí.",
+      "upgrades": {
+        "2": {
+          "cost": 0,
+          "text": "Sem custo. Elimina uma alternativa errada da triagem e dá +5 de visibilidade."
+        }
+      }
+    },
+    {
+      "id": "a-priorizar",
+      "node": "fun-riscos",
+      "level": 1,
+      "name": "Priorizar por risco",
+      "icon": "bolt",
+      "cost": 0,
+      "cd": 3,
+      "effects": {
+        "ap": 1
+      },
+      "text": "+1 de banda neste turno. Recarga de 3 turnos.",
+      "flavor": "Nem todo alerta merece o mesmo minuto."
+    },
+    {
+      "id": "a-playbook",
+      "node": "fun-normas",
+      "level": 1,
+      "name": "Acionar o plano de resposta",
+      "icon": "doc",
+      "cost": 1,
+      "cd": 99,
+      "effects": {
+        "ap": 3
+      },
+      "text": "+3 de banda. Uma vez por incidente.",
+      "flavor": "ISO/IEC 27035 na gaveta certa vale mais que dez heróis."
+    },
+    {
+      "id": "a-politica",
+      "node": "gov-politicas",
+      "level": 1,
+      "name": "Bloquear por política",
+      "icon": "shield",
+      "cost": 2,
+      "effects": {
+        "shield": {
+          "tags": [
+            "cred",
+            "mail",
+            "midia",
+            "insider"
+          ],
+          "turns": 2
+        }
+      },
+      "text": "Escudo contra credencial, e-mail, mídia removível e abuso interno por 2 turnos.",
+      "flavor": "Acesso condicional e proibição de regras de encaminhamento, publicados e cobrados.",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "shield": {
+              "tags": [
+                "cred",
+                "mail",
+                "midia",
+                "insider"
+              ],
+              "turns": 3
+            }
+          },
+          "text": "Escudo contra credencial, e-mail, mídia removível e abuso interno por 3 turnos."
+        }
+      }
+    },
+    {
+      "id": "a-dpo",
+      "node": "gov-dados",
+      "level": 1,
+      "name": "Acionar o encarregado",
+      "icon": "heart",
+      "cost": 1,
+      "cd": 2,
+      "effects": {
+        "heal": 10,
+        "cleanse": [
+          "vazamento"
+        ]
+      },
+      "text": "+10 de integridade e encerra vazamento ativo. Recarga de 2 turnos.",
+      "flavor": "LGPD, art. 48: comunicar a ANPD e os titulares em prazo razoável."
+    },
+    {
+      "id": "a-continuidade",
+      "node": "gov-continuidade",
+      "level": 1,
+      "name": "Ativar a continuidade",
+      "icon": "heart",
+      "cost": 2,
+      "cd": 3,
+      "effects": {
+        "heal": 22
+      },
+      "text": "+22 de integridade. Recarga de 3 turnos.",
+      "flavor": "O site secundário assume. O RTO acabou de ser testado ao vivo."
+    },
+    {
+      "id": "a-pcap",
+      "node": "net-fundamentos",
+      "level": 1,
+      "name": "Capturar tráfego",
+      "icon": "net",
+      "cost": 1,
+      "effects": {
+        "vis": 18,
+        "counter": [
+          "recon",
+          "mitm"
+        ]
+      },
+      "text": "+18 de visibilidade e contém reconhecimento e interceptação (MITM) neste turno.",
+      "flavor": "tcpdump -i any -w incidente.pcap",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "vis": 26,
+            "counter": [
+              "recon",
+              "mitm"
+            ]
+          },
+          "text": "+26 de visibilidade e contém reconhecimento e interceptação (MITM) neste turno."
+        }
+      }
+    },
+    {
+      "id": "a-firewall",
+      "node": "net-perimetro",
+      "level": 1,
+      "name": "Regra de firewall",
+      "icon": "wall",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "c2",
+          "recon",
+          "exfil",
+          "dos"
+        ]
+      },
+      "text": "Contém comando e controle, reconhecimento, exfiltração e negação de serviço neste turno.",
+      "flavor": "deny any → 198.51.100.0/24, e filtragem de DNS para domínios recém-registrados."
+    },
+    {
+      "id": "a-ssh",
+      "node": "net-protocolos",
+      "level": 1,
+      "name": "Endurecer o SSH",
+      "icon": "lock",
+      "cost": 2,
+      "effects": {
+        "shield": {
+          "tags": [
+            "lateral",
+            "cred"
+          ],
+          "turns": 2
+        }
+      },
+      "text": "Escudo contra movimentação lateral e credencial por 2 turnos.",
+      "flavor": "PermitRootLogin no, AllowUsers, chaves com passphrase e origem restrita."
+    },
+    {
+      "id": "a-rotacionar",
+      "node": "cri-primitivas",
+      "level": 1,
+      "name": "Rotacionar segredos",
+      "icon": "key",
+      "cost": 2,
+      "effects": {
+        "counter": [
+          "cred",
+          "dump"
+        ],
+        "cleanse": [
+          "credencial"
+        ]
+      },
+      "text": "Contém credencial e dump neste turno e invalida credenciais roubadas.",
+      "flavor": "Senha nova, hash novo, sal novo. O que foi roubado virou lixo.",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "counter": [
+              "cred",
+              "dump"
+            ],
+            "cleanse": [
+              "credencial"
+            ],
+            "heal": 6
+          },
+          "text": "Contém credencial e dump, invalida credenciais roubadas e dá +6 de integridade."
+        }
+      }
+    },
+    {
+      "id": "a-revogar",
+      "node": "cri-pki",
+      "level": 1,
+      "name": "Revogar certificado",
+      "icon": "cert",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "c2",
+          "phish",
+          "cert"
+        ]
+      },
+      "text": "Contém comando e controle, phishing e abuso de certificado neste turno.",
+      "flavor": "CRL e OCSP atualizados: o certificado do domínio falso não vale mais nada."
+    },
+    {
+      "id": "a-tls",
+      "node": "cri-tls",
+      "level": 1,
+      "name": "Inspecionar TLS",
+      "icon": "eye",
+      "cost": 1,
+      "effects": {
+        "vis": 14,
+        "counter": [
+          "c2",
+          "exfil",
+          "mitm",
+          "cert"
+        ]
+      },
+      "text": "+14 de visibilidade e contém C2, exfiltração, interceptação e abuso de certificado neste turno.",
+      "flavor": "JA4, SNI e certificado: dá para ver muito sem decifrar nada."
+    },
+    {
+      "id": "a-nuvem",
+      "node": "cld-nuvem",
+      "level": 1,
+      "name": "Revogar tokens de nuvem",
+      "icon": "key",
+      "cost": 2,
+      "effects": {
+        "counter": [
+          "cred",
+          "mfa",
+          "cloud"
+        ],
+        "cleanse": [
+          "credencial"
+        ]
+      },
+      "text": "Contém credencial, MFA e abuso de nuvem neste turno e invalida credenciais roubadas.",
+      "flavor": "Revoke-MgUserSignInSession: toda sessão aberta cai agora."
+    },
+    {
+      "id": "a-mfa",
+      "node": "hard-acesso",
+      "level": 1,
+      "name": "Exigir MFA",
+      "icon": "key",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "cred"
+        ]
+      },
+      "text": "Contém técnicas de credencial neste turno.",
+      "flavor": "A senha vazou. O segundo fator, não.",
+      "upgrades": {
+        "2": {
+          "name": "MFA com número",
+          "effects": {
+            "counter": [
+              "cred",
+              "mfa"
+            ]
+          },
+          "text": "Contém credencial e fadiga de MFA neste turno."
+        }
+      }
+    },
+    {
+      "id": "a-linux",
+      "node": "hard-linux",
+      "level": 1,
+      "name": "Endurecer o host Linux",
+      "icon": "shield",
+      "cost": 2,
+      "effects": {
+        "counter": [
+          "privesc",
+          "persist"
+        ],
+        "cleanse": [
+          "persistencia",
+          "root"
+        ]
+      },
+      "text": "Contém escalada e persistência, remove uma persistência e o root do atacante.",
+      "flavor": "sudoers revisado, cron.d auditado, AppArmor em enforce."
+    },
+    {
+      "id": "a-gpo",
+      "node": "hard-windows",
+      "level": 1,
+      "name": "GPO de contenção",
+      "icon": "shield",
+      "cost": 2,
+      "cd": 1,
+      "effects": {
+        "counter": [
+          "exec",
+          "lateral",
+          "dump",
+          "impact",
+          "midia"
+        ]
+      },
+      "text": "Contém execução, movimentação lateral, dump, impacto e mídia removível neste turno. Recarga de 1 turno.",
+      "flavor": "LAPS, Credential Guard, bloqueio de macros e de ADMIN$. Empurrado em 90 segundos."
+    },
+    {
+      "id": "a-waf",
+      "node": "dev-owasp",
+      "level": 1,
+      "name": "Patch virtual no WAF",
+      "icon": "wall",
+      "cost": 2,
+      "effects": {
+        "counter": [
+          "web",
+          "exploit"
+        ]
+      },
+      "text": "Contém ataques web e exploração neste turno.",
+      "flavor": "Regra no WAF enquanto o patch de verdade não sai.",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "shield": {
+              "tags": [
+                "web",
+                "exploit"
+              ],
+              "turns": 2
+            }
+          },
+          "text": "Escudo contra ataques web e exploração por 2 turnos."
+        }
+      }
+    },
+    {
+      "id": "a-dast",
+      "node": "dev-testes",
+      "level": 1,
+      "name": "Varredura DAST",
+      "icon": "scan",
+      "cost": 2,
+      "effects": {
+        "damage": 14
+      },
+      "text": "Causa 14 de dano. Escala com a visibilidade.",
+      "flavor": "Ataque a sua própria aplicação antes que ele termine de atacar."
+    },
+    {
+      "id": "a-rebuild",
+      "node": "dev-pipeline",
+      "level": 1,
+      "name": "Reconstruir do pipeline",
+      "icon": "bolt",
+      "cost": 3,
+      "cd": 3,
+      "effects": {
+        "damage": 26,
+        "cleanse": [
+          "persistencia:all",
+          "root"
+        ]
+      },
+      "text": "Causa 26 de dano e remove toda persistência e o root. Recarga de 3 turnos.",
+      "flavor": "Infra como código: o servidor comprometido vira gado, não bicho de estimação."
+    },
+    {
+      "id": "a-ratelimit",
+      "node": "dev-apis",
+      "level": 1,
+      "name": "Rate limiting",
+      "icon": "wall",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "cred",
+          "recon",
+          "dos"
+        ]
+      },
+      "text": "Contém credencial, reconhecimento e negação de serviço neste turno.",
+      "flavor": "429 Too Many Requests. Volte em 30 segundos. Ou nunca."
+    },
+    {
+      "id": "a-siem",
+      "node": "ops-siem",
+      "level": 1,
+      "name": "Correlacionar no SIEM",
+      "icon": "eye",
+      "cost": 1,
+      "effects": {
+        "vis": 22,
+        "counter": [
+          "evasion"
+        ]
+      },
+      "text": "+22 de visibilidade e contém evasão neste turno (os logs já estão no SIEM).",
+      "flavor": "Três fontes, uma linha do tempo.",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "vis": 32,
+            "counter": [
+              "evasion"
+            ]
+          },
+          "text": "+32 de visibilidade e contém evasão neste turno."
+        }
+      }
+    },
+    {
+      "id": "a-purgar",
+      "node": "ops-siem",
+      "level": 1,
+      "name": "Purgar e-mails maliciosos",
+      "icon": "mail",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "phish",
+          "mail"
+        ],
+        "cleanse": [
+          "persistencia"
+        ]
+      },
+      "text": "Contém phishing e abuso de e-mail neste turno e remove uma persistência.",
+      "flavor": "Search-and-purge em todas as caixas, mais as regras que o atacante criou."
+    },
+    {
+      "id": "a-edr",
+      "node": "ops-siem",
+      "level": 2,
+      "name": "Isolar endpoint (EDR)",
+      "icon": "target",
+      "cost": 2,
+      "effects": {
+        "counter": [
+          "exec",
+          "lateral",
+          "impact",
+          "persist",
+          "midia"
+        ],
+        "damage": 8
+      },
+      "text": "Contém execução, movimentação lateral, impacto, persistência e mídia removível neste turno e causa 8 de dano.",
+      "flavor": "A máquina continua ligada para a perícia, mas fala só com o EDR."
+    },
+    {
+      "id": "a-cacar",
+      "node": "ops-logs",
+      "level": 1,
+      "name": "Caçar nos logs",
+      "icon": "target",
+      "cost": 2,
+      "effects": {
+        "damage": 16
+      },
+      "text": "Causa 16 de dano. Escala com a visibilidade.",
+      "flavor": "Hipótese, consulta, achado. Repita."
+    },
+    {
+      "id": "a-memoria",
+      "node": "ops-forense",
+      "level": 1,
+      "name": "Análise de memória",
+      "icon": "flask",
+      "cost": 3,
+      "cd": 2,
+      "effects": {
+        "damage": 22,
+        "cleanse": [
+          "persistencia:all"
+        ],
+        "expose": 2
+      },
+      "text": "Causa 22 de dano, remove toda persistência e expõe o atacante (+30% de dano por 2 turnos). Recarga de 2 turnos.",
+      "flavor": "vol -f mem.raw windows.malfind"
+    },
+    {
+      "id": "a-patch",
+      "node": "ops-vuln",
+      "level": 1,
+      "name": "Patch emergencial",
+      "icon": "patch",
+      "cost": 2,
+      "effects": {
+        "counter": [
+          "exploit",
+          "privesc"
+        ],
+        "burnOnContain": true
+      },
+      "text": "Contém exploração e escalada. A técnica contida não pode ser usada de novo neste incidente.",
+      "flavor": "CVSS 9.8, janela de manutenção: agora."
+    },
+    {
+      "id": "a-mascarar",
+      "node": "dat-classificacao",
+      "level": 1,
+      "name": "Mascarar dados sensíveis",
+      "icon": "mask",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "exfil",
+          "ia"
+        ],
+        "cleanse": [
+          "vazamento"
+        ]
+      },
+      "text": "Contém exfiltração e vazamento por IA neste turno e encerra vazamento ativo.",
+      "flavor": "O que sair vai sair como ***.***.***-**.",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "shield": {
+              "tags": [
+                "exfil",
+                "ia"
+              ],
+              "turns": 2
+            },
+            "cleanse": [
+              "vazamento"
+            ]
+          },
+          "text": "Escudo contra exfiltração e vazamento por IA por 2 turnos e encerra vazamento ativo."
+        }
+      }
+    },
+    {
+      "id": "a-dlp",
+      "node": "dat-dlp",
+      "level": 1,
+      "name": "Bloquear com DLP",
+      "icon": "mask",
+      "cost": 1,
+      "effects": {
+        "counter": [
+          "exfil",
+          "mail",
+          "ia",
+          "insider"
+        ],
+        "cleanse": [
+          "vazamento"
+        ]
+      },
+      "text": "Contém exfiltração, abuso de e-mail, vazamento por IA e abuso interno neste turno e encerra vazamento ativo.",
+      "flavor": "Regra: CPF em massa saindo por qualquer canal = bloqueio."
+    },
+    {
+      "id": "a-restaurar",
+      "node": "dat-backup",
+      "level": 1,
+      "name": "Restaurar cópia imutável",
+      "icon": "heart",
+      "cost": 2,
+      "cd": 3,
+      "effects": {
+        "heal": 30,
+        "counter": [
+          "impact"
+        ],
+        "ignoreNoBackup": true
+      },
+      "text": "+30 de integridade e contém impacto neste turno. Funciona mesmo com backups sabotados. Recarga de 3 turnos.",
+      "flavor": "3-2-1, com uma cópia imutável e fora do domínio. O vssadmin não chega lá."
+    },
+    {
+      "id": "a-segmentar",
+      "node": "ten-zt",
+      "level": 1,
+      "name": "Microssegmentar",
+      "icon": "split",
+      "cost": 2,
+      "effects": {
+        "shield": {
+          "tags": [
+            "lateral",
+            "c2",
+            "ia"
+          ],
+          "turns": 2
+        }
+      },
+      "text": "Escudo contra movimentação lateral, comando e controle e abuso de agentes de IA por 2 turnos.",
+      "flavor": "Nunca confie, sempre verifique. Nem o servidor ao lado.",
+      "upgrades": {
+        "2": {
+          "effects": {
+            "shield": {
+              "tags": [
+                "lateral",
+                "c2",
+                "ia"
+              ],
+              "turns": 3
+            }
+          },
+          "text": "Escudo contra movimentação lateral, comando e controle e abuso de agentes de IA por 3 turnos."
+        }
+      }
+    },
+    {
+      "id": "a-attck",
+      "node": "ten-ameacas",
+      "level": 1,
+      "name": "Mapear no ATT&CK",
+      "icon": "brain",
+      "cost": 1,
+      "effects": {
+        "triageCut": 2
+      },
+      "text": "Elimina duas alternativas erradas da triagem. Passivo: a triagem mostra os IDs do ATT&CK.",
+      "flavor": "Tática, técnica, subtécnica. O adversário tem um vocabulário, e você também."
+    },
+    {
+      "id": "a-ueba",
+      "node": "ten-ia",
+      "level": 1,
+      "name": "Ativar UEBA",
+      "icon": "brain",
+      "cost": 2,
+      "cd": 99,
+      "effects": {
+        "passiveVis": 10
+      },
+      "text": "+10 de visibilidade por turno até o fim do incidente. Uma vez por incidente.",
+      "flavor": "O modelo aprendeu como a Carla trabalha. A Carla não trabalha às 3 da manhã."
+    }
+  ]
+}

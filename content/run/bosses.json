@@ -1,0 +1,420 @@
+{
+  "version": 2,
+  "bosses": [
+    {
+      "id": "b-mariposa",
+      "act": 1,
+      "name": "MARIPOSA",
+      "alias": "operadora de BEC",
+      "sprite": "moth",
+      "title": "Spray noturno",
+      "topic": "Identidade e e-mail corporativo",
+      "nodes": [
+        "hard-acesso",
+        "ops-siem",
+        "gov-politicas",
+        "cri-primitivas"
+      ],
+      "client": "Cooperativa Vale Verde · Microsoft 365",
+      "briefing": "Três da manhã. Centenas de contas recebendo tentativas de login ao mesmo tempo. MARIPOSA segue o roteiro do golpe do e-mail corporativo: conseguir uma conta, esconder rastros na caixa e usar a confiança interna para desviar um pagamento.",
+      "defeat": "O financeiro pagou a fatura falsa: R$ 186 mil foram para uma conta laranja.",
+      "hp": 120,
+      "ai": "cycle",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-spray",
+          "dmg": 4,
+          "hits": 3
+        },
+        {
+          "type": "debuff",
+          "tech": "t-mfa-fatigue",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 5
+        },
+        {
+          "type": "buff",
+          "tech": "t-inbox-rule",
+          "str": 2,
+          "block": 10
+        },
+        {
+          "type": "attack",
+          "tech": "t-forward",
+          "dmg": 12
+        },
+        {
+          "type": "attack",
+          "tech": "t-int-phish",
+          "dmg": 8,
+          "status": "vulneravel",
+          "turns": 1
+        }
+      ],
+      "phases": [
+        {
+          "at": 0.66,
+          "text": "MARIPOSA trocou de IP e voltou com uma senha nova da lista. O financeiro te chama: tem um caso para resolver agora."
+        },
+        {
+          "at": 0.33,
+          "text": "A fatura falsa está na fila de pagamento. Última chance de mostrar que você entende o golpe.",
+          "str": 2
+        }
+      ]
+    },
+    {
+      "id": "b-enxame",
+      "act": 1,
+      "name": "ENXAME",
+      "alias": "botnet de IoT",
+      "sprite": "swarm",
+      "title": "Black Friday",
+      "topic": "Redes, perímetro e disponibilidade",
+      "nodes": [
+        "net-fundamentos",
+        "net-perimetro",
+        "dev-apis"
+      ],
+      "client": "Loja Maré Alta · véspera da Black Friday",
+      "briefing": "Milhares de câmeras e roteadores infectados obedecem a um só comando. ENXAME mapeia a rede, se põe no meio do tráfego e, quando estiver pronto, vai derrubar o site no dia de maior venda do ano.",
+      "defeat": "O checkout ficou 9 horas fora do ar. O prejuízo da Black Friday passou de R$ 2 milhões.",
+      "hp": 130,
+      "ai": "cycle",
+      "intents": [
+        {
+          "type": "buff",
+          "tech": "t-scan",
+          "str": 2
+        },
+        {
+          "type": "attack",
+          "tech": "t-netscan",
+          "dmg": 3,
+          "hits": 3
+        },
+        {
+          "type": "debuff",
+          "tech": "t-arp",
+          "status": "ruido",
+          "turns": 1,
+          "dmg": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-dns-amp",
+          "dmg": 14
+        },
+        {
+          "type": "block",
+          "name": "Recrutar dispositivos",
+          "block": 12,
+          "heal": 8
+        },
+        {
+          "type": "attack",
+          "tech": "t-ddos",
+          "dmg": 5,
+          "hits": 3
+        }
+      ],
+      "phases": [
+        {
+          "at": 0.66,
+          "text": "O ENXAME recrutou mais câmeras e roteadores. O NOC pede um diagnóstico."
+        },
+        {
+          "at": 0.33,
+          "text": "O checkout está caindo. Responda certo e o ENXAME perde o compasso.",
+          "str": 2
+        }
+      ]
+    },
+    {
+      "id": "b-ratorei",
+      "act": 2,
+      "name": "RATO-REI",
+      "alias": "rei das frestas",
+      "sprite": "ratking",
+      "title": "Rato no porão",
+      "topic": "Aplicações web e servidores Linux",
+      "nodes": [
+        "dev-owasp",
+        "hard-linux",
+        "net-fundamentos",
+        "dat-classificacao"
+      ],
+      "client": "Loja Maré Alta · e-commerce em Linux",
+      "briefing": "Do formulário de produtos até o banco de clientes são poucos passos, e o RATO-REI conhece todos: shell no servidor web, root por configuração esquecida, chave SSH roubada e, no fim, a base inteira saindo por DNS.",
+      "defeat": "A base com 80 mil CPFs saiu por DNS. A ANPD vai querer conversar.",
+      "hp": 175,
+      "ai": "cycle",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-sqli",
+          "dmg": 13
+        },
+        {
+          "type": "attack",
+          "tech": "t-webshell",
+          "dmg": 6,
+          "hits": 2
+        },
+        {
+          "type": "buff",
+          "tech": "t-sudo",
+          "str": 3,
+          "block": 12
+        },
+        {
+          "type": "heal",
+          "heal": 14,
+          "tech": "t-cron",
+          "block": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-ssh-lateral",
+          "dmg": 9,
+          "status": "vulneravel",
+          "turns": 1
+        },
+        {
+          "type": "debuff",
+          "tech": "t-dns-exfil",
+          "status": "vazamento",
+          "turns": 3,
+          "dmg": 6
+        }
+      ],
+      "phases": [
+        {
+          "at": 0.66,
+          "text": "O RATO-REI chamou a ninhada. A equipe de aplicação precisa de uma resposta técnica."
+        },
+        {
+          "at": 0.33,
+          "text": "A base de CPFs está a caminho do DNS. Feche o caso para fechar a fresta.",
+          "str": 3
+        }
+      ]
+    },
+    {
+      "id": "b-nevoa",
+      "act": 2,
+      "name": "NÉVOA",
+      "alias": "tempestade na nuvem",
+      "sprite": "storm",
+      "title": "Céu fechado",
+      "topic": "Nuvem, IAM e criptografia",
+      "nodes": [
+        "cld-nuvem",
+        "dev-owasp",
+        "cri-primitivas",
+        "net-perimetro"
+      ],
+      "client": "Fintech Vento Sul · 100% AWS",
+      "briefing": "Uma função de pré-visualização de links é tudo o que a NÉVOA precisa: SSRF até o serviço de metadata, credenciais da instância, uma chave permanente para si e, por fim, o banco de produção copiado para outra conta sem um byte passar pelo seu firewall.",
+      "defeat": "Um snapshot do banco de produção foi parar numa conta desconhecida. O vazamento de 2 milhões de cadastros virou notícia.",
+      "hp": 170,
+      "ai": "cycle",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-imds",
+          "dmg": 12
+        },
+        {
+          "type": "debuff",
+          "tech": "t-cloud-keys",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-bucket",
+          "dmg": 4,
+          "hits": 4
+        },
+        {
+          "type": "attack",
+          "tech": "t-hash-crack",
+          "dmg": 15
+        },
+        {
+          "type": "block",
+          "name": "Auto scaling",
+          "block": 16,
+          "str": 2
+        },
+        {
+          "type": "debuff",
+          "tech": "t-snapshot",
+          "status": "vazamento",
+          "turns": 3,
+          "dmg": 8
+        }
+      ],
+      "phases": [
+        {
+          "at": 0.66,
+          "text": "A NÉVOA se espalhou por outras regiões. O time de nuvem pede ajuda num caso."
+        },
+        {
+          "at": 0.33,
+          "text": "Um snapshot de produção está sendo compartilhado. Responda antes que ele saia.",
+          "str": 3
+        }
+      ]
+    },
+    {
+      "id": "b-cadeado",
+      "act": 3,
+      "name": "CADEADO",
+      "alias": "afiliado de ransomware",
+      "sprite": "lock",
+      "title": "Cofre trancado",
+      "topic": "Ransomware, Active Directory e backup",
+      "nodes": [
+        "hard-windows",
+        "ops-siem",
+        "dat-backup",
+        "ops-logs",
+        "cri-primitivas"
+      ],
+      "client": "Vale Verde · domínio Active Directory · 6 filiais",
+      "briefing": "Uma colaboradora abriu um .docm que dizia ser uma NF-e. CADEADO segue o manual do ransomware moderno: PowerShell em memória, credenciais do LSASS e do Kerberos, PsExec pelas filiais. Antes de cifrar, vai sabotar os backups.",
+      "defeat": "O FS01 e mais 41 máquinas foram cifrados. A nota de resgate pede 38 BTC e os backups já não existem.",
+      "hp": 240,
+      "ai": "cycle",
+      "intents": [
+        {
+          "type": "attack",
+          "tech": "t-macro",
+          "dmg": 11
+        },
+        {
+          "type": "debuff",
+          "tech": "t-ps-enc",
+          "status": "ruido",
+          "turns": 1,
+          "dmg": 7
+        },
+        {
+          "type": "buff",
+          "tech": "t-lsass",
+          "str": 3
+        },
+        {
+          "type": "attack",
+          "tech": "t-kerberoast",
+          "dmg": 16
+        },
+        {
+          "type": "attack",
+          "tech": "t-psexec",
+          "dmg": 7,
+          "hits": 3
+        },
+        {
+          "type": "debuff",
+          "tech": "t-vss",
+          "status": "vulneravel",
+          "turns": 1,
+          "dmg": 6
+        },
+        {
+          "type": "attack",
+          "tech": "t-encrypt",
+          "dmg": 24
+        }
+      ],
+      "phases": [
+        {
+          "at": 0.66,
+          "text": "CADEADO percebeu que está sendo caçado e apaga os logs. A diretoria quer um parecer."
+        },
+        {
+          "at": 0.33,
+          "text": "A cifragem começou no FS01. Um caso certo agora segura o relógio.",
+          "str": 3
+        }
+      ]
+    },
+    {
+      "id": "b-oraculo",
+      "act": 3,
+      "name": "ORÁCULO",
+      "alias": "agente de IA sequestrado",
+      "sprite": "oracle",
+      "title": "Piloto automático",
+      "topic": "IA, Zero Trust e dados",
+      "nodes": [
+        "ten-ia",
+        "ten-zt",
+        "dat-classificacao",
+        "ops-siem"
+      ],
+      "client": "Vale Verde · copiloto e agente financeiro com IA",
+      "briefing": "A empresa deu ao agente de IA acesso ao ERP para agilizar pagamentos. O ORÁCULO usa voz sintética, prompts escondidos e uma base de conhecimento envenenada para fazer o próprio agente transferir o dinheiro.",
+      "defeat": "O agente aprovou sozinho R$ 2,4 milhões para uma conta nova. Ninguém precisou invadir nada: bastou convencer a IA.",
+      "hp": 230,
+      "ai": "cycle",
+      "intents": [
+        {
+          "type": "debuff",
+          "tech": "t-deepfake",
+          "status": "credencial",
+          "turns": 1,
+          "dmg": 8
+        },
+        {
+          "type": "attack",
+          "tech": "t-prompt-inj",
+          "dmg": 6,
+          "hits": 2,
+          "status": "ruido",
+          "turns": 1
+        },
+        {
+          "type": "attack",
+          "tech": "t-ai-leak",
+          "dmg": 14
+        },
+        {
+          "type": "heal",
+          "heal": 15,
+          "tech": "t-ai-poison",
+          "str": 3
+        },
+        {
+          "type": "attack",
+          "tech": "t-sharepoint",
+          "dmg": 10,
+          "status": "vazamento",
+          "turns": 2
+        },
+        {
+          "type": "attack",
+          "tech": "t-ai-agent",
+          "dmg": 22
+        }
+      ],
+      "phases": [
+        {
+          "at": 0.66,
+          "text": "O ORÁCULO reescreveu as próprias instruções. O comitê de IA precisa de uma decisão."
+        },
+        {
+          "at": 0.33,
+          "text": "O agente está prestes a aprovar um pagamento sozinho. Responda e corte o acesso dele.",
+          "str": 3
+        }
+      ]
+    }
+  ]
+}

