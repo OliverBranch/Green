@@ -31,7 +31,7 @@ async function start() {
   const s = store.get();
   log(`sessão iniciada · bem-vindo, ${s.operator}`, 'ok');
   if (abandoned) log(`prova de ${abandoned.node?.code} (${LEVELS[abandoned.level].name.toLowerCase()}) foi interrompida e contou como reprovação`, 'alert');
-  if (!s.stats.exams) log('dica: clique num nó do anel interno do mapa para fazer sua primeira prova. ` abre este terminal.', 'info');
+  if (!s.stats.exams) log('dica: comece uma operação, ou faça sua primeira prova na aba habilidades para fortalecer o analista. ` abre este terminal.', 'info');
   if (content.warnings.length) log(`${content.warnings.length} aviso(s) de conteúdo; veja o console do navegador`, 'warn');
 }
 

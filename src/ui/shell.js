@@ -6,18 +6,21 @@ import * as store from '../state.js';
 import { rank, mastery, status } from '../skilltree.js';
 import { mountTree } from './tree-view.js';
 import { mountMissions, openMission } from './mission-view.js';
-import { mountOperation, openRun, playerAttrs } from './run-view.js';
+import { mountOperation, openRun, playerAttrs, sheet } from './run-view.js';
+import { ACT_NAMES } from '../run.js';
+import { PALETTE as P, iconURL } from './pixel.js';
 import { ATTRS } from '../attributes.js';
 import { mountProfile } from './profile-view.js';
 import { openExam } from './exam-view.js';
 import { mountConsole, log } from './console.js';
 
 const ROUTES = [
-  { id: 'mapa', label: 'mapa', title: 'Mapa de habilidades' },
-  { id: 'missoes', label: 'missões', title: 'Contratos' },
-  { id: 'operacao', label: 'operação', title: 'Operação' },
-  { id: 'perfil', label: 'perfil', title: 'Perfil' },
+  { id: 'operacao', label: 'Operação', path: 'operacao', icon: 'sword', title: 'Operação' },
+  { id: 'mapa', label: 'Habilidades', path: 'mapa', icon: 'brain', title: 'Mapa de habilidades' },
+  { id: 'missoes', label: 'Contratos', path: 'missoes', icon: 'doc', title: 'Contratos' },
+  { id: 'perfil', label: 'Perfil', path: 'perfil', icon: 'cert', title: 'Perfil' },
 ];
+const HOME = 'operacao';
 
 export function mountShell(root) {
   const topStats = h('div', { class: 'top-stats' });
@@ -26,7 +29,7 @@ export function mountShell(root) {
   const con = h('div', { class: 'console' });
   const shell = h('div', { class: 'shell' },
     h('header', { class: 'topbar' },
-      h('a', { class: 'brand', href: '#/mapa', 'aria-label': 'GREEN, ir para o mapa' }, 'green', h('span', { class: 'brand-cursor', 'aria-hidden': 'true' })),
+      h('a', { class: 'brand', href: `#/${HOME}`, 'aria-label': 'GREEN, ir para a operação' }, 'green', h('span', { class: 'brand-cursor', 'aria-hidden': 'true' })),
       topStats),
     nav, main, con);
   clear(root).appendChild(shell);
@@ -49,10 +52,63 @@ export function mountShell(root) {
       h('span', { class: 'ts-rep' }, h('span', { class: 'ts-k' }, 'rep'), String(s.reputation)));
   }
 
+  // ----- menu lateral -----
+
+  const navIcon = (name, on) => h('img', { class: 'nav-icon pix', src: iconURL(name, on ? P.G : P.m), alt: '', 'aria-hidden': 'true' });
+
+  // status ao vivo de cada seção: o que tem para fazer ali
+  function navStatus(id) {
+    const s = store.get();
+    if (id === 'operacao') {
+      const run = s.run;
+      if (run && !['dead', 'won'].includes(run.status)) {
+        const low = run.hp < run.maxHp * 0.35;
+        return { sub: `ato ${run.act} · andar ${run.floor}`, badge: `${run.hp}/${run.maxHp}`, kind: low ? 'alert' : 'live', live: true };
+      }
+      return { sub: s.stats.runs ? `${s.stats.runsWon || 0} vitória(s) em ${s.stats.runs}` : 'roguelike · 3 atos', badge: null };
+    }
+    if (id === 'mapa') {
+      const m = mastery();
+      let ready = 0;
+      for (const n of content.nodes.values()) if (status(n).canExam) ready++;
+      return { sub: `${m.proven}/${m.total} níveis`, badge: ready ? String(ready) : null, kind: 'go', badgeTitle: `${ready} nó(s) com prova disponível` };
+    }
+    if (id === 'missoes') {
+      const done = content.missions.filter((m) => s.missions[m.id]?.completions).length;
+      return { sub: `${done}/${content.missions.length} concluído(s)`, badge: null };
+    }
+    if (id === 'perfil') return { sub: 'ficha, registro e save', badge: null };
+    return { sub: '', badge: null };
+  }
+
   function renderNav() {
-    mount(nav, h('ul', {}, ROUTES.map((r) => h('li', {},
-      h('a', { href: `#/${r.id}`, class: `nav-link${current === r.id ? ' is-active' : ''}`, 'aria-current': current === r.id ? 'page' : null },
-        h('span', { class: 'nav-path', 'aria-hidden': 'true' }, '~/'), r.label)))));
+    const s = store.get();
+    const r = rank(s.xp);
+    const attrs = playerAttrs();
+    mount(nav,
+      h('p', { class: 'nav-k' }, '// seções'),
+      h('ul', { class: 'nav-list' }, ROUTES.map((rt, i) => {
+        const on = current === rt.id;
+        const st = navStatus(rt.id);
+        return h('li', {}, h('a', {
+          href: `#/${rt.path}`, class: `nav-link${on ? ' is-active' : ''}${st.live ? ' is-live' : ''}`,
+          'aria-current': on ? 'page' : null, title: `${rt.title} (Alt+${i + 1})`,
+        },
+          navIcon(rt.icon, on || st.live),
+          h('span', { class: 'nav-text' },
+            h('span', { class: 'nav-label' }, rt.label),
+            h('span', { class: 'nav-sub' }, st.sub)),
+          st.badge ? h('span', { class: `nav-badge is-${st.kind || 'info'}`, title: st.badgeTitle || null }, st.live ? h('i', { class: 'nav-dot', 'aria-hidden': 'true' }) : null, st.badge) : null));
+      })),
+      h('a', { class: 'nav-card', href: '#/perfil', title: 'Ficha do analista: atributos vindos do que você estuda' },
+        h('span', { class: 'nav-card-top' },
+          h('span', { class: 'nav-avatar', 'aria-hidden': 'true' }, (s.operator || '?').slice(0, 1).toUpperCase()),
+          h('span', { class: 'nav-who' }, h('b', {}, s.operator || 'operador'), h('span', {}, r.name.toLowerCase()))),
+        h('span', { class: 'nav-xp', role: 'meter', 'aria-label': `${s.xp} XP`, 'aria-valuenow': String(s.xp) }, h('span', { style: { width: `${Math.round(r.progress * 100)}%` } })),
+        h('span', { class: 'nav-xp-text' }, r.ceil ? `${s.xp} / ${r.ceil} xp` : `${s.xp} xp`),
+        h('span', { class: 'nav-k' }, 'ficha do analista'),
+        sheet(attrs, { compact: true })),
+      h('p', { class: 'nav-foot' }, h('span', {}, `v${content.version}`), h('span', {}, h('kbd', {}, '`'), ' terminal')));
   }
 
   const startExam = (nodeId, level) => openExam(nodeId, level, { onClose: () => {} });
@@ -62,9 +118,9 @@ export function mountShell(root) {
   };
 
   function route() {
-    let id = (location.hash.replace(/^#\/?/, '') || 'mapa').split('/')[0];
+    let id = (location.hash.replace(/^#\/?/, '') || HOME).split('/')[0];
     if (id === 'incidentes') id = 'operacao';
-    const target = ROUTES.find((r) => r.id === id) ? id : 'mapa';
+    const target = ROUTES.find((r) => r.id === id) ? id : HOME;
     if (target === current && view) return;
     view?.destroy?.();
     current = target;
@@ -140,8 +196,14 @@ export function mountShell(root) {
 
   mountConsole(con, commands);
   renderTop();
-  store.subscribe(() => { renderTop(); applyFx(); });
+  store.subscribe(() => { renderTop(); renderNav(); applyFx(); });
   window.addEventListener('hashchange', route);
+  // Alt+1..4 troca de seção (fora de provas e da operação aberta)
+  window.addEventListener('keydown', (e) => {
+    if (!e.altKey || e.ctrlKey || e.metaKey || document.querySelector('.overlay')) return;
+    const rt = ROUTES[Number(e.key) - 1];
+    if (rt) { e.preventDefault(); location.hash = `#/${rt.path}`; }
+  });
   route();
 }
 

@@ -123,30 +123,72 @@ export function mountOperation(container, { onNode }) {
     };
 
     const threats = R.THREATS.filter((t) => t.n <= (s.maxThreat || 0));
-    let threatSel = Math.min(s.maxThreat || 0, Number(container.dataset.threat || s.maxThreat || 0));
-    const sel = h('select', { id: 'threat', onchange: (e) => { container.dataset.threat = e.target.value; } },
-      threats.map((t) => h('option', { value: String(t.n), selected: t.n === threatSel ? 'selected' : null }, `${t.n} · ${t.name}`)));
+    const threatSel = Math.min(s.maxThreat || 0, Number(container.dataset.threat ?? s.maxThreat ?? 0));
+    const live = active(run);
+
+    // escalação de chefes: dois por ato; na operação em andamento, o sorteado aparece em destaque
+    const lineup = h('div', { class: 'op-lineup', 'aria-label': 'Chefes por ato' }, [1, 2, 3].map((act) => {
+      const bosses = content.run.bosses.filter((b) => b.act === act);
+      const cleared = live && run.act > act;
+      const here = live && run.act === act;
+      return h('div', { class: `lineup-act${here ? ' is-here' : ''}${cleared ? ' is-cleared' : ''}` },
+        h('p', { class: 'lineup-k' }, `ato ${act}`, h('span', {}, R.ACT_NAMES[act].toLowerCase())),
+        bosses.map((b) => {
+          const seen = best[b.id]?.met > 0;
+          const chosen = live && run.bosses?.[act] === b.id;
+          return h('div', { class: `lineup-boss${seen ? '' : ' is-unseen'}${live && !chosen ? ' is-out' : ''}${chosen ? ' is-chosen' : ''}`, title: seen ? `${b.name} · ${b.topic}` : `Chefe do ato ${act} · ainda não encontrado` },
+            portrait(b.sprite, 2),
+            h('span', {}, seen || chosen ? b.name : '???'));
+        }),
+        cleared ? h('p', { class: 'lineup-mark' }, 'contido') : here ? h('p', { class: 'lineup-mark is-here' }, 'você está aqui') : null);
+    }));
+
+    const cta = live
+      ? h('div', { class: 'op-run' },
+        h('p', { class: 'op-kicker' }, h('i', { class: 'nav-dot' }), `em andamento · ameaça ${run.threat || 0}`),
+        h('h2', { class: 'op-title' }, `Ato ${run.act} · ${R.ACT_NAMES[run.act]}`),
+        h('div', { class: 'op-stats' }, hpBar(run), h('span', { class: 'run-cr' }, icon('coin', P.A, 'pix-icon is-sm'), `${run.credits}`), h('span', {}, `andar ${run.floor}`), h('span', {}, `${run.relics.length} ferramenta(s)`)),
+        h('div', { class: 'op-actions' },
+          h('button', { class: 'btn btn-primary btn-big', onclick: () => openRun({ onNode }) }, 'Continuar operação'),
+          h('button', { class: 'btn btn-ghost btn-small', onclick: abandon }, 'Abandonar')))
+      : h('div', { class: 'op-run' },
+        threats.length > 1 ? h('div', { class: 'op-threats', role: 'group', 'aria-label': 'Nível de ameaça' },
+          h('p', { class: 'op-kicker' }, 'nível de ameaça'),
+          h('div', { class: 'threat-pills' }, threats.map((t) => h('button', {
+            class: `threat-pill${t.n === threatSel ? ' is-on' : ''}`, 'aria-pressed': String(t.n === threatSel), title: t.text,
+            onclick: () => { container.dataset.threat = String(t.n); sfx.click(); render(); },
+          }, String(t.n)))),
+          h('p', { class: 'threat-desc' }, h('b', {}, R.THREATS[threatSel].name), ` · ${R.THREATS[threatSel].text}`))
+          : h('p', { class: 'threat-desc' }, 'Vencer uma operação libera o próximo nível de ameaça.'),
+        h('div', { class: 'op-actions' },
+          h('button', { class: 'btn btn-primary btn-big', onclick: () => start(threatSel) }, 'Iniciar operação')),
+        h('p', { class: 'op-note' }, 'Os chefes são sorteados no início. Seus atributos ficam fixos durante a operação: são os da ficha abaixo.'));
+
+    const runs = s.runs || [];
+    const bestAct = runs.reduce((m, r) => Math.max(m, r.won ? 4 : r.act || 0), 0);
+    const kpi = (label, value, sub) => h('li', { class: 'kpi' }, h('span', { class: 'kpi-k' }, label), h('b', {}, value), sub ? h('span', { class: 'kpi-sub' }, sub) : null);
+    const kpis = h('ul', { class: 'op-kpis' },
+      kpi('operações', `${s.stats.runsWon || 0}/${s.stats.runs || 0}`, 'vencidas'),
+      kpi('melhor resultado', bestAct === 4 ? 'vitória' : bestAct ? `ato ${bestAct}` : '—', bestAct === 4 ? 'os três chefes' : bestAct ? 'mais longe que chegou' : 'nenhuma ainda'),
+      kpi('acerto nas cartas', s.stats.cards ? `${Math.round(((s.stats.cardsOk || 0) / s.stats.cards) * 100)}%` : '—', s.stats.cards ? `${s.stats.cards} cartas` : 'jogue para medir'),
+      kpi('ameaça liberada', `${s.maxThreat || 0}/${R.THREATS.length - 1}`, R.THREATS[s.maxThreat || 0].name.toLowerCase()));
+
+    const how = (s.stats.runs || 0) < 3 ? h('ol', { class: 'op-how' },
+      h('li', {}, icon('net', P.G, 'pix-icon is-big'), h('div', {}, h('b', {}, 'Escolha a rota'), h('span', {}, 'Mapa gerado na hora: incidentes, elites, imprevistos, plantões e mercado até o chefe.'))),
+      h('li', {}, icon('sword', P.G, 'pix-icon is-big'), h('div', {}, h('b', {}, 'Cada ação é uma carta'), h('span', {}, 'Atacar, defender ou analisar o log. Acertou, a ação acontece; rápido, é crítico.'))),
+      h('li', {}, icon('brain', P.G, 'pix-icon is-big'), h('div', {}, h('b', {}, 'Estudo vira atributo'), h('span', {}, 'Cada nível comprovado nas provas fortalece o seu analista.')))) : null;
 
     mount(container, h('div', { class: 'page op-page' },
-      h('header', { class: 'page-head' },
-        h('h1', { class: 'page-title' }, 'Operação'),
-        h('p', { class: 'page-lead' }, 'Três atos, cada um com um mapa de caminhos que termina num chefe. No combate, cada ação abre uma carta: acertou, a ação acontece. Cada monstro é um tema que você estuda, e o que você estuda vira atributo do seu analista. Morreu, recomeça do zero: o que fica é o que você aprendeu.')),
       s.notice ? h('p', { class: 'panel-note is-warn op-notice' }, s.notice, ' ', h('button', { class: 'link-btn', onclick: () => store.update((x) => { delete x.notice; }) }, 'ok')) : null,
-      active(run)
-        ? h('section', { class: 'op-current' },
-          h('div', {},
-            h('p', { class: 'op-kicker' }, `operação em andamento · ameaça ${run.threat || 0}`),
-            h('h2', { class: 'op-title' }, `Ato ${run.act} · ${R.ACT_NAMES[run.act]}`),
-            h('div', { class: 'op-stats' }, hpBar(run), h('span', { class: 'run-cr' }, icon('coin', P.A, 'pix-icon is-sm'), `${run.credits}`), h('span', {}, `andar ${run.floor}`), h('span', {}, `${run.relics.length} ferramenta(s)`))),
-          h('div', { class: 'op-actions' },
-            h('button', { class: 'btn btn-primary', onclick: () => openRun({ onNode }) }, 'Continuar operação'),
-            h('button', { class: 'btn btn-danger btn-small', onclick: abandon }, 'Abandonar')))
-        : h('section', { class: 'op-new' },
-          h('div', {},
-            h('h2', { class: 'sec-title' }, 'Nova operação'),
-            h('p', { class: 'sec-lead' }, 'O chefe de cada ato é sorteado no início. Seus atributos ficam fixos durante a operação: são os da ficha abaixo, no momento em que você começa.'),
-            threats.length > 1 ? h('div', { class: 'field op-threat' }, h('label', { for: 'threat' }, 'Nível de ameaça'), sel, h('p', { class: 'panel-note' }, R.THREATS[threatSel].text)) : h('p', { class: 'panel-note' }, 'Vencer uma operação libera o próximo nível de ameaça.')),
-          h('button', { class: 'btn btn-primary btn-big', onclick: () => start(Number(container.dataset.threat || threatSel)) }, 'Iniciar operação')),
+      h('section', { class: `op-hero${live ? ' is-live' : ''}` },
+        h('div', { class: 'op-hero-main' },
+          h('p', { class: 'op-kicker' }, 'modo roguelike · 3 atos · 6 chefes'),
+          h('h1', { class: 'page-title' }, 'Operação'),
+          h('p', { class: 'op-lead' }, 'Escolha a rota, enfrente os atacantes e derrube o chefe de cada ato. Cada monstro é um tema que você estuda. Morreu, recomeça do zero: o que fica é o que você aprendeu.'),
+          cta),
+        lineup),
+      kpis,
+      how,
       h('section', { class: 'sec' },
         h('h2', { class: 'sec-title' }, 'Ficha do analista'),
         h('p', { class: 'sec-lead' }, 'Cada ramo da árvore alimenta um atributo. O XP de área vem de cada nível comprovado nas provas (100 por nível) e de cada carta certa nas operações. Escolha o que estudar na semana pensando no analista que você quer ter.'),
@@ -158,9 +200,9 @@ export function mountOperation(container, { onNode }) {
         h('ul', { class: 'bestiary is-bosses' }, content.run.bosses.map((b) => beast(b, true))),
         h('h3', { class: 'beast-h' }, 'Atacantes'),
         h('ul', { class: 'bestiary' }, content.run.monsters.map((m) => beast(m, false)))),
-      s.runs?.length ? h('section', { class: 'sec' },
+      runs.length ? h('section', { class: 'sec' },
         h('h2', { class: 'sec-title' }, 'Histórico'),
-        h('ul', { class: 'runs' }, s.runs.slice().reverse().slice(0, 10).map((r) => h('li', { class: r.won ? 'is-won' : '' },
+        h('ul', { class: 'runs' }, runs.slice().reverse().slice(0, 10).map((r) => h('li', { class: r.won ? 'is-won' : '' },
           h('span', { class: 'runs-when' }, new Date(r.at).toLocaleDateString('pt-BR')),
           h('b', {}, r.won ? 'vitória' : `caiu no ato ${r.act}`),
           h('span', {}, `ameaça ${r.threat} · andar ${r.floor} · acerto ${Math.round(r.acc * 100)}%`),
